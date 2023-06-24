@@ -4,13 +4,15 @@ import { Heading, Box, Container, Button} from '@chakra-ui/react';
 
 import type {  NextPage, GetServerSideProps } from "next";
 import Head from 'next/head';
-import { Login } from '@/components/page/login';
+import { Login } from '../components/page/login';
+import { Playlists } from '../components/page/playlists';
 
 type Props = {
   token: string;
 };
 
 const Page: NextPage<Props> = ({ token }) => {
+  console.log(process.env.SPOTIFY_CLIENT_ID);
   return (
     <>
       <Head>
@@ -28,7 +30,7 @@ const Page: NextPage<Props> = ({ token }) => {
           </Heading>
         </Box>
         <Box h={200} display='flex' justifyContent='center' alignItems='center'>
-          {token === "" ? <Login /> : ''}
+          {token === "" ? <Login /> : <Playlists />}
         </Box>
       </Container>
     </>
