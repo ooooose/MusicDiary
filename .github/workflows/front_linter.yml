@@ -1,0 +1,29 @@
+name: next lint
+on: push
+
+env:
+  project-name: music-diary-front
+
+jobs:
+  dev-check:
+    name: lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20 
+          cache: npm
+
+      - name: Package Install
+        working-directory: ./front
+        run: npm ci
+
+      - name: Lint
+        working-directory: ./front
+        run: npm run lint

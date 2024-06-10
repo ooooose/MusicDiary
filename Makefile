@@ -60,3 +60,6 @@ console:
 
 fix:
 	docker-compose run --rm front npm run fix
+
+lint:
+	docker-compose run --rm front npm run lint
