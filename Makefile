@@ -58,3 +58,5 @@ routes:
 console:
 	docker-compose run --rm back bin/rails c
 
+fix:
+	docker-compose run --rm front npm run fix

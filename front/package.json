@@ -6,7 +6,12 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "fix": "npm run fix:prettier && npm run fix:eslint",
+    "lint:eslint": "eslint .",
+    "lint:prettier": "prettier --check .",
+    "fix:eslint": "npm run lint:eslint -- --fix",
+    "fix:prettier": "npm run lint:prettier -- --write"
   },
   "dependencies": {
     "next": "14.2.3",
