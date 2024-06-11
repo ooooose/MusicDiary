@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-  has_many :diaries
+  has_many :diaries, dependent: :destroy
 
   ROLES = { general: 1, admin: 9 }.freeze
 
@@ -15,10 +15,15 @@ class User < ApplicationRecord
   scope :deleted, -> { where(deleted_flag: true) }
 
   before_validation :set_default_role, on: :create
+  before_create :set_uid
 
   private
 
     def set_default_role
       self.role ||= :general
+    end
+
+    def set_uid
+      self.uid = SecureRandom.uuid
     end
 end
