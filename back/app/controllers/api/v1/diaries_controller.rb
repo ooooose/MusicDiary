@@ -15,7 +15,7 @@ class Api::V1::DiariesController < ApplicationController
 
   # POST /diaries
   def create
-    @diary = Diary.new(diary_params)
+    @diary = current_user.build(diary_params)
 
     if @diary.save
       render json: @diary, status: :created, location: @diary
@@ -40,7 +40,7 @@ class Api::V1::DiariesController < ApplicationController
 
   private
     def set_diary
-      @diary = Diary.find_by(uid: params[:id])
+      @diary = Diary.find_by(uid: params[:uid])
     end
 
     def diary_params
