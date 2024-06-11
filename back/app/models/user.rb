@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-  has_many :diaries
+  has_many :diaries, dependent: :destroy
 
   ROLES = { general: 1, admin: 9 }.freeze
 

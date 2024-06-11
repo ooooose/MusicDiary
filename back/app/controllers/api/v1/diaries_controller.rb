@@ -1,5 +1,5 @@
 class Api::V1::DiariesController < ApplicationController
-  before_action :set_diary, only: %i[ show update destroy ]
+  before_action :set_diary, only: %i[show update destroy]
 
   # GET /diaries
   def index
@@ -39,6 +39,7 @@ class Api::V1::DiariesController < ApplicationController
   end
 
   private
+
     def set_diary
       @diary = Diary.find_by(uid: params[:uid])
     end
@@ -46,5 +47,4 @@ class Api::V1::DiariesController < ApplicationController
     def diary_params
       params.require(:diary).permit(:body)
     end
-
 end
