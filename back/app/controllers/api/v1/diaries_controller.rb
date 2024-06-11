@@ -40,7 +40,7 @@ class Api::V1::DiariesController < ApplicationController
 
   private
     def set_diary
-      @diary = Diary.find_by(params[:uid])
+      @diary = Diary.find_by(uid: params[:id])
     end
 
     def diary_params
