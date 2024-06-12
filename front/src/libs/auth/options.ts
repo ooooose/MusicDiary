@@ -1,11 +1,9 @@
-import type { NextAuthOptions } from "next-auth";
+import { apiClient } from '@/libs/api/apiClient'
+import type { NextAuthOptions, Session, User } from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
-import { apiClient } from "@/libs/api/apiClient";
-import type { User, Session } from 'next-auth'
-
 
 export type CustomUser = User & {
-  providerUserId: string;
+  providerUserId: string
 }
 
 export type CustomSession = Session & {
@@ -25,7 +23,7 @@ export const options: NextAuthOptions = {
     maxAge: 7 * 24 * 60 * 60,
   },
   callbacks: {
-    async jwt({token, user, account}) {
+    async jwt({ token, user, account }) {
       if (account && user) {
         return {
           id: user.id,
@@ -43,32 +41,32 @@ export const options: NextAuthOptions = {
       return token
     },
 
-    async session({session, token, user}) {
+    async session({ session, token, user }) {
       session.user = token as unknown as CustomUser
       return { ...session, ...token, ...user }
     },
     async signIn({ user, account }) {
-      const provider = account?.provider;
-      const providerId = user?.id;
-      const name = user?.name;
+      const provider = account?.provider
+      const providerId = user?.id
+      const name = user?.name
       try {
         const res = await apiClient.apiPost(`/api/v1/users`, {
           provider,
           providerId,
           name,
-        });
+        })
         if (res.status === 200) {
-          return true;
+          return true
         } else {
-          return false;
+          return false
         }
       } catch (error) {
-        console.log("エラー", error);
-        return false;
+        console.log('エラー', error)
+        return false
       }
     },
   },
   pages: {
-    signIn: "/auth/signin",
+    signIn: '/auth/signin',
   },
 }
