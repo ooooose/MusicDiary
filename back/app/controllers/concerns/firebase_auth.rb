@@ -23,7 +23,7 @@ module FirebaseAuth
         {
           uid: payload["user_id"],
           name: payload["name"],
-          avatar: payload["picture"],
+          image: payload["picture"],
         }
       )
     end
