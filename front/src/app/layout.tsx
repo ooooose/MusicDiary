@@ -1,13 +1,13 @@
 import type { Metadata } from 'next'
 
-import NextAuthProvider from '@/libs/auth/NextAuthProvider'
-import './globals.css'
-import { Inter as FontSans } from 'next/font/google'
+import NextAuthProvider from '@/lib/auth/NextAuthProvider'
 import { cn } from '@/lib/utils'
+import { Inter as FontSans } from 'next/font/google'
+import './globals.css'
 
 const fontSans = FontSans({
-  subsets: ["latin"],
-  variable: "--font-sans",
+  subsets: ['latin'],
+  variable: '--font-sans',
 })
 export const metadata: Metadata = {
   title: 'Create Next App',
