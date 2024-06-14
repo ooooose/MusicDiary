@@ -1,5 +1,6 @@
 import type { NextAuthOptions } from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
+import { postJwtToBack } from '@/lib/auth/postJwtToBack'
 
 export const options: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
@@ -21,7 +22,10 @@ export const options: NextAuthOptions = {
       return token
     },
     async session({ session, token }) {
-      session.accessToken = token.accessToken
+      if (token.accessToken) {
+        session.accessToken = token.accessToken
+        await postJwtToBack(token.accessToken)
+      }
       return session
     },
   },
