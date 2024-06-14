@@ -37,7 +37,9 @@ gem "rack-cors"
 
 gem 'jsonapi-serializer'
 
-gem "jwt"
+gem 'jwt'
+gem 'devise'
+gem 'devise-jwt'
 
 gem "base64"
 gem "bigdecimal"
