@@ -1,9 +1,9 @@
-import { GoogleAuthButton } from "@/components/atoms/GoogleAuthButton"
+import AuthButton from "@/components/atoms/AuthButton"
 
 export default function Page() {
   return (
     <div>
-      <GoogleAuthButton />
+      <AuthButton />
     </div>
   )
 }
