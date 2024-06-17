@@ -38,8 +38,11 @@ gem "rack-cors"
 gem 'jsonapi-serializer'
 
 gem 'jwt'
+
 gem 'devise'
-gem 'devise-jwt'
+gem 'devise_token_auth'
+gem 'omniauth-google-oauth2'
+
 
 gem "base64"
 gem "bigdecimal"
