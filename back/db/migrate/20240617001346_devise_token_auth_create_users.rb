@@ -33,11 +33,14 @@ class DeviseTokenAuthCreateUsers < ActiveRecord::Migration[7.0]
       t.string :nickname
       t.string :image
       t.string :email
+      t.integer :role, null: false, default: 1
+      t.boolean :deleted_flag, null: false, default: false, index: true
 
       ## Tokens
       t.text :tokens
 
       t.timestamps
+      t.datetime :deleted_at
     end
 
     add_index :users, :email,                unique: true

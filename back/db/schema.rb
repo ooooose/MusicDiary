@@ -37,10 +37,14 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_17_001447) do
     t.string "nickname"
     t.string "image"
     t.string "email"
+    t.integer "role", default: 1, null: false
+    t.boolean "deleted_flag", default: false, null: false
     t.text "tokens"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
+    t.index ["deleted_flag"], name: "index_users_on_deleted_flag"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
