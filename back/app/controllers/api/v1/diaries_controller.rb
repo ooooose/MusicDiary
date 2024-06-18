@@ -3,9 +3,9 @@ class Api::V1::DiariesController < ApplicationController
 
   # GET /diaries
   def index
-    @diaries = Diary.all
+    @diaries = current_user.diaries.includes(:user)
 
-    render json: @diaries
+    render json: @diaries, includes: :user
   end
 
   # GET /diaries/{uid}

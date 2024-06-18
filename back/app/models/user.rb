@@ -17,6 +17,18 @@ class User < ApplicationRecord
   before_validation :set_default_role, on: :create
   before_create :set_uid
 
+  def self.find_with_jwt(encoded_token)
+    decoded_token = JWT.decode(encoded_token,
+                               Rails.application.credentials.secret_key_base,
+                               true,
+                               algorithm: 'HS256')
+
+    payload = decoded_token.first
+    find_by(id: payload['user_id'])
+  rescue JWT::DecodeError
+    nil
+  end
+
   private
 
     def set_default_role
