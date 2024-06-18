@@ -2,6 +2,7 @@
 import { signIn, signOut, useSession } from 'next-auth/react';
 import { Button } from '@/components/ui/button';
 
+
 const AuthButton = () => {
   const { data: session, status } = useSession();
   const loading = status === "loading";
