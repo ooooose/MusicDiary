@@ -13,6 +13,9 @@ export const options: NextAuthOptions = {
     strategy: 'jwt',
     maxAge: 7 * 24 * 60 * 60,
   },
+  pages: {
+    signIn: '/login',
+  },
   callbacks: {
     async signIn({ user, account }) {
       const provider = account?.provider
@@ -45,6 +48,9 @@ export const options: NextAuthOptions = {
       } catch (error) {
         return false
       }
+    },
+    async redirect({ baseUrl }) {
+      return baseUrl
     },
     async jwt({ token, account, user }) {
       if (account && user) {
