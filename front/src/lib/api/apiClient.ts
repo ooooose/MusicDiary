@@ -11,7 +11,7 @@ class ApiClient {
     additionalHeaders: HeadersInit = {},
   ): Promise<HeadersInit> {
     const session = await getSession()
-    const accessToken = session?.accessToken
+    const accessToken = session?.user.accessToken
 
     return {
       'Content-Type': 'application/json',

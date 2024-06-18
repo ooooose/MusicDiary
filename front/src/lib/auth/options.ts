@@ -1,6 +1,5 @@
 import type { NextAuthOptions } from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
-import { postJwtToBack } from '@/lib/auth/postJwtToBack'
 
 export const options: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
@@ -15,17 +14,47 @@ export const options: NextAuthOptions = {
     maxAge: 7 * 24 * 60 * 60,
   },
   callbacks: {
-    async jwt({ token, account }) {
-      if (account) {
-        token.accessToken = account.access_token
+    async signIn({ user, account }) {
+      const provider = account?.provider
+      const name = user?.name
+      const email = user?.email
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/auth/${provider}/callback`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              user: {
+                name,
+                email,
+              },
+            }),
+          },
+        )
+        if (response.status === 200) {
+          const data = await response.json()
+          user.userId = data.user.id
+          user.accessToken = data.accessToken
+          return true
+        } else {
+          return false
+        }
+      } catch (error) {
+        return false
+      }
+    },
+    async jwt({ token, account, user }) {
+      if (account && user) {
+        token.userId = user.userId
+        token.accessToken = user.accessToken
       }
       return token
     },
     async session({ session, token }) {
-      if (token.accessToken) {
-        session.accessToken = token.accessToken
-        await postJwtToBack(token.accessToken)
-      }
+      session.user = token
       return session
     },
   },
