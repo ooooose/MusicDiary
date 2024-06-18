@@ -39,11 +39,6 @@ gem 'jsonapi-serializer'
 
 gem 'jwt'
 
-gem 'devise'
-gem 'devise_token_auth'
-gem 'omniauth-google-oauth2'
-
-
 gem "base64"
 gem "bigdecimal"
 gem "mutex_m"
