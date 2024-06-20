@@ -11,4 +11,14 @@ class Api::V1::UsersController < ApplicationController
   rescue StandardError => e
     render json: { error: "ログインに失敗しました: #{e.message}" }, status: :internal_server_error
   end
+
+  private
+
+    def user_params
+      params.require(:user).permit(:name, :email)
+    end
+
+    def encode_jwt(payload)
+      JWT.encode(payload, Rails.application.secret_key_base, 'HS256')
+    end
 end
