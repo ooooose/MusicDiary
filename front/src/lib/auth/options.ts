@@ -17,13 +17,14 @@ export const options: NextAuthOptions = {
   },
   callbacks: {
     async signIn({ user, account }) {
-      const provider = account?.provider;
-      const name = user?.name;
-      const email = user?.email;
+      const provider = account?.provider
+      const name = user?.name
+      const email = user?.email
+      const image = user?.image
 
       if (!provider || !name || !email) {
-        console.error('認証情報の取得に失敗しました');
-        return false;
+        console.error('認証情報の取得に失敗しました')
+        return false
       }
 
       try {
@@ -36,23 +37,24 @@ export const options: NextAuthOptions = {
             user: {
               name,
               email,
+              image
             },
           }),
         })
 
-        console.log(`Response status: ${response.status}`);
+        console.log(`Response status: ${response.status}`)
         if (response.ok) {
-          const data = await response.json();
-          user.userId = data.user.id;
-          user.accessToken = data.accessToken;
-          return true;
+          const data = await response.json()
+          user.userId = data.user.id
+          user.accessToken = data.accessToken
+          return true
         } else {
-          console.error(`Error: ${response.status} ${response.statusText}`);
-          return false;
+          console.error(`Error: ${response.status} ${response.statusText}`)
+          return false
         }
       } catch (error) {
-        console.error(`Fetch error: ${error}`);
-        return false;
+        console.error(`Fetch error: ${error}`)
+        return false
       }
     },
     async redirect({ baseUrl }) {

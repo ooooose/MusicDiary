@@ -1,3 +1,3 @@
-FROM node:20.9.0-alpine
+FROM node:20.11.0-slim
 
-WORKDIR /user/src/app
+WORKDIR /app

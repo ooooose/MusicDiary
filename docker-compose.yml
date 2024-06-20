@@ -23,17 +23,17 @@ services:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
-  front:
-    build:
-      context: ./front
-      dockerfile: Dockerfile
-    volumes:
-      - './front:/user/src/app'
-    command: sh -c "npm run dev"
-    ports:
-      - "8000:3000"
-    tty: true
-    stdin_open: true
+  # front:
+  #   build:
+  #     context: ./front
+  #     dockerfile: Dockerfile
+  #   volumes:
+  #     - './front:/app'
+  #   command: sh -c "npm run dev"
+  #   ports:
+  #     - "8000:3000"
+  #   tty: true
+  #   stdin_open: true
 
 volumes:
   mysql_data:
