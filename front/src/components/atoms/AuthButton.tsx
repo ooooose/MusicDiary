@@ -7,10 +7,6 @@ const AuthButton = () => {
   const { data: session, status } = useSession();
   const loading = status === "loading";
 
-  const handleSignIn = () => {
-    signIn('google')
-  }
-
   return (
     <div>
       {loading ? (
@@ -21,7 +17,7 @@ const AuthButton = () => {
           <Button onClick={() => signOut()}>Sign out</Button>
         </div>
       ) : (
-        <Button variant="outline" onClick={handleSignIn}>
+        <Button variant="outline" onClick={() => signIn('google', {})}>
           Google認証ボタン
         </Button>
       )}

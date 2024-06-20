@@ -1,22 +1,22 @@
-import { getSession } from 'next-auth/react'
+// import { getSession } from 'next-auth/react'
 
 class ApiClient {
   baseURL: string
 
   constructor() {
-    this.baseURL = process.env.NEXT_APP_URL ?? ''
+    this.baseURL = process.env.NEXT_PUBLIC_API_URL ?? ''
   }
 
   private async getHeaders(
     additionalHeaders: HeadersInit = {},
   ): Promise<HeadersInit> {
-    const session = await getSession()
-    const accessToken = session?.user.accessToken
+    // const session = await getSession()
+    // const accessToken = session?.user.accessToken
 
     return {
       'Content-Type': 'application/json',
       'X-Requested-With': 'XMLHttpRequest',
-      ...(accessToken && { Authorization: `Bearer ${accessToken}` }),
+      // ...(accessToken && { Authorization: `Bearer ${accessToken}` }),
       ...additionalHeaders,
     }
   }
