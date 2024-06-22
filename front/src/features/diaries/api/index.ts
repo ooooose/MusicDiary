@@ -1,3 +1,2 @@
-export * from './getDiaries'
-export * from './postDiary'
-export * from './getDiary'
+export * from './create-diary'
+export * from './get-diaries'
