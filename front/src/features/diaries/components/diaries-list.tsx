@@ -1,3 +1,4 @@
+'use client'
 import { useDiaries } from "@/features/diaries/api"
 
 

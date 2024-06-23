@@ -1,4 +1,7 @@
-// import { getSession } from 'next-auth/react'
+'use server'
+
+import { getServerSession } from 'next-auth'
+import { options } from '@/lib/auth/options'
 
 class ApiClient {
   baseURL: string
@@ -10,13 +13,11 @@ class ApiClient {
   private async getHeaders(
     additionalHeaders: HeadersInit = {},
   ): Promise<HeadersInit> {
-    // const session = await getSession()
-    // const accessToken = session?.user.accessToken
-
+    const session = await getServerSession(options)
     return {
       'Content-Type': 'application/json',
       'X-Requested-With': 'XMLHttpRequest',
-      // ...(accessToken && { Authorization: `Bearer ${accessToken}` }),
+      Authorization: `Bearer ${session?.user.accessToken}`,
       ...additionalHeaders,
     }
   }
