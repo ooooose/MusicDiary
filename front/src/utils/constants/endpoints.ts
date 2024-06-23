@@ -1,6 +1,13 @@
 class Url {
-  BACK_URL = process.env.NEXT_PUBLIC_API_URL
-  GOOGLE_AUTH = `${this.BACK_URL}/api/v1/auth`
+  readonly BASE_URL = '/api/v1';
+
+  get diaries() {
+    return `${this.BASE_URL}/diaries`;
+  }
+
+  get me() {
+    return `${this.BASE_URL}/me`;
+  }
 }
 
-export const BACK_URL = new Url()
+export const endpoints = new Url()

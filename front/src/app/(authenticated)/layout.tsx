@@ -1,4 +1,5 @@
 import AuthenticatedLayout from "@/components/layouts/Layout/AuthenticatedLayout"
+import { ReactQueryClientProvider } from "@/lib/react-query/react-query-client-provider"
 
 export default function Authenticated({
   children,
@@ -7,7 +8,9 @@ export default function Authenticated({
 }) {
   return (
     <AuthenticatedLayout>
-      {children}
+      <ReactQueryClientProvider>
+        {children}
+      </ReactQueryClientProvider>
     </AuthenticatedLayout>
   )
 }
