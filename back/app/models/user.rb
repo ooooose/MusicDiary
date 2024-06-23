@@ -21,10 +21,10 @@ class User < ApplicationRecord
     decoded_token = JWT.decode(encoded_token,
                                Rails.application.credentials.secret_key_base,
                                true,
-                               algorithm: 'HS256')
+                               algorithm: "HS256")
 
     payload = decoded_token.first
-    find_by(id: payload['user_id'])
+    find_by(id: payload["user_id"])
   rescue JWT::DecodeError
     nil
   end

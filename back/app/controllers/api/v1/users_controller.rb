@@ -14,7 +14,7 @@ class Api::V1::UsersController < ApplicationController
     encoded_token = encode_jwt(payload)
 
     render json: { user: @current_user, accessToken: encoded_token, status: :ok }
-  rescue StandardError => e
+  rescue => e
     render json: { error: "ログインに失敗しました: #{e.message}" }, status: :internal_server_error
   end
 
@@ -25,6 +25,6 @@ class Api::V1::UsersController < ApplicationController
     end
 
     def encode_jwt(payload)
-      JWT.encode(payload, Rails.application.secret_key_base, 'HS256')
+      JWT.encode(payload, Rails.application.secret_key_base, "HS256")
     end
 end
