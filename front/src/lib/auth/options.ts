@@ -57,8 +57,8 @@ export const options: NextAuthOptions = {
         return false
       }
     },
-    async redirect({ baseUrl }) {
-      return baseUrl
+    async redirect() {
+      return '/diaries'
     },
     async jwt({ token, account, user }) {
       if (account && user) {
