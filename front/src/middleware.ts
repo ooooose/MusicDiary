@@ -14,7 +14,6 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL('/diaries', req.url))
   }
 
-  // 続行
   return NextResponse.next()
 }
 export const config = {
