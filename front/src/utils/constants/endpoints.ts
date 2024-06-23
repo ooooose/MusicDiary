@@ -1,6 +1,13 @@
 class Url {
-  BACK_URL = process.env.NEXT_PUBLIC_API_URL
-  DIARIES = `${this.BACK_URL}/api/v1/diaries`
+  readonly BASE_URL = '/api/v1';
+
+  get diaries() {
+    return `${this.BASE_URL}/diaries`;
+  }
+
+  get me() {
+    return `${this.BASE_URL}/me`;
+  }
 }
 
 export const endpoints = new Url()

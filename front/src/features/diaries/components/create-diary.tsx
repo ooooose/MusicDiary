@@ -12,13 +12,9 @@ import { createDiaryInputSchema, useCreateDiary } from '@/features/diaries/api'
 import { zodResolver } from '@hookform/resolvers/zod'
 import type { SubmitHandler } from 'react-hook-form'
 import { useForm } from 'react-hook-form'
-type CreateDiaryProps = {
-  userId: number
-}
 
-export const CreateDiary = ({ userId }: CreateDiaryProps) => {
+export const CreateDiary = () => {
   const createDiaryMutation = useCreateDiary({
-    userId,
     mutationConfig: {
       onSuccess: () => {
         console.log('success')
@@ -30,14 +26,12 @@ export const CreateDiary = ({ userId }: CreateDiaryProps) => {
   const form = useForm<CreateDiaryInput>({
     resolver: zodResolver(createDiaryInputSchema),
     defaultValues: {
-      userId,
       body: '',
     },
   })
 
   const onSubmit: SubmitHandler<CreateDiaryInput> = (values) => {
     createDiaryMutation.mutate({
-      userId: values.userId,
       body: values.body,
     })
   }
