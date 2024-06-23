@@ -37,7 +37,7 @@ export const options: NextAuthOptions = {
             user: {
               name,
               email,
-              image
+              image,
             },
           }),
         })

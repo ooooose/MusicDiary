@@ -1,9 +1,9 @@
-import { apiClient } from "@/lib/api/apiClient"
-import { endpoints } from "@/utils/constants/endpoints"
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { getDiariesQueryOptions } from '@/features/diaries/api/get-diaries'
+import { apiClient } from '@/lib/api/apiClient'
 import type { MutationConfig } from '@/lib/react-query/react-query'
-import type { Diary } from "@/types/api"
-import { getDiariesQueryOptions } from "@/features/diaries/api/get-diaries"
+import type { Diary } from '@/types/api'
+import { endpoints } from '@/utils/constants/endpoints'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { z } from 'zod'
 
 export const createDiaryInputSchema = z.object({
@@ -22,9 +22,7 @@ type UsePostDiaryOptions = {
   mutationConfig?: MutationConfig<typeof createDiary>
 }
 
-export const useCreateDiary = ({
-  mutationConfig,
-}: UsePostDiaryOptions) => {
+export const useCreateDiary = ({ mutationConfig }: UsePostDiaryOptions) => {
   const queryClient = useQueryClient()
 
   const { onSuccess, ...restConfig } = mutationConfig || {}
@@ -39,5 +37,4 @@ export const useCreateDiary = ({
     ...restConfig,
     mutationFn: createDiary,
   })
-
 }

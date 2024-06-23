@@ -1,5 +1,5 @@
-import Link from 'next/link'
 import { CreateDiary } from '@/features/diaries/components/create-diary'
+import Link from 'next/link'
 
 export default function Page() {
   return (

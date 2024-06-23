@@ -1,7 +1,5 @@
 import Link from 'next/link'
 
-
-
 const Footer = () => {
   return (
     <footer className="mt-36 border-0 border-t border-solid bg-gray-50 py-6 text-gray-500">

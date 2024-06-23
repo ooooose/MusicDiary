@@ -6,5 +6,9 @@ export const GoogleAuthButton = () => {
   const handleSignIn = () => {
     signIn('google')
   }
-  return <Button variant="outline" onClick={handleSignIn}>Google認証ボタン</Button>
+  return (
+    <Button variant="outline" onClick={handleSignIn}>
+      Google認証ボタン
+    </Button>
+  )
 }

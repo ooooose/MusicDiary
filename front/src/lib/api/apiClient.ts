@@ -1,7 +1,7 @@
 'use server'
 
-import { getServerSession } from 'next-auth'
 import { options } from '@/lib/auth/options'
+import { getServerSession } from 'next-auth'
 
 class ApiClient {
   baseURL: string

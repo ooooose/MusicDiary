@@ -1,13 +1,12 @@
 'use client'
-import { useDiaries } from "@/features/diaries/api"
-
+import { useDiaries } from '@/features/diaries/api'
 
 export const DiariesList = () => {
   const diariesQuery = useDiaries({})
 
   if (diariesQuery.isLoading) return <div>loading...</div>
   if (!diariesQuery?.data?.length) return <div>No Diaries!</div>
-  
+
   return (
     <ul aria-label="comments" className="flex flex-col space-y-3">
       {diariesQuery.data.map((diary, index) => (
