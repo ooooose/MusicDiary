@@ -3,14 +3,15 @@ class Api::V1::DiariesController < ApplicationController
 
   # GET /diaries
   def index
-    @diaries = current_user.diaries.includes(:user)
+    diaries = current_user.diaries.includes(:user)
 
-    render json: @diaries, includes: :user
+    json_string = DairySerializer.new(diaries).serializable_hash.to_json
+    render json: json_string, status: :ok
   end
 
   # GET /diaries/{uid}
   def show
-    render json: @diary
+    render json: DairySerializer.new(@diaries).serializable_hash.to_json, status: :ok
   end
 
   # POST /diaries

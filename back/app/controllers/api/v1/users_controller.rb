@@ -1,6 +1,10 @@
 class Api::V1::UsersController < ApplicationController
   skip_before_action :authenticate, only: [:create]
 
+  def show
+    render json: UserSerializer.new(current_user).serializable_hash.to_json, status: :ok
+  end
+
   def create
     @current_user = User.find_by(email: user_params[:email])
 
