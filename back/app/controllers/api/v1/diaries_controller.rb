@@ -5,13 +5,13 @@ class Api::V1::DiariesController < ApplicationController
   def index
     diaries = current_user.diaries.includes(:user)
 
-    json_string = DairySerializer.new(diaries).serializable_hash.to_json
+    json_string = DiarySerializer.new(diaries).serializable_hash.to_json
     render json: json_string, status: :ok
   end
 
   # GET /diaries/{uid}
   def show
-    render json: DairySerializer.new(@diaries).serializable_hash.to_json, status: :ok
+    render json: DiarySerializer.new(@diaries).serializable_hash.to_json, status: :ok
   end
 
   # POST /diaries
@@ -19,7 +19,7 @@ class Api::V1::DiariesController < ApplicationController
     @diary = current_user.diaries.build(diary_params)
 
     if @diary.save
-      render json: @diary, status: :created, location: @diary
+      render json: @diary, status: :created
     else
       render json: @diary.errors, status: :unprocessable_entity
     end
