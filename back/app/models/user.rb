@@ -15,7 +15,6 @@ class User < ApplicationRecord
   scope :deleted, -> { where(deleted_flag: true) }
 
   before_validation :set_default_role, on: :create
-  before_create :set_uid
 
   def self.find_with_jwt(encoded_token)
     begin
@@ -40,9 +39,5 @@ class User < ApplicationRecord
 
     def set_default_role
       self.role ||= :general
-    end
-
-    def set_uid
-      self.uid = SecureRandom.uuid
     end
 end

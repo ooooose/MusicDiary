@@ -16,7 +16,7 @@ class Api::V1::DiariesController < ApplicationController
 
   # POST /diaries
   def create
-    @diary = current_user.build(diary_params)
+    @diary = current_user.diaries.build(diary_params)
 
     if @diary.save
       render json: @diary, status: :created, location: @diary
@@ -46,6 +46,6 @@ class Api::V1::DiariesController < ApplicationController
     end
 
     def diary_params
-      params.require(:diary).permit(:body)
+      params.require(:diary).permit(:uid, :body)
     end
 end
