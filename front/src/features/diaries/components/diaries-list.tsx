@@ -1,14 +1,16 @@
 'use client'
+
 import { useDiaries } from '@/features/diaries/api'
+import { Skeleton } from '@/components/ui/skeleton'
 
 export const DiariesList = () => {
   const diariesQuery = useDiaries({})
 
-  if (diariesQuery.isLoading) return <div>loading...</div>
+  if (diariesQuery.isLoading) return <Skeleton className="h-[30px] w-[100px]" />
   if (!diariesQuery?.data?.length) return <div>No Diaries!</div>
 
   return (
-    <ul aria-label="comments" className="flex flex-col space-y-3">
+    <ul aria-label="diaries" className="flex flex-col space-y-3">
       {diariesQuery.data.map((diary, index) => (
         <li
           aria-label={`diary-${diary.body}-${index}`}
