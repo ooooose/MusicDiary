@@ -1,5 +1,5 @@
 class Api::V1::UsersController < ApplicationController
-  skip_before_action :authenticate, only: [:create]
+  skip_before_action :authenticate_request, only: [:create]
 
   def show
     render json: UserSerializer.new(current_user).serializable_hash.to_json, status: :ok
