@@ -6,13 +6,13 @@ import type { UseQueryOptions } from '@tanstack/react-query'
 import { useQuery } from '@tanstack/react-query'
 
 export const getDiary = async (id: string) => {
-  return apiClient
-    .apiGet(`${endpoints.diaries}/${id}`)
-    .then((res) => res.json())
+  const response = await apiClient.apiGet(`${endpoints.diaries}/${id}`)
+  return response.data
 }
 
 export const getDiaries = async (): Promise<Diary[]> => {
-  return apiClient.apiGet(endpoints.diaries).then((res) => res.json())
+  const response = await apiClient.apiGet(endpoints.diaries)
+  return response.data
 }
 
 export const getDiariesQueryOptions = (): UseQueryOptions<Diary[], Error> => {

@@ -7,15 +7,15 @@ export const DiariesList = () => {
   const diariesQuery = useDiaries({})
 
   if (diariesQuery.isLoading) return <Skeleton className="h-[30px] w-[100px]" />
-  if (!diariesQuery?.data?.length) return <div>No Diaries!</div>
-
+  if (!diariesQuery.data?.length) return <div>No Diaries!</div>
+  console.log(diariesQuery.data)
   return (
     <ul aria-label="diaries" className="flex flex-col space-y-3">
-      {diariesQuery.data.map((diary, index) => (
+      {diariesQuery?.data?.map((diary, index) => (
         <li
           aria-label={`diary-${diary.body}-${index}`}
           key={diary.id || index}
-          className="w-full bg-white p-4 shadow-sm"
+          className="w-full p-4 shadow-sm"
         >
           {diary.id}
         </li>

@@ -4,6 +4,7 @@ import type { MutationConfig } from '@/lib/react-query/react-query'
 import type { Diary } from '@/types/api'
 import { endpoints } from '@/utils/constants/endpoints'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { generateUUID } from '@/lib/uuid'
 import { z } from 'zod'
 
 export const createDiaryInputSchema = z.object({
@@ -13,9 +14,11 @@ export const createDiaryInputSchema = z.object({
 export type CreateDiaryInput = z.infer<typeof createDiaryInputSchema>
 
 export const createDiary = async (params: CreateDiaryInput): Promise<Diary> => {
+  const uuid = generateUUID()
+  const paramsWithUUID = { ...params, uid: uuid }
+
   return await apiClient
-    .apiPost(endpoints.diaries, params)
-    .then((result) => result.json())
+    .apiPost(endpoints.diaries, paramsWithUUID)
 }
 
 type UsePostDiaryOptions = {
