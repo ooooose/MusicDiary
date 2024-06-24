@@ -14,8 +14,7 @@ class Api::V1::UsersController < ApplicationController
       @current_user.save!
     end
 
-    payload = { user_id: @current_user.id, exp: 24.hours.from_now.to_i }
-    encoded_token = encode_jwt(payload)
+    encoded_token = JwtService.encode(user_id: @current_user.id,  exp: 24.hours.from_now.to_i)
 
     render json: { user: @current_user, accessToken: encoded_token, status: :ok }
   rescue => e

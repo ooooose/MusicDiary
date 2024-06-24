@@ -18,15 +18,22 @@ class User < ApplicationRecord
   before_create :set_uid
 
   def self.find_with_jwt(encoded_token)
-    decoded_token = JWT.decode(encoded_token,
-                               Rails.application.credentials.secret_key_base,
-                               true,
-                               algorithm: "HS256")
-
-    payload = decoded_token.first
-    find_by(id: payload["user_id"])
-  rescue JWT::DecodeError
-    nil
+    begin
+      Rails.logger.debug "Encoded token: #{encoded_token}"
+      decoded_token = JWT.decode(encoded_token, Rails.application.credentials.secret_key_base, true, { algorithm: 'HS256' })
+      payload = decoded_token.first
+      Rails.logger.debug "Decoded token payload: #{payload}"
+      find(payload['user_id'])
+    rescue JWT::DecodeError => e
+      Rails.logger.error "JWT decode error: #{e.message}"
+      nil
+    rescue JWT::ExpiredSignature
+      Rails.logger.error "JWT token has expired"
+      nil
+    rescue JWT::VerificationError
+      Rails.logger.error "JWT verification error"
+      nil
+    end
   end
 
   private
