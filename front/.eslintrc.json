@@ -23,7 +23,7 @@
         "args": "after-used",
         "argsIgnorePattern": "^_"
       }
-      ],
+    ],
     "@typescript-eslint/no-explicit-any": "off",
     "object-shorthand": "error",
     "tailwindcss/no-custom-classname": "off",

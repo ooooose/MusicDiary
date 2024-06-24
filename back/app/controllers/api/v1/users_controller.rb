@@ -1,5 +1,9 @@
 class Api::V1::UsersController < ApplicationController
-  skip_before_action :authenticate, only: [:create]
+  skip_before_action :authenticate_request, only: [:create]
+
+  def show
+    render json: UserSerializer.new(current_user).serializable_hash.to_json, status: :ok
+  end
 
   def create
     @current_user = User.find_by(email: user_params[:email])
@@ -10,8 +14,7 @@ class Api::V1::UsersController < ApplicationController
       @current_user.save!
     end
 
-    payload = { user_id: @current_user.id, exp: 24.hours.from_now.to_i }
-    encoded_token = encode_jwt(payload)
+    encoded_token = JwtService.encode(user_id: @current_user.id,  exp: 24.hours.from_now.to_i)
 
     render json: { user: @current_user, accessToken: encoded_token, status: :ok }
   rescue => e

@@ -1,5 +1,5 @@
-import { DiariesList } from "@/features/diaries/components/diaries-list";
-import { CreateDiary } from "@/features/diaries/components/create-diary";
+import { CreateDiary } from '@/features/diaries/components/create-diary'
+import { DiariesList } from '@/features/diaries/components/diaries-list'
 
 export const Diaries = () => {
   return (

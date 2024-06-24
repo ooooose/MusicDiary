@@ -1,6 +1,5 @@
+import AuthButton from '@/components/atoms/AuthButton'
 import Link from 'next/link'
-
-
 
 const Footer = () => {
   return (
@@ -9,6 +8,7 @@ const Footer = () => {
         <div className="flex items-center justify-between px-4 pb-12">
           <div className="flex flex-col gap-4">
             <div className="mt-10">
+              <AuthButton />
               <h2>Music Diary</h2>
               <p>日々の日記を音楽と共に...</p>
             </div>

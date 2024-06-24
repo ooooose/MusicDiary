@@ -1,11 +1,10 @@
 'use client'
-import { signIn, signOut, useSession } from 'next-auth/react';
-import { Button } from '@/components/ui/button';
-
+import { Button } from '@/components/ui/button'
+import { signIn, signOut, useSession } from 'next-auth/react'
 
 const AuthButton = () => {
-  const { data: session, status } = useSession();
-  const loading = status === "loading";
+  const { data: session, status } = useSession()
+  const loading = status === 'loading'
 
   return (
     <div>
@@ -23,7 +22,6 @@ const AuthButton = () => {
       )}
     </div>
   )
-};
+}
 
-export default AuthButton;
-
+export default AuthButton
