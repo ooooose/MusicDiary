@@ -4,15 +4,33 @@ import type { Diary } from '@/types/api'
 import { endpoints } from '@/utils/constants/endpoints'
 import type { UseQueryOptions } from '@tanstack/react-query'
 import { useQuery } from '@tanstack/react-query'
+import { Deserializer } from 'jsonapi-serializer'
 
-export const getDiary = async (id: string) => {
-  const response = await apiClient.apiGet(`${endpoints.diaries}/${id}`)
-  return response.data
+// 追加でオプションがあれば設定する
+const deserializerOptions = {}
+
+export const getDiary = async (id: string): Promise<Diary> => {
+  try {
+    const response = await apiClient.apiGet(`${endpoints.diaries}/${id}`)
+    const deserializer = new Deserializer(deserializerOptions)
+    const diary = await deserializer.deserialize(response)
+    return diary
+  } catch (error) {
+    console.error('日記の取得に失敗しました。:', error)
+    throw error
+  }
 }
 
 export const getDiaries = async (): Promise<Diary[]> => {
-  const response = await apiClient.apiGet(endpoints.diaries)
-  return response.data
+  try {
+    const response = await apiClient.apiGet(endpoints.diaries)
+    const deserializer = new Deserializer(deserializerOptions)
+    const diaries = await deserializer.deserialize(response)
+    return diaries
+  } catch (error) {
+    console.error('日記一覧の取得に失敗しました:', error)
+    throw error
+  }
 }
 
 export const getDiariesQueryOptions = (): UseQueryOptions<Diary[], Error> => {

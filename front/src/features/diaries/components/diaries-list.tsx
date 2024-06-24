@@ -5,10 +5,10 @@ import { Skeleton } from '@/components/ui/skeleton'
 
 export const DiariesList = () => {
   const diariesQuery = useDiaries({})
-
+  
+  console.log(diariesQuery)
   if (diariesQuery.isLoading) return <Skeleton className="h-[30px] w-[100px]" />
   if (!diariesQuery.data?.length) return <div>No Diaries!</div>
-  console.log(diariesQuery.data)
   return (
     <ul aria-label="diaries" className="flex flex-col space-y-3">
       {diariesQuery?.data?.map((diary, index) => (
