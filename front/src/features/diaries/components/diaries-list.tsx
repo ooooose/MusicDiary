@@ -1,25 +1,29 @@
 'use client'
 
-import { useState } from 'react'
-import { useDiaries } from '@/features/diaries/api'
 import { Skeleton } from '@/components/ui/skeleton'
-import { Calendar } from '@/components/ui/calendar'
+import { useDairyDiaries } from '@/features/diaries/api'
 
-export const DiariesList = () => {
-  const [date, setDate] = useState<Date | undefined>(new Date())
-  const diariesQuery = useDiaries({})
-  
-  if (diariesQuery.isLoading) return <Skeleton className="h-[30px] w-[100px]" />
-  if (!diariesQuery.data?.length) return <div>No Diaries!</div>
+type DiariesListProps = {
+  date: string
+}
+
+export const DiariesList = ({ date }: DiariesListProps) => {
+  const dairydiariesQuery = useDairyDiaries({ date })
+
+  if (dairydiariesQuery.isLoading)
+    return <Skeleton className="h-[350px] w-[400px]" />
+  if (!dairydiariesQuery.data?.length) return <div>No Diaries!</div>
   return (
-    <div className='float-left'>
-      <Calendar
-        mode="single"
-        selected={date}
-        onSelect={setDate}
-        diaries={diariesQuery.data}
-        className="rounded-md border shadow"
-      />
-    </div>
+    <ul aria-label="diaries" className="flex flex-col space-y-3">
+      {dairydiariesQuery?.data?.map((diary, index) => (
+        <li
+          aria-label={`diary-${diary.body}-${index}`}
+          key={diary.id || index}
+          className="w-full p-4 shadow-sm"
+        >
+          {diary.id}
+        </li>
+      ))}
+    </ul>
   )
 }

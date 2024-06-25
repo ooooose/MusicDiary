@@ -1,4 +1,4 @@
-import { DiariesList } from '@/features/diaries/components/diaries-list'
+import { DiariesCalendar } from "@/features/diaries/components/diaries-calendar"
 
 export default function DiaryLayout({
   children,
@@ -7,7 +7,7 @@ export default function DiaryLayout({
 }) {
   return (
     <div className="mt-[50px] flex w-full">
-      <DiariesList />
+      <DiariesCalendar />
       {children}
     </div>
   )
