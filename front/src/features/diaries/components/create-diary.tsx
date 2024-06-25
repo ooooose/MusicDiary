@@ -53,9 +53,9 @@ export const CreateDiary = () => {
           name="body"
           render={({ field, fieldState }) => (
             <FormItem>
-              <FormLabel>日記</FormLabel>
+              <FormLabel>6月24日（月）</FormLabel>
               <FormControl>
-                <Textarea {...field} />
+                <Textarea {...field} className='h-[300px]' />
               </FormControl>
               <FormMessage>{fieldState.error?.message}</FormMessage>
             </FormItem>
