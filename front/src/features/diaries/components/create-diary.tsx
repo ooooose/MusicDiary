@@ -16,8 +16,10 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
 import type { SubmitHandler } from 'react-hook-form'
 import { useForm } from 'react-hook-form'
+import { formatToday } from '@/lib/date'
 
 export const CreateDiary = () => {
+  const today = formatToday()
   const router = useRouter()
   const createDiaryMutation = useCreateDiary({
     mutationConfig: {
@@ -53,7 +55,7 @@ export const CreateDiary = () => {
           name="body"
           render={({ field, fieldState }) => (
             <FormItem>
-              <FormLabel>6月24日（月）</FormLabel>
+              <FormLabel>{today}</FormLabel>
               <FormControl>
                 <Textarea {...field} className='h-[300px]' />
               </FormControl>

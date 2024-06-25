@@ -41,7 +41,6 @@ type UseDairyDiariesOptions = {
 }
 
 export const useDairyDiaries = ({ date, queryConfig }: UseDairyDiariesOptions) => {
-  // TODO: dateの処理を`yyyy-mm-dd`に変換する処理をする
   return useQuery<Diary[], Error>({
     ...getDairyDiariesQueryOptions(date),
     ...queryConfig,
