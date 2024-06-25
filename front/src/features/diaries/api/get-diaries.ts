@@ -5,9 +5,11 @@ import { endpoints } from '@/utils/constants/endpoints'
 import type { UseQueryOptions } from '@tanstack/react-query'
 import { useQuery } from '@tanstack/react-query'
 import { Deserializer } from 'jsonapi-serializer'
+import type { DeserializerOptions } from 'jsonapi-serializer'
 
-// 追加でオプションがあれば設定する
-const deserializerOptions = {}
+const deserializerOptions: DeserializerOptions = {
+  keyForAttribute: 'camelCase'
+}
 
 export const getDiary = async (id: string): Promise<Diary> => {
   try {

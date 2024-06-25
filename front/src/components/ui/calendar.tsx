@@ -1,15 +1,18 @@
-import { format } from 'date-fns'
+import { buttonVariants } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
+import type { Diary } from '@/types/api'
+import dayjs from 'dayjs'
+import timezone from 'dayjs/plugin/timezone'
+import utc from 'dayjs/plugin/utc'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import * as React from 'react'
 import { DayPicker } from 'react-day-picker'
-import { buttonVariants } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
-import dayjs from 'dayjs'
-import type { Diary } from '@/types/api'
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker> & {
   diaries: Diary[]
 }
+dayjs.extend(utc)
+dayjs.extend(timezone)
 
 function Calendar({
   className,
@@ -18,14 +21,13 @@ function Calendar({
   diaries,
   ...props
 }: CalendarProps) {
-
-  // 日記の作成日に応じて色を変更するための修飾子を設定
   const diaryDates = diaries.map((diary) =>
-    dayjs(diary.createdAt).format('YYYY-MM-DD'),
+    dayjs(diary.createdAt).utc().tz('Asia/Tokyo').format('YYYY-MM-DD'),
   )
+
   const modifiers = {
     hasDiary: (date: Date) =>
-      diaryDates.includes(dayjs(date).format('YYYY-MM-DD')),
+      diaryDates.includes(dayjs(date).tz('Asia/Tokyo').format('YYYY-MM-DD')),
   }
 
   return (
@@ -68,7 +70,7 @@ function Calendar({
       }}
       modifiers={modifiers}
       modifiersClassNames={{
-        hasDiary: 'bg-blue-500 text-white',
+        hasDiary: 'bg-red-500 text-white',
       }}
       components={{
         IconLeft: ({}) => <ChevronLeft className="size-4" />,
