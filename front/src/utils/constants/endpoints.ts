@@ -4,6 +4,10 @@ class Url {
   get diaries() {
     return `${this.BASE_URL}/diaries`
   }
+  
+  dairy_diaries(date: string) {
+    return `${this.BASE_URL}/diaries/${date}`
+  }
 
   get me() {
     return `${this.BASE_URL}/me`

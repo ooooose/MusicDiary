@@ -15,6 +15,12 @@ export const options: NextAuthOptions = {
     strategy: 'jwt',
     maxAge: 7 * 24 * 60 * 60,
   },
+  jwt: {
+    maxAge: 24 * 60 * 60,
+  },
+  pages: {
+    signIn: '/login',
+  },
   callbacks: {
     async signIn({ user, account }) {
       const provider = account?.provider
@@ -42,7 +48,6 @@ export const options: NextAuthOptions = {
           }),
         })
 
-        console.log(`Response status: ${response.status}`)
         if (response.ok) {
           const data = await response.json()
           user.userId = data.user.id

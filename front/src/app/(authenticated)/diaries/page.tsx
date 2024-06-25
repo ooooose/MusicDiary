@@ -1,10 +1,9 @@
-import Link from 'next/link'
+import { CreateDiary } from "@/features/diaries/components/create-diary"
 
 export default function Page() {
   return (
-    <div>
-      日記一覧
-      <Link href="/diaries/create">日記を作成する</Link>
+    <div className="mx-auto ml-5 w-full">
+      <CreateDiary />
     </div>
   )
 }

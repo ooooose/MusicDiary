@@ -1,4 +1,4 @@
-import { DiariesList } from '@/features/diaries/components/diaries-list'
+import { DiariesCalendar } from "@/features/diaries/components/diaries-calendar"
 
 export default function DiaryLayout({
   children,
@@ -6,8 +6,8 @@ export default function DiaryLayout({
   children: React.ReactNode
 }) {
   return (
-    <div className="flex gap-5">
-      <DiariesList />
+    <div className="mt-[50px] flex w-full">
+      <DiariesCalendar />
       {children}
     </div>
   )
