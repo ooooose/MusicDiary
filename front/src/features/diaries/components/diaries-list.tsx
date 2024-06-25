@@ -12,7 +12,7 @@ export const DiariesList = () => {
   if (diariesQuery.isLoading) return <Skeleton className="h-[30px] w-[100px]" />
   if (!diariesQuery.data?.length) return <div>No Diaries!</div>
   return (
-    <ul aria-label="diaries" className="flex flex-col space-y-3">
+    <div className='float-left'>
       <Calendar
         mode="single"
         selected={date}
@@ -20,6 +20,6 @@ export const DiariesList = () => {
         diaries={diariesQuery.data}
         className="rounded-md border shadow"
       />
-    </ul>
+    </div>
   )
 }

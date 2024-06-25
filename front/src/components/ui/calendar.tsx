@@ -70,7 +70,7 @@ function Calendar({
       }}
       modifiers={modifiers}
       modifiersClassNames={{
-        hasDiary: 'bg-red-500 text-white',
+        hasDiary: 'bg-green-400 text-white',
       }}
       components={{
         IconLeft: ({}) => <ChevronLeft className="size-4" />,

@@ -61,7 +61,7 @@ export const CreateDiary = () => {
             </FormItem>
           )}
         />
-        <Button type="submit">登録する</Button>
+        <Button className='float-right mt-4' type="submit" variant='outline'>登録する</Button>
       </form>
     </Form>
   )

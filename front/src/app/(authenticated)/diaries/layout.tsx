@@ -6,7 +6,7 @@ export default function DiaryLayout({
   children: React.ReactNode
 }) {
   return (
-    <div className="flex gap-5">
+    <div className="mt-[50px] flex w-full">
       <DiariesList />
       {children}
     </div>
