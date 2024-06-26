@@ -17,6 +17,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_18_002319) do
     t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["created_at"], name: "index_diaries_on_created_at"
     t.index ["uid"], name: "unique_uid", unique: true
     t.index ["user_id"], name: "index_diaries_on_user_id"
   end
