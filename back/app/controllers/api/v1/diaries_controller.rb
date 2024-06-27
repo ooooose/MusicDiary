@@ -39,6 +39,14 @@ class Api::V1::DiariesController < ApplicationController
     @diary.destroy
   end
 
+  # GET /diaries/{date}
+  def dairy_index
+    date = Date.parse(params[:date])
+    @diaries = current_user.diaries.created_on(date).sorted_by_date
+    json_string = DiarySerializer.new(@diaries).serializable_hash.to_json
+    render json: json_string, status: :ok
+  end
+
   private
 
     def set_diary
