@@ -1,5 +1,6 @@
 'use client'
 
+import { memo } from 'react'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useDairyDiaries } from '@/features/diaries/api'
 
@@ -7,7 +8,7 @@ type DiariesListProps = {
   date: string
 }
 
-export const DiariesList = ({ date }: DiariesListProps) => {
+export const DairyDiariesList = memo(({ date }: DiariesListProps) => {
   const dairydiariesQuery = useDairyDiaries({ date })
 
   if (dairydiariesQuery.isLoading)
@@ -26,4 +27,6 @@ export const DiariesList = ({ date }: DiariesListProps) => {
       ))}
     </ul>
   )
-}
+})
+
+DairyDiariesList.displayName = 'DairyDiariesList'

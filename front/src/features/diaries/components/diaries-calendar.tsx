@@ -10,14 +10,13 @@ export const DiariesCalendar = () => {
   const diariesQuery = useDiaries({})
   
   if (diariesQuery.isLoading) return <Skeleton className="h-[350px] w-[400px]" />
-  if (!diariesQuery.data?.length) return <div>No Diaries!</div>
   return (
     <div className='float-left'>
       <Calendar
         mode="single"
         selected={date}
         onSelect={setDate}
-        diaries={diariesQuery.data}
+        diaries={diariesQuery.data ?? []}
         className="rounded-md border shadow"
       />
     </div>
