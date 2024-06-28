@@ -11,7 +11,7 @@ class Api::V1::DiariesController < ApplicationController
 
   # GET /diaries/{uid}
   def show
-    render json: DiarySerializer.new(@diaries).serializable_hash.to_json, status: :ok
+    render json: DiarySerializer.new(@diary).serializable_hash.to_json, status: :ok
   end
 
   # POST /diaries
@@ -50,7 +50,7 @@ class Api::V1::DiariesController < ApplicationController
   private
 
     def set_diary
-      @diary = Diary.find_by(uid: params[:id])
+      @diary = Diary.find_by(uid: params[:uid])
     end
 
     def diary_params
