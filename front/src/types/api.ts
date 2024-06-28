@@ -15,6 +15,7 @@ export type User = Entity<{
 }>
 
 export type Diary = Entity<{
+  uid: string
   body: string
   userId: number
 }>

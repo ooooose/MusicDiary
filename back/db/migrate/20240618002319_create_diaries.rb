@@ -7,5 +7,7 @@ class CreateDiaries < ActiveRecord::Migration[7.0]
 
       t.timestamps null: false
     end
+
+    add_index :diaries, :created_at
   end
 end

@@ -1,3 +1,6 @@
+'use client'
+
+import { useRouter } from 'next/navigation'
 import { buttonVariants } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import type { Diary } from '@/types/api'
@@ -21,6 +24,7 @@ function Calendar({
   diaries,
   ...props
 }: CalendarProps) {
+  const router = useRouter()
   const diaryDates = diaries.map((diary) =>
     dayjs(diary.createdAt).utc().tz('Asia/Tokyo').format('YYYY-MM-DD'),
   )
@@ -28,6 +32,11 @@ function Calendar({
   const modifiers = {
     hasDiary: (date: Date) =>
       diaryDates.includes(dayjs(date).tz('Asia/Tokyo').format('YYYY-MM-DD')),
+  }
+
+  const handleDayClick = (date: Date) => {
+    const formattedDate = dayjs(date).tz('Asia/Tokyo').format('YYYY-MM-DD')
+    router.push(`/diaries/${formattedDate}`)
   }
 
   return (
@@ -72,6 +81,7 @@ function Calendar({
       modifiersClassNames={{
         hasDiary: 'bg-green-400 text-white',
       }}
+      onDayClick={handleDayClick}
       components={{
         IconLeft: ({}) => <ChevronLeft className="size-4" />,
         IconRight: ({}) => <ChevronRight className="size-4" />,
