@@ -1,10 +1,12 @@
 import { getDiariesQueryOptions } from '@/features/diaries/api/get-diaries'
 import { apiClient } from '@/lib/api/apiClient'
+import { formatToday } from '@/lib/date'
 import type { MutationConfig } from '@/lib/react-query/react-query'
+import { generateUUID } from '@/lib/uuid'
 import type { Diary } from '@/types/api'
 import { endpoints } from '@/utils/constants/endpoints'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { generateUUID } from '@/lib/uuid'
+import { useRouter } from 'next/navigation'
 import { z } from 'zod'
 
 export const createDiaryInputSchema = z.object({
@@ -17,8 +19,7 @@ export const createDiary = async (params: CreateDiaryInput): Promise<Diary> => {
   const uuid = generateUUID()
   const paramsWithUUID = { ...params, uid: uuid }
 
-  return await apiClient
-    .apiPost(endpoints.diaries, paramsWithUUID)
+  return await apiClient.apiPost(endpoints.diaries, paramsWithUUID)
 }
 
 type UsePostDiaryOptions = {
@@ -27,15 +28,18 @@ type UsePostDiaryOptions = {
 
 export const useCreateDiary = ({ mutationConfig }: UsePostDiaryOptions) => {
   const queryClient = useQueryClient()
+  const today = formatToday()
+  const router = useRouter()
 
   const { onSuccess, ...restConfig } = mutationConfig || {}
 
   return useMutation({
-    onSuccess: (...args) => {
+    onSuccess: (data, ...args) => {
       queryClient.invalidateQueries({
         queryKey: getDiariesQueryOptions().queryKey,
       })
-      onSuccess?.(...args)
+      onSuccess?.(data, ...args)
+      router.push(`/diaries/${today}/${data.uid}`)
     },
     ...restConfig,
     mutationFn: createDiary,
