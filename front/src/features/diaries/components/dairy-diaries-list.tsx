@@ -27,7 +27,6 @@ export const DairyDiariesList = memo(({ date }: DiariesListProps) => {
               aria-label={`diary-${diary.body}-${index}`}
               className="w-full p-4 shadow-sm"
             >
-              {index + 1}
               {diary.body}
             </li>
           </Link>
