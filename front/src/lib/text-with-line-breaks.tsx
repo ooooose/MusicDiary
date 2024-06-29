@@ -1,4 +1,6 @@
-export const TextWithLineBreaks = ({ text }: { text: string }) => {
+import { memo } from 'react'
+
+export const TextWithLineBreaks = memo(({ text }: { text: string }) => {
   return (
     <div>
       {text.split('\n').map((line, index) => (
@@ -9,4 +11,6 @@ export const TextWithLineBreaks = ({ text }: { text: string }) => {
       ))}
     </div>
   )
-}
+})
+
+TextWithLineBreaks.displayName = 'TextWithLineBreaks'

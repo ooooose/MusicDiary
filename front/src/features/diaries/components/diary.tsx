@@ -2,15 +2,16 @@
 
 import { useDiary } from '@/features/diaries/api/get-diary'
 import { LoadingDiary } from '@/features/diaries/components/loading-diary'
-import { TextWithLineBreaks } from '@/lib/text-with-line-breaks'
 import { formatDateForDiary } from '@/lib/date'
+import { TextWithLineBreaks } from '@/lib/text-with-line-breaks'
+import { memo } from 'react'
 
 type DiaryProps = {
   date: string
   diaryId: string
 }
 
-export const Diary = ({ date, diaryId }: DiaryProps) => {
+export const Diary = memo(({ date, diaryId }: DiaryProps) => {
   const diaryQuery = useDiary({ diaryId })
   if (diaryQuery.isLoading) return <LoadingDiary />
   return (
@@ -21,4 +22,6 @@ export const Diary = ({ date, diaryId }: DiaryProps) => {
       </div>
     </div>
   )
-}
+})
+
+Diary.displayName = 'Diary'

@@ -11,11 +11,11 @@ import {
 import { Textarea } from '@/components/ui/textarea'
 import type { CreateDiaryInput } from '@/features/diaries/api'
 import { createDiaryInputSchema, useCreateDiary } from '@/features/diaries/api'
+import { formatToday } from '@/lib/date'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
 import type { SubmitHandler } from 'react-hook-form'
 import { useForm } from 'react-hook-form'
-import { formatToday } from '@/lib/date'
 
 export const CreateDiary = () => {
   const today = formatToday()
@@ -29,7 +29,7 @@ export const CreateDiary = () => {
       },
       onError: (error) => {
         console.log('error', error)
-      }
+      },
     },
   })
 
@@ -56,13 +56,15 @@ export const CreateDiary = () => {
             <FormItem>
               {today}
               <FormControl>
-                <Textarea {...field} className='h-[300px]' />
+                <Textarea {...field} className="h-[300px]" />
               </FormControl>
               <FormMessage>{fieldState.error?.message}</FormMessage>
             </FormItem>
           )}
         />
-        <Button className='float-right mt-4' type="submit" variant='outline'>登録する</Button>
+        <Button className="float-right mt-4" type="submit" variant="outline">
+          登録する
+        </Button>
       </form>
     </Form>
   )

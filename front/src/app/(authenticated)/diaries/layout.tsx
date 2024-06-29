@@ -1,4 +1,4 @@
-import { DiariesCalendar } from "@/features/diaries/components/diaries-calendar"
+import { DiariesCalendar } from '@/features/diaries/components/diaries-calendar'
 
 export default function DiaryLayout({
   children,

@@ -17,7 +17,6 @@ export const getDairyDiaries = async ({
   date: string
 }): Promise<Diary[]> => {
   try {
-
     const response = await apiClient.apiGet(endpoints.dairy_diaries(date))
     const deserializer = new Deserializer(deserializerOptions)
     const diaries = await deserializer.deserialize(response)
@@ -28,7 +27,9 @@ export const getDairyDiaries = async ({
   }
 }
 
-export const getDairyDiariesQueryOptions = (date: string): UseQueryOptions<Diary[], Error> => {
+export const getDairyDiariesQueryOptions = (
+  date: string,
+): UseQueryOptions<Diary[], Error> => {
   return {
     queryKey: ['diaries', date],
     queryFn: () => getDairyDiaries({ date }),
@@ -40,7 +41,10 @@ type UseDairyDiariesOptions = {
   queryConfig?: QueryConfig<typeof getDairyDiaries>
 }
 
-export const useDairyDiaries = ({ date, queryConfig }: UseDairyDiariesOptions) => {
+export const useDairyDiaries = ({
+  date,
+  queryConfig,
+}: UseDairyDiariesOptions) => {
   return useQuery<Diary[], Error>({
     ...getDairyDiariesQueryOptions(date),
     ...queryConfig,
