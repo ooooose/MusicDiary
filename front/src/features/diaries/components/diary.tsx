@@ -1,7 +1,7 @@
 'use client'
 
 import { useDiary } from "@/features/diaries/api/get-diary"
-import { Skeleton } from "@/components/ui/skeleton"
+import { LoadingDiary } from "@/features/diaries/components/loading-diary"
 
 type DiaryProps = {
   date: string
@@ -10,7 +10,7 @@ type DiaryProps = {
 
 export const Diary = ({ date, diaryId }: DiaryProps) => {
   const diaryQuery = useDiary({ diaryId })
-  if (diaryQuery.isLoading) return <Skeleton className="h-[350px] w-[400px]" />
+  if (diaryQuery.isLoading) return <LoadingDiary />
 
   return (
     <div className="w-full">

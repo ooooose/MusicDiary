@@ -1,9 +1,9 @@
 'use client'
 
 import { memo } from 'react'
-import { Skeleton } from '@/components/ui/skeleton'
 import { useDairyDiaries } from '@/features/diaries/api'
 import Link from 'next/link'
+import { LoadingDiaries } from '@/features/diaries/components/loading-diaries'
 
 type DiariesListProps = {
   date: string
@@ -12,8 +12,7 @@ type DiariesListProps = {
 export const DairyDiariesList = memo(({ date }: DiariesListProps) => {
   const dairydiariesQuery = useDairyDiaries({ date })
 
-  if (dairydiariesQuery.isLoading)
-    return <Skeleton className="h-[350px] w-[400px]" />
+  if (dairydiariesQuery.isLoading) return <LoadingDiaries />
   if (!dairydiariesQuery.data?.length) return <div>No Diaries!</div>
   return (
     <div>

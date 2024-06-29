@@ -11,7 +11,12 @@ export const DiariesCalendar = () => {
   const [date, setDate] = useState<Date | undefined>(new Date())
   const diariesQuery = useDiaries({})
   
-  if (diariesQuery.isLoading) return <Skeleton className="h-[350px] w-[400px]" />
+  if (diariesQuery.isLoading) return (
+    <div className='w-[400px]'>
+      <Skeleton className="h-[350px] w-full" />
+      <Skeleton className='mt-4 h-[40px] w-full' />
+    </div>
+  )
   return (
     <div className='float-left'>
       <Calendar
