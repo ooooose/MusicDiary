@@ -15,4 +15,3 @@ export const formatDateForDiary = (date: Date): string => dayjs(date).format('YY
 export const formatToday = (): string => {
   return dayjs(new Date()).format('YYYY年MM月DD日（ddd）')
 }
-
