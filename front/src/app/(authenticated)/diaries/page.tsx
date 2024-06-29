@@ -1,4 +1,4 @@
-import { CreateDiary } from "@/features/diaries/components/create-diary"
+import { CreateDiary } from '@/features/diaries/components/create-diary'
 
 export default function Page() {
   return (

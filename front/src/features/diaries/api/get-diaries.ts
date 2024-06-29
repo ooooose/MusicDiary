@@ -4,11 +4,11 @@ import type { Diary } from '@/types/api'
 import { endpoints } from '@/utils/constants/endpoints'
 import type { UseQueryOptions } from '@tanstack/react-query'
 import { useQuery } from '@tanstack/react-query'
-import { Deserializer } from 'jsonapi-serializer'
 import type { DeserializerOptions } from 'jsonapi-serializer'
+import { Deserializer } from 'jsonapi-serializer'
 
 const deserializerOptions: DeserializerOptions = {
-  keyForAttribute: 'camelCase'
+  keyForAttribute: 'camelCase',
 }
 
 export const getDiary = async (id: string): Promise<Diary> => {

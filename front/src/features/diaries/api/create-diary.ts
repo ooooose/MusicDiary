@@ -1,6 +1,6 @@
 import { getDiariesQueryOptions } from '@/features/diaries/api/get-diaries'
 import { apiClient } from '@/lib/api/apiClient'
-import { formatToday } from '@/lib/date'
+import { formatDateForDairyDiaries } from '@/lib/date'
 import type { MutationConfig } from '@/lib/react-query/react-query'
 import { generateUUID } from '@/lib/uuid'
 import type { Diary } from '@/types/api'
@@ -28,7 +28,7 @@ type UsePostDiaryOptions = {
 
 export const useCreateDiary = ({ mutationConfig }: UsePostDiaryOptions) => {
   const queryClient = useQueryClient()
-  const today = formatToday()
+  const today = formatDateForDairyDiaries(new Date())
   const router = useRouter()
 
   const { onSuccess, ...restConfig } = mutationConfig || {}

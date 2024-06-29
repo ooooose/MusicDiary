@@ -10,9 +10,9 @@ dayjs.updateLocale('en', {
 export const formatDateForDairyDiaries = (date: Date): string =>
   dayjs(date).format('YYYY-MM-DD')
 
-export const formatDateForDiary = (date: Date): string => dayjs(date).format('YYYY M/D')
+export const formatDateForDiary = (date: Date): string =>
+  dayjs(date).format('YYYY年MM月DD日（ddd）')
 
 export const formatToday = (): string => {
   return dayjs(new Date()).format('YYYY年MM月DD日（ddd）')
 }
-

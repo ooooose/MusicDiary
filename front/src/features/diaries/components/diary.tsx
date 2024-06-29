@@ -1,21 +1,27 @@
 'use client'
 
-import { useDiary } from "@/features/diaries/api/get-diary"
-import { Skeleton } from "@/components/ui/skeleton"
+import { useDiary } from '@/features/diaries/api/get-diary'
+import { LoadingDiary } from '@/features/diaries/components/loading-diary'
+import { formatDateForDiary } from '@/lib/date'
+import { TextWithLineBreaks } from '@/lib/text-with-line-breaks'
+import { memo } from 'react'
 
 type DiaryProps = {
   date: string
   diaryId: string
 }
 
-export const Diary = ({ date, diaryId }: DiaryProps) => {
+export const Diary = memo(({ date, diaryId }: DiaryProps) => {
   const diaryQuery = useDiary({ diaryId })
-  if (diaryQuery.isLoading) return <Skeleton className="h-[350px] w-[400px]" />
-
+  if (diaryQuery.isLoading) return <LoadingDiary />
   return (
-    <div className="w-full">
-      {date} <br />
-      {diaryQuery.data?.body}
+    <div className="flex w-full flex-col gap-4">
+      {formatDateForDiary(new Date(date))} <br />
+      <div className="h-[300px] w-full rounded-sm border p-2">
+        <TextWithLineBreaks text={diaryQuery.data?.body ?? ''} />
+      </div>
     </div>
   )
-}
+})
+
+Diary.displayName = 'Diary'
