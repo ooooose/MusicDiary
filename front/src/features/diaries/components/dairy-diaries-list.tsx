@@ -4,6 +4,8 @@ import { memo } from 'react'
 import { useDairyDiaries } from '@/features/diaries/api'
 import Link from 'next/link'
 import { LoadingDiaries } from '@/features/diaries/components/loading-diaries'
+import { NoDiaries } from '@/features/diaries/components/no-diaries'
+import { formatDateForDiary } from '@/lib/date'
 
 type DiariesListProps = {
   date: string
@@ -11,12 +13,13 @@ type DiariesListProps = {
 
 export const DairyDiariesList = memo(({ date }: DiariesListProps) => {
   const dairydiariesQuery = useDairyDiaries({ date })
+  const formatDate = formatDateForDiary(new Date(date))
 
   if (dairydiariesQuery.isLoading) return <LoadingDiaries />
-  if (!dairydiariesQuery.data?.length) return <div>No Diaries!</div>
+  if (!dairydiariesQuery.data?.length) return <NoDiaries date={formatDate} />
   return (
     <div>
-      <p>{date}</p>
+      <p>{formatDate}</p>
       <ul aria-label="diaries" className="flex flex-col space-y-3">
         {dairydiariesQuery?.data?.map((diary, index) => (
           <Link key={diary.id || index} href={`/diaries/${date}/${diary.uid}`}>

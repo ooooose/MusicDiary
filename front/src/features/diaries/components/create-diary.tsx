@@ -6,7 +6,6 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from '@/components/ui/form'
 import { Textarea } from '@/components/ui/textarea'
@@ -55,7 +54,7 @@ export const CreateDiary = () => {
           name="body"
           render={({ field, fieldState }) => (
             <FormItem>
-              <FormLabel>{today}</FormLabel>
+              {today}
               <FormControl>
                 <Textarea {...field} className='h-[300px]' />
               </FormControl>
