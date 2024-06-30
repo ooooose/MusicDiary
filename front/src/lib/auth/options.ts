@@ -12,7 +12,7 @@ async function refreshAccessToken(token: JWT) {
         client_id: process.env.GOOGLE_CLIENT_ID ?? '',
         client_secret: process.env.GOOGLE_CLIENT_SECRET ?? '',
         grant_type: 'refresh_token',
-        refresh_token: token.refreshToken ?? '',
+        refresh_token: token.refreshToken,
       })
 
     const response = await fetch(url, {
@@ -50,6 +50,7 @@ export const options: NextAuthOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID ?? '',
       clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? '',
+      authorization: { params: { access_type: 'offline', prompt: 'consent' } },
     }),
   ],
   session: {
@@ -106,7 +107,7 @@ export const options: NextAuthOptions = {
       if (account && user) {
         token.userId = user.userId
         token.accessToken = user.accessToken
-        token.refreshToken = account.refresh_token
+        token.refreshToken = account.refresh_token!
       }
       if (token.accessTokenExpires && Date.now() < token.accessTokenExpires) {
         return token
