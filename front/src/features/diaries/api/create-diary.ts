@@ -1,5 +1,5 @@
 import { getDiariesQueryOptions } from '@/features/diaries/api/get-diaries'
-import { apiClient } from '@/lib/api/apiClient'
+import { apiClient } from '@/lib/api/api-client'
 import { formatDateForDairyDiaries } from '@/lib/date'
 import type { MutationConfig } from '@/lib/react-query/react-query'
 import { generateUUID } from '@/lib/uuid'

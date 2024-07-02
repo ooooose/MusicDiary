@@ -1,4 +1,4 @@
-import { apiClient } from '@/lib/api/apiClient'
+import { apiClient } from '@/lib/api/api-client'
 import type { User } from '@/types/api'
 import { endpoints } from '@/utils/constants/endpoints'
 

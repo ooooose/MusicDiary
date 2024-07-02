@@ -1,4 +1,4 @@
-import { apiClient } from '@/lib/api/apiClient'
+import { apiClient } from '@/lib/api/api-client'
 import type { QueryConfig } from '@/lib/react-query/react-query'
 import type { Diary } from '@/types/api'
 import { endpoints } from '@/utils/constants/endpoints'
@@ -9,18 +9,6 @@ import { Deserializer } from 'jsonapi-serializer'
 
 const deserializerOptions: DeserializerOptions = {
   keyForAttribute: 'camelCase',
-}
-
-export const getDiary = async (id: string): Promise<Diary> => {
-  try {
-    const response = await apiClient.apiGet(`${endpoints.diaries}/${id}`)
-    const deserializer = new Deserializer(deserializerOptions)
-    const diary = await deserializer.deserialize(response)
-    return diary
-  } catch (error) {
-    console.error('日記の取得に失敗しました。:', error)
-    throw error
-  }
 }
 
 export const getDiaries = async (): Promise<Diary[]> => {
