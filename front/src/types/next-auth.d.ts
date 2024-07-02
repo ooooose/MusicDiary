@@ -7,7 +7,8 @@ declare module 'next-auth' {
       userId: string
       accessToken?: string | undefined
     } & DefaultSession['user']
-    error?: 'RefreshAccessTokenError'
+    accessToken?: string
+    error?: string
   }
 
   interface User {
@@ -20,7 +21,7 @@ declare module 'next-auth/jwt' {
   interface JWT {
     userId: string
     accessToken?: string | undefined
-    refreshToken: string
+    refreshToken?: string
     accessTokenExpires?: number
     error?: string
   }
