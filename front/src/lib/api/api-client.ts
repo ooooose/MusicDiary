@@ -11,7 +11,6 @@ class ApiClient {
     additionalHeaders: HeadersInit = {},
   ): Promise<HeadersInit> {
     const session = await getSession()
-    console.log(session?.user)
     return {
       'Content-Type': 'application/json',
       'X-Requested-With': 'XMLHttpRequest',

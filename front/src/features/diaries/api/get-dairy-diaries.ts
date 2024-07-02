@@ -1,4 +1,4 @@
-import { apiClient } from '@/lib/api/apiClient'
+import { apiClient } from '@/lib/api/api-client'
 import type { QueryConfig } from '@/lib/react-query/react-query'
 import type { Diary } from '@/types/api'
 import { endpoints } from '@/utils/constants/endpoints'
