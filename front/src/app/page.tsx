@@ -1,10 +1,11 @@
-import Link from 'next/link'
+import HomeLayout from '@/components/layouts/Layout/HomeLayout'
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      Hello
-      <Link href="/login">ログイン</Link>
-    </main>
+    <HomeLayout>
+      <main className="flex min-h-screen flex-col items-center justify-between p-24">
+        TOPページ作成中
+      </main>
+    </HomeLayout>
   )
 }
