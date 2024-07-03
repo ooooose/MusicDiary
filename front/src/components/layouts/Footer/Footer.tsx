@@ -8,10 +8,10 @@ const Footer = () => {
         <div className="flex items-center justify-between px-4 pb-12">
           <div className="flex flex-col gap-4">
             <div className="mt-10">
-              <AuthButton />
-              <h2>Music Diary</h2>
-              <p>日々の日記を音楽と共に...</p>
+              <h2 className="text-3xl">Music Diary</h2>
+              <p>一日を音楽と共に振り返ろう</p>
             </div>
+            <AuthButton />
           </div>
           <div className="flex flex-col gap-y-3 pt-7">
             <Link href="/">アプリについて</Link>

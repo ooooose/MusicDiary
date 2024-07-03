@@ -1,5 +1,7 @@
 'use client'
+
 import { Button } from '@/components/ui/button'
+import { Skeleton } from '@/components/ui/skeleton'
 import { signIn, signOut, useSession } from 'next-auth/react'
 
 const AuthButton = () => {
@@ -9,11 +11,16 @@ const AuthButton = () => {
   return (
     <div>
       {loading ? (
-        <p>Loading...</p>
+        <Skeleton className="h-[50px] w-[100px]" />
       ) : session ? (
         <div>
-          <p>Signed in as {session.user?.email}</p>
-          <Button onClick={() => signOut()}>Sign out</Button>
+          <p className='mb-2'>{session.user?.name} さん</p>
+          <Button
+            variant="outline"
+            onClick={() => signOut()}
+          >
+            ログアウト
+          </Button>
         </div>
       ) : (
         <Button variant="outline" onClick={() => signIn('google', {})}>
