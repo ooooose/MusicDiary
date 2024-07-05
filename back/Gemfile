@@ -39,6 +39,8 @@ gem "jsonapi-serializer"
 
 gem "jwt"
 
+gem 'faraday'
+
 gem "base64"
 gem "bigdecimal"
 gem "mutex_m"

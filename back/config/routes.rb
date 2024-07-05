@@ -5,6 +5,7 @@ Rails.application.routes.draw do
       resources :diaries, param: :uid, only: [:index, :show, :create, :update, :destroy] do
         collection do
           get 'date/:date', to: 'diaries#dairy_index', as: :date
+          post ':uid/music', to: 'diaries#set_music'
         end
       end
     end

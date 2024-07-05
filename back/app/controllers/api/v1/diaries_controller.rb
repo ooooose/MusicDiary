@@ -47,6 +47,14 @@ class Api::V1::DiariesController < ApplicationController
     render json: json_string, status: :ok
   end
 
+  #POST /diaries/{uid}/music
+  def set_music
+    response = Openai::ChatResponseService.new.call(params[:message])
+    render json: { response: response }
+  rescue => e
+    render json: { error: e.message }, status: :internal_server_error
+  end
+
   private
 
     def set_diary
