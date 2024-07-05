@@ -9,9 +9,17 @@ module Openai
     private
       
       def build_body(input)
+        prompt_path = Rails.root.join('lib/data/prompts.yml')
+        prompts = YAML.load_file(prompt_path)
+        prompt = prompts[:measure_emotion_prompt_template]
+
         {
           model: @model
-          message: [{ role: "user", content: input }]
+          temperature: 1.0,
+          message: [
+            { role: "system", content: prompt }
+            { role: "user", content: input }
+          ]
         }.to_json
       end
 

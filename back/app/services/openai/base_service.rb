@@ -34,32 +34,19 @@ module Openai
       def handle_response_errors(response)
         case response.status
         when 200
+          nil
         when 401
-          raise UnauthorizedError, extract_message(response.body)
+          raise UnauthorizedError, 'APIキーが無効です。'
         when 429
-          raise TooManyRequestsError, extract_message(response.body)
+          raise TooManyRequestsError, 'リクエストが多すぎます。'
         when 500
-          raise InternalServerError, extract_message(response.body)
+          raise InternalServerError, 'サーバーエラーが発生しました。'
         when 503
-          raise ServiceUnabailableError, extract_message(response.body)
+          raise ServiceUnavailableError, 'サービスが利用できません。'
         else
-          raise StandardError, '不明なエラーです。'
+          raise StandardError, '予期せぬエラーが発生しました。'
         end
       end
 
-      def extract_message(response_body)
-        extracted_message = begin
-                              response_json = JSON.parse(response_body)
-                              return nil unless response_json.is_a?(Hash)
-                              response_json.dig("error", "message")
-
-                            rescue JSON::parserError
-                              nil
-                            end
-
-        extracted_message || 'エラーが発生しましたが、エラーメッセージが取得できませんでした。'
-      end
-
   end
-    
 end
