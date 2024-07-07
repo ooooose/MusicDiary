@@ -3,12 +3,11 @@ import { apiClient } from '@/lib/api/api-client'
 import type { MutationConfig } from '@/lib/react-query/react-query'
 import { endpoints } from '@/utils/constants/endpoints'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import type { CreateMusicParams } from '@/features/music/types'
 
 
 export const createMusic = async (
   uid: string,
-): Promise<{ response: CreateMusicParams }> => {
+): Promise<{ response: string[] }> => {
   return await apiClient.apiPost(endpoints.set_music(uid))
 }
 

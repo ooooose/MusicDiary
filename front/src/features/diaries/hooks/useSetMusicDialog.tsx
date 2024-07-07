@@ -10,22 +10,22 @@ import {
 import { useCreateMusic } from '@/features/diaries/api'
 import type { UseMutationResult } from '@tanstack/react-query'
 import type { FC } from 'react'
-import type { CreateMusicParams } from '@/features/music/types'
 import { useCallback, useState } from 'react'
 
 type DialogProps = {
   uid: string
+  music: string[]
   open: boolean
   onClose: (result: boolean) => void
   onSetMusic: UseMutationResult<
-    { response: CreateMusicParams },
+    { response: string[] },
     Error,
     string,
     unknown
   >
 }
 
-const _ModalDialog: FC<DialogProps> = ({ uid, open, onClose, onSetMusic }) => {
+const _ModalDialog: FC<DialogProps> = ({ uid, music, open, onClose, onSetMusic }) => {
   const handleSetMusic = useCallback(() => {
     onSetMusic.mutate(uid)
   }, [onSetMusic, uid])
@@ -39,6 +39,11 @@ const _ModalDialog: FC<DialogProps> = ({ uid, open, onClose, onSetMusic }) => {
             日記からおすすめの音楽を提供できます。利用しますか？
           </DialogDescription>
         </DialogHeader>
+        {music.length > 0 ? (
+          music.map((m: string, i: number) => <div key={i}>{m}</div>)
+        ) : (
+          <div>No!</div>
+        )}
         <DialogFooter>
           <Button onClick={handleSetMusic}>利用する！</Button>
           <Button onClick={() => onClose(false)}>閉じる</Button>
@@ -50,7 +55,7 @@ const _ModalDialog: FC<DialogProps> = ({ uid, open, onClose, onSetMusic }) => {
 
 export const useSetMusicDialog = () => {
   const [modalOpen, setModalOpen] = useState<boolean>(false)
-  const [music, setMusic] = useState<CreateMusicParams | undefined>(undefined)
+  const [music, setMusic] = useState<string[]>([])
 
   const [resolve, setResolve] = useState<(result: boolean) => void>(
     () => () => {},
@@ -84,11 +89,12 @@ export const useSetMusicDialog = () => {
     },
   })
 
-  const ModalDialog: FC<{ uid: string, music: CreateMusicParams }> = ({ uid }) => (
+  const ModalDialog: FC<{ uid: string }> = ({ uid }) => (
     <_ModalDialog
       uid={uid}
       open={modalOpen}
       onClose={onClose}
+      music={music}
       onSetMusic={createDiaryMutation}
     />
   )
