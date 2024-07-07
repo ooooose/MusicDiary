@@ -2,10 +2,10 @@
 
 import { useDiary } from '@/features/diaries/api/get-diary'
 import { LoadingDiary } from '@/features/diaries/components/loading-diary'
+import { useSetMusicDialog } from '@/features/diaries/hooks'
 import { formatDateForDiary } from '@/lib/date'
 import { TextWithLineBreaks } from '@/lib/text-with-line-breaks'
 import { memo, useEffect } from 'react'
-import { useSetMusicDialog } from '@/features/diaries/hooks'
 
 type DiaryProps = {
   date: string
@@ -21,7 +21,7 @@ export const Diary = memo(({ date, diaryId }: DiaryProps) => {
       openDialog()
     }
   }, [openDialog, diaryQuery.data])
-  
+
   if (diaryQuery.isLoading) return <LoadingDiary />
   return (
     <div className="flex w-full flex-col gap-4">

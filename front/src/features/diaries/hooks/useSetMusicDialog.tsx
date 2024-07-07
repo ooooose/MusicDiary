@@ -78,7 +78,7 @@ export const useSetMusicDialog = () => {
     },
   })
 
-  const ModalDialog: FC<{uid: string}> = ({uid}) => (
+  const ModalDialog: FC<{ uid: string }> = ({ uid }) => (
     <_ModalDialog
       uid={uid}
       open={modalOpen}

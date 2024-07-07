@@ -14,11 +14,8 @@ const AuthButton = () => {
         <Skeleton className="h-[50px] w-[100px]" />
       ) : session ? (
         <div>
-          <p className='mb-2'>{session.user?.name} さん</p>
-          <Button
-            variant="outline"
-            onClick={() => signOut()}
-          >
+          <p className="mb-2">{session.user?.name} さん</p>
+          <Button variant="outline" onClick={() => signOut()}>
             ログアウト
           </Button>
         </div>
