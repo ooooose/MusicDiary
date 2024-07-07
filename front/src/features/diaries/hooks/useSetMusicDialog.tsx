@@ -10,20 +10,25 @@ import {
 import { useCreateMusic } from '@/features/diaries/api'
 import type { UseMutationResult } from '@tanstack/react-query'
 import type { FC } from 'react'
+import type { CreateMusicParams } from '@/features/music/types'
 import { useCallback, useState } from 'react'
 
 type DialogProps = {
   uid: string
   open: boolean
   onClose: (result: boolean) => void
-  onSetMusic: UseMutationResult<string, Error, string, unknown>
+  onSetMusic: UseMutationResult<
+    { response: CreateMusicParams },
+    Error,
+    string,
+    unknown
+  >
 }
 
 const _ModalDialog: FC<DialogProps> = ({ uid, open, onClose, onSetMusic }) => {
   const handleSetMusic = useCallback(() => {
     onSetMusic.mutate(uid)
-    onClose(true)
-  }, [onSetMusic, onClose, uid])
+  }, [onSetMusic, uid])
 
   return (
     <Dialog open={open} onOpenChange={(isOpen) => !isOpen && onClose(false)}>
@@ -45,6 +50,7 @@ const _ModalDialog: FC<DialogProps> = ({ uid, open, onClose, onSetMusic }) => {
 
 export const useSetMusicDialog = () => {
   const [modalOpen, setModalOpen] = useState<boolean>(false)
+  const [music, setMusic] = useState<CreateMusicParams | undefined>(undefined)
 
   const [resolve, setResolve] = useState<(result: boolean) => void>(
     () => () => {},
@@ -69,8 +75,8 @@ export const useSetMusicDialog = () => {
 
   const createDiaryMutation = useCreateMusic({
     mutationConfig: {
-      onSuccess: async () => {
-        console.log('success')
+      onSuccess: async (data) => {
+        setMusic(data.response)
       },
       onError: (error) => {
         console.log('error', error)
@@ -78,7 +84,7 @@ export const useSetMusicDialog = () => {
     },
   })
 
-  const ModalDialog: FC<{ uid: string }> = ({ uid }) => (
+  const ModalDialog: FC<{ uid: string, music: CreateMusicParams }> = ({ uid }) => (
     <_ModalDialog
       uid={uid}
       open={modalOpen}

@@ -3,8 +3,12 @@ import { apiClient } from '@/lib/api/api-client'
 import type { MutationConfig } from '@/lib/react-query/react-query'
 import { endpoints } from '@/utils/constants/endpoints'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import type { CreateMusicParams } from '@/features/music/types'
 
-export const createMusic = async (uid: string): Promise<string> => {
+
+export const createMusic = async (
+  uid: string,
+): Promise<{ response: CreateMusicParams }> => {
   return await apiClient.apiPost(endpoints.set_music(uid))
 }
 
@@ -23,7 +27,6 @@ export const useCreateMusic = ({ mutationConfig }: UsePostMusicOptions) => {
         queryKey: getDiariesQueryOptions().queryKey,
       })
       onSuccess?.(data, ...args)
-      console.log(data)
     },
     ...restConfig,
     mutationFn: createMusic,
