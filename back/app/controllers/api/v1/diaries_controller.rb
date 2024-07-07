@@ -51,7 +51,8 @@ class Api::V1::DiariesController < ApplicationController
   def set_music
     service = Openai::ChatResponseService.new
     response = service.call(@diary.body)
-    render json: { response: }
+    reccomendations = Spotify::RequestRecommendationService.new(response).request()
+    render json: { response: reccomendations }
   rescue => e
     render json: { error: e.message }, status: :internal_server_error
   end

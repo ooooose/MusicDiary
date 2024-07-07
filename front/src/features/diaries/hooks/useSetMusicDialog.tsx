@@ -14,16 +14,21 @@ import { useCallback, useState } from 'react'
 
 type DialogProps = {
   uid: string
+  music: string[]
   open: boolean
   onClose: (result: boolean) => void
-  onSetMusic: UseMutationResult<string, Error, string, unknown>
+  onSetMusic: UseMutationResult<
+    { response: string[] },
+    Error,
+    string,
+    unknown
+  >
 }
 
-const _ModalDialog: FC<DialogProps> = ({ uid, open, onClose, onSetMusic }) => {
+const _ModalDialog: FC<DialogProps> = ({ uid, music, open, onClose, onSetMusic }) => {
   const handleSetMusic = useCallback(() => {
     onSetMusic.mutate(uid)
-    onClose(true)
-  }, [onSetMusic, onClose, uid])
+  }, [onSetMusic, uid])
 
   return (
     <Dialog open={open} onOpenChange={(isOpen) => !isOpen && onClose(false)}>
@@ -34,6 +39,11 @@ const _ModalDialog: FC<DialogProps> = ({ uid, open, onClose, onSetMusic }) => {
             日記からおすすめの音楽を提供できます。利用しますか？
           </DialogDescription>
         </DialogHeader>
+        {music.length > 0 ? (
+          music.map((m: string, i: number) => <div key={i}>{m}</div>)
+        ) : (
+          <div>No!</div>
+        )}
         <DialogFooter>
           <Button onClick={handleSetMusic}>利用する！</Button>
           <Button onClick={() => onClose(false)}>閉じる</Button>
@@ -45,6 +55,7 @@ const _ModalDialog: FC<DialogProps> = ({ uid, open, onClose, onSetMusic }) => {
 
 export const useSetMusicDialog = () => {
   const [modalOpen, setModalOpen] = useState<boolean>(false)
+  const [music, setMusic] = useState<string[]>([])
 
   const [resolve, setResolve] = useState<(result: boolean) => void>(
     () => () => {},
@@ -69,8 +80,8 @@ export const useSetMusicDialog = () => {
 
   const createDiaryMutation = useCreateMusic({
     mutationConfig: {
-      onSuccess: async () => {
-        console.log('success')
+      onSuccess: async (data) => {
+        setMusic(data.response)
       },
       onError: (error) => {
         console.log('error', error)
@@ -83,6 +94,7 @@ export const useSetMusicDialog = () => {
       uid={uid}
       open={modalOpen}
       onClose={onClose}
+      music={music}
       onSetMusic={createDiaryMutation}
     />
   )

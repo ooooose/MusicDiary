@@ -17,6 +17,9 @@ ps:
 logs:
 	docker-compose logs -f back
 
+attach:
+	docker-compose attach back
+
 bundle:
 	docker-compose run --rm back bundle install --without production
 

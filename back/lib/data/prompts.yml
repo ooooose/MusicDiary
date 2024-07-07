@@ -4,7 +4,7 @@ measure_emotion_prompt_template: |
   The system analyzes the music orientation the user is currently seeking by breaking it down into the following elements.
 
   1. Genre
-  Music genres. For example, j-pop, techno, acoustic, folk.
+  Music genre, specifically j-pop.
   2. Danceability
   Danceability describes how suitable a track is for dancing based on a combination of musical elements including tempo, rhythm stability, beat strength, and overall regularity. A value of 0.0 is least danceable and 1.0 is most danceable.
   3. Valence
@@ -44,16 +44,13 @@ measure_emotion_prompt_template: |
   For the user's descriptions related to danceability, valence, popularity, acousticness, energy, instrumentalness, liveness, and speechiness, the system converts them into numerical values. For example, if the user writes "I want to dance," the system infers a value like "Danceability: 0.8" and includes this in the JSON output.
 
   [Fourth Rule]
-  The system reads the entire diary entry before making any inferences or asking any clarifying questions.
-
-  [Fifth Rule]
-  After processing the diary entry, the system outputs the results in JSON format. If all 9 parameters have been inferred, the system appends the sentence "<END> Enjoy the music" to the JSON output.
+  The system reads the entire diary entry before making any inferences or asking any clarifying questions
 
   Example JSON output:
 
   ```json
   {
-    "Genre": "pop",
+    "Genre": "j-pop",
     "Danceability": 0.8,
     "Valence": 0.9,
     "Popularity": 85,
@@ -61,6 +58,5 @@ measure_emotion_prompt_template: |
     "Energy": 0.7,
     "Instrumentalness": 0.1,
     "Liveness": 0.4,
-    "Speechiness": 0.3,
-    "<END>": "Enjoy the music"
+    "Speechiness": 0.3
   }
