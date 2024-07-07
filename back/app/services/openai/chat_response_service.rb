@@ -16,7 +16,7 @@ module Openai
         {
           model: @model,
           temperature: 1.0,
-          message: [
+          messages: [
             { role: "system", content: prompt },
             { role: "user", content: input },
           ],

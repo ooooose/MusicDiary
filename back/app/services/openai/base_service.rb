@@ -22,7 +22,6 @@ module Openai
 
       def post_request(url: "/", body: "{}")
         response = @connection.post(url) {|req| req.body = body }
-
         handle_response_errors(response)
         response
       rescue Faraday::TimeoutError
@@ -34,7 +33,6 @@ module Openai
       def handle_response_errors(response)
         case response.status
         when 200
-          nil
         when 401
           raise UnauthorizedError, "APIキーが無効です。"
         when 429
