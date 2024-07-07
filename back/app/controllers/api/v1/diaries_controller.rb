@@ -1,5 +1,5 @@
 class Api::V1::DiariesController < ApplicationController
-  before_action :set_diary, only: %i[show update destroy]
+  before_action :set_diary, only: %i[show update destroy set_music]
 
   # GET /diaries
   def index
@@ -49,7 +49,7 @@ class Api::V1::DiariesController < ApplicationController
 
   #POST /diaries/{uid}/music
   def set_music
-    response = Openai::ChatResponseService.new.call(params[:message])
+    response = Openai::ChatResponseService.new.call(@diary.body)
     render json: { response: response }
   rescue => e
     render json: { error: e.message }, status: :internal_server_error
