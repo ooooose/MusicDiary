@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 
-import NextAuthProvider from '@/lib/auth/NextAuthProvider'
+import NextAuthProvider from '@/lib/auth/next-auth-provider'
 import { cn } from '@/lib/utils'
 import { Inter as FontSans } from 'next/font/google'
 import './globals.css'
