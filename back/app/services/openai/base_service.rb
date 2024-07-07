@@ -10,7 +10,7 @@ module Openai
 
     def initialize(model: 'gpt-3.5-turbo', timeout: 10)
       @model = model
-      @connection = Faraday..new(url: 'https://api.openai.com') do |f|
+      @connection = Faraday.new(url: 'https://api.openai.com') do |f|
         f.headers['Authorization'] = "Bearer #{ENV['OPENAI_API_KEY']}"
         f.headers['Content-Type'] = 'application/json'
         f.options[:timeout] = timeout
@@ -47,6 +47,5 @@ module Openai
           raise StandardError, '予期せぬエラーが発生しました。'
         end
       end
-
   end
 end

@@ -1,67 +1,66 @@
 measure_emotion_prompt_template: |
   Below is a diary entry written by a user.
 
-	The system analyzes the music orientation the user is currently seeking by breaking it down into the following elements.
+  The system analyzes the music orientation the user is currently seeking by breaking it down into the following elements.
 
-	1. Genre
-	Music genres. For example, j-pop, techno, acoustic, folk.
-	2. Danceability
-	Danceability describes how suitable a track is for dancing based on a combination of musical elements including tempo, rhythm stability, beat strength, and overall regularity. A value of 0.0 is least danceable and 1.0 is most danceable.
-	3. Valence
-	A measure from 0.0 to 1.0 describing the musical positiveness conveyed by a track. Tracks with high valence sound more positive (e.g. happy, cheerful, euphoric), while tracks with low valence sound more negative (e.g. sad, depressed, angry).
-	4. Popularity
-	A measure from 0 to 100 describing how much the track is popular. Tracks with high popularity are more popular.
-	5. Acousticness
-	A measure from 0.0 to 1.0 describing how much the track is acoustic. Tracks with high acousticness are more acoustic.
-	6. Energy
-	Energy is a measure from 0.0 to 1.0 and represents a perceptual measure of intensity and activity. Typically, energetic tracks feel fast, loud, and noisy.
-	7. Instrumentalness
-	Predicts whether a track contains no vocals. The closer the instrumentalness value is to 1.0, the greater likelihood the track contains no vocal content.
-	8. Liveness
-	Detects the presence of an audience in the recording. Higher liveness values represent an increased probability that the track was performed live.
-	9. Speechiness
-	Speechiness detects the presence of spoken words in a track. The more exclusively speech-like the recording (e.g. talk show, audio book, poetry), the closer to 1.0 the attribute value.
-	The system follows some rules:
+  1. Genre
+  Music genres. For example, j-pop, techno, acoustic, folk.
+  2. Danceability
+  Danceability describes how suitable a track is for dancing based on a combination of musical elements including tempo, rhythm stability, beat strength, and overall regularity. A value of 0.0 is least danceable and 1.0 is most danceable.
+  3. Valence
+  A measure from 0.0 to 1.0 describing the musical positiveness conveyed by a track. Tracks with high valence sound more positive (e.g. happy, cheerful, euphoric), while tracks with low valence sound more negative (e.g. sad, depressed, angry).
+  4. Popularity
+  A measure from 0 to 100 describing how much the track is popular. Tracks with high popularity are more popular.
+  5. Acousticness
+  A measure from 0.0 to 1.0 describing how much the track is acoustic. Tracks with high acousticness are more acoustic.
+  6. Energy
+  Energy is a measure from 0.0 to 1.0 and represents a perceptual measure of intensity and activity. Typically, energetic tracks feel fast, loud, and noisy.
+  7. Instrumentalness
+  Predicts whether a track contains no vocals. The closer the instrumentalness value is to 1.0, the greater likelihood the track contains no vocal content.
+  8. Liveness
+  Detects the presence of an audience in the recording. Higher liveness values represent an increased probability that the track was performed live.
+  9. Speechiness
+  Speechiness detects the presence of spoken words in a track. The more exclusively speech-like the recording (e.g. talk show, audio book, poetry), the closer to 1.0 the attribute value.
+  The system follows some rules:
 
-	[First Rule]
-	The possible values for the analysis elements Danceability, Valence, Popularity, Acousticness, Energy, Instrumentalness, Liveness, and Speechiness are numerical values such as 0.5.
-	However, the system cannot directly extract numerical values from the diary entry. Instead, the system infers the values based on the user's descriptions.
+  [First Rule]
+  The possible values for the analysis elements Danceability, Valence, Popularity, Acousticness, Energy, Instrumentalness, Liveness, and Speechiness are numerical values such as 0.5.
+  However, the system cannot directly extract numerical values from the diary entry. Instead, the system infers the values based on the user's descriptions.
 
-	[Second Rule]
-	The system processes the diary entry in the following order:
+  [Second Rule]
+  The system processes the diary entry in the following order:
 
-	1. Genre
-	2. Danceability
-	3. Valence
-	4. Popularity
-	5. Acousticness
-	6. Energy
-	7. Instrumentalness
-	8. Liveness
-	9. Speechiness
-	[Third Rule]
-	For the user's descriptions related to danceability, valence, popularity, acousticness, energy, instrumentalness, liveness, and speechiness, the system converts them into numerical values. For example, if the user writes "I want to dance," the system infers a value like "Danceability: 0.8" and includes this in the JSON output.
+  1. Genre
+  2. Danceability
+  3. Valence
+  4. Popularity
+  5. Acousticness
+  6. Energy
+  7. Instrumentalness
+  8. Liveness
+  9. Speechiness
 
-	[Fourth Rule]
-	The system reads the entire diary entry before making any inferences or asking any clarifying questions.
+  [Third Rule]
+  For the user's descriptions related to danceability, valence, popularity, acousticness, energy, instrumentalness, liveness, and speechiness, the system converts them into numerical values. For example, if the user writes "I want to dance," the system infers a value like "Danceability: 0.8" and includes this in the JSON output.
 
-	[Fifth Rule]
-	After processing the diary entry, the system outputs the results in JSON format. If all 9 parameters have been inferred, the system appends the sentence "<END> Enjoy the music" to the JSON output.
+  [Fourth Rule]
+  The system reads the entire diary entry before making any inferences or asking any clarifying questions.
 
-	Example JSON output:
+  [Fifth Rule]
+  After processing the diary entry, the system outputs the results in JSON format. If all 9 parameters have been inferred, the system appends the sentence "<END> Enjoy the music" to the JSON output.
 
-	```json
-		{
-				"Genre": "pop",
-				"Danceability": 0.8,
-				"Valence": 0.9,
-				"Popularity": 85,
-				"Acousticness": 0.2,
-				"Energy": 0.7,
-				"Instrumentalness": 0.1,
-				"Liveness": 0.4,
-				"Speechiness": 0.3,
-				"<END>": "Enjoy the music"
-		}
-	```
-	Please provide the diary entry.
+  Example JSON output:
+
+  ```json
+  {
+    "Genre": "pop",
+    "Danceability": 0.8,
+    "Valence": 0.9,
+    "Popularity": 85,
+    "Acousticness": 0.2,
+    "Energy": 0.7,
+    "Instrumentalness": 0.1,
+    "Liveness": 0.4,
+    "Speechiness": 0.3,
+    "<END>": "Enjoy the music"
+  }

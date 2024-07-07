@@ -49,7 +49,9 @@ class Api::V1::DiariesController < ApplicationController
 
   #POST /diaries/{uid}/music
   def set_music
-    response = Openai::ChatResponseService.new.call(@diary.body)
+    binding.pry
+    service = Openai::ChatResponseService.new
+    response = service.call(@diary.body)
     render json: { response: response }
   rescue => e
     render json: { error: e.message }, status: :internal_server_error

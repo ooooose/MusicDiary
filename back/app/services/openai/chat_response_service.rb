@@ -10,14 +10,14 @@ module Openai
       
       def build_body(input)
         prompt_path = Rails.root.join('lib/data/prompts.yml')
-        prompts = YAML.load_file(prompt_path)
+        prompts = YAML.load_file(prompt_path).deep_symbolize_keys
         prompt = prompts[:measure_emotion_prompt_template]
 
         {
-          model: @model
+          model: @model,
           temperature: 1.0,
           message: [
-            { role: "system", content: prompt }
+            { role: "system", content: prompt },
             { role: "user", content: input }
           ]
         }.to_json
@@ -33,6 +33,5 @@ module Openai
       rescue JSON::ParserError
         raise StandardError, 'チャットの返信を取得できませんでした。'
       end
-
   end
 end
