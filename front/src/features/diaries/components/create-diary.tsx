@@ -61,7 +61,13 @@ export const CreateDiary = () => {
             </FormItem>
           )}
         />
-        <Button className="float-right mt-4" type="submit" variant="outline">
+        <Button
+          isLoading={createDiaryMutation.isPending}
+          className="float-right mt-4"
+          type="submit"
+          variant="outline"
+          disabled={createDiaryMutation.isPending}
+        >
           登録する
         </Button>
       </form>
