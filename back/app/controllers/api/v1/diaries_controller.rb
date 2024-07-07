@@ -1,5 +1,5 @@
 class Api::V1::DiariesController < ApplicationController
-  before_action :set_diary, only: %i[show update destroy]
+  before_action :set_diary, only: %i[show update destroy set_music]
 
   # GET /diaries
   def index
@@ -45,6 +45,15 @@ class Api::V1::DiariesController < ApplicationController
     @diaries = current_user.diaries.created_on(date).sorted_by_date
     json_string = DiarySerializer.new(@diaries).serializable_hash.to_json
     render json: json_string, status: :ok
+  end
+
+  # POST /diaries/{uid}/music
+  def set_music
+    service = Openai::ChatResponseService.new
+    response = service.call(@diary.body)
+    render json: { response: }
+  rescue => e
+    render json: { error: e.message }, status: :internal_server_error
   end
 
   private

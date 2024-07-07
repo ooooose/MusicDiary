@@ -11,7 +11,7 @@ import {
 import { Textarea } from '@/components/ui/textarea'
 import type { CreateDiaryInput } from '@/features/diaries/api'
 import { createDiaryInputSchema, useCreateDiary } from '@/features/diaries/api'
-import { formatToday } from '@/lib/date'
+import { formatDateForDairyDiaries, formatToday } from '@/lib/date'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
 import type { SubmitHandler } from 'react-hook-form'
@@ -22,10 +22,9 @@ export const CreateDiary = () => {
   const router = useRouter()
   const createDiaryMutation = useCreateDiary({
     mutationConfig: {
-      onSuccess: () => {
-        console.log('success')
+      onSuccess: async () => {
         // toastを出すこと
-        router.push('/diaries')
+        router.push(`/diaries/${formatDateForDairyDiaries(new Date())}`)
       },
       onError: (error) => {
         console.log('error', error)
