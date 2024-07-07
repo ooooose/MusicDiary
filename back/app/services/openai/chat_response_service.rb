@@ -28,7 +28,7 @@ module Openai
         content = response_hash.dig("choices", 0, "message", "content")
         raise StandardError, "チャットの返信を取得できませんでした。" if content.blank?
 
-        content
+        JSON.parse(content)
       rescue JSON::ParserError
         raise StandardError, "チャットの返信を取得できませんでした。"
       end
