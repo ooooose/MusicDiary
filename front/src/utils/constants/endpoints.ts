@@ -5,6 +5,10 @@ class Url {
     return `${this.BASE_URL}/diaries`
   }
 
+  set_music(uid: string) {
+    return `${this.BASE_URL}/diaries/${uid}/music`
+  }
+
   dairy_diaries(date: string) {
     return `${this.BASE_URL}/diaries/date/${date}`
   }

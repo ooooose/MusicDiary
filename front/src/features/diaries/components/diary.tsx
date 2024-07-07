@@ -29,7 +29,7 @@ export const Diary = memo(({ date, diaryId }: DiaryProps) => {
       <div className="h-[300px] w-full rounded-sm border p-2">
         <TextWithLineBreaks text={diaryQuery.data?.body ?? ''} />
       </div>
-      <ModalDialog />
+      <ModalDialog uid={diaryId} />
     </div>
   )
 })
