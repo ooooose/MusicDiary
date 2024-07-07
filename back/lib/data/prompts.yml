@@ -44,10 +44,7 @@ measure_emotion_prompt_template: |
   For the user's descriptions related to danceability, valence, popularity, acousticness, energy, instrumentalness, liveness, and speechiness, the system converts them into numerical values. For example, if the user writes "I want to dance," the system infers a value like "Danceability: 0.8" and includes this in the JSON output.
 
   [Fourth Rule]
-  The system reads the entire diary entry before making any inferences or asking any clarifying questions.
-
-  [Fifth Rule]
-  After processing the diary entry, the system outputs the results in JSON format. If all 9 parameters have been inferred, the system appends the sentence "<END> Enjoy the music" to the JSON output.
+  The system reads the entire diary entry before making any inferences or asking any clarifying questions
 
   Example JSON output:
 
@@ -61,6 +58,5 @@ measure_emotion_prompt_template: |
     "Energy": 0.7,
     "Instrumentalness": 0.1,
     "Liveness": 0.4,
-    "Speechiness": 0.3,
-    "<END>": "Enjoy the music"
+    "Speechiness": 0.3
   }
