@@ -47,12 +47,11 @@ class Api::V1::DiariesController < ApplicationController
     render json: json_string, status: :ok
   end
 
-  #POST /diaries/{uid}/music
+  # POST /diaries/{uid}/music
   def set_music
-    binding.pry
     service = Openai::ChatResponseService.new
     response = service.call(@diary.body)
-    render json: { response: response }
+    render json: { response: }
   rescue => e
     render json: { error: e.message }, status: :internal_server_error
   end

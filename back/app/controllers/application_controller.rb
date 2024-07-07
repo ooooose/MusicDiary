@@ -1,4 +1,4 @@
-require 'jwt_service'
+require "jwt_service"
 
 class ApplicationController < ActionController::API
   before_action :authenticate_request
@@ -12,12 +12,12 @@ class ApplicationController < ActionController::API
   private
 
     def authenticate_request
-      token = request.headers['Authorization']&.split(' ')&.last
+      token = request.headers["Authorization"]&.split(" ")&.last
       decoded_token = JwtService.decode(token)
       if decoded_token
         @current_user = User.find_by(id: decoded_token[:user_id])
       else
-        render json: { errors: ['Not Authenticated'] }, status: :unauthorized
+        render json: { errors: ["Not Authenticated"] }, status: :unauthorized
       end
     end
 end
