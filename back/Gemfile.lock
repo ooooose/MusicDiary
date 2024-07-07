@@ -82,6 +82,10 @@ GEM
     debug (1.9.2)
       irb (~> 1.10)
       reline (>= 0.3.8)
+    dotenv (3.1.2)
+    dotenv-rails (3.1.2)
+      dotenv (= 3.1.2)
+      railties (>= 6.1)
     erubi (1.13.0)
     faraday (2.9.2)
       faraday-net_http (>= 2.0, < 3.2)
@@ -248,6 +252,7 @@ DEPENDENCIES
   bootsnap
   bullet
   debug
+  dotenv-rails
   faraday
   jsonapi-serializer
   jwt
