@@ -3,6 +3,7 @@ require 'rspotify'
 module Spotify
   class RequestRecommendationService
     def initialize(params)
+      @limit = 1
       @genre = params['Genre']
       @danceability = params['Danceability']
       @valence = params['Valence']
@@ -16,6 +17,7 @@ module Spotify
 
     def request()
       recommendations = RSpotify::Recommendations.generate(
+        limit: @limit,
         seed_genres: [@genre],
         target_danceability: @danceability,
         target_valence: @valence,
