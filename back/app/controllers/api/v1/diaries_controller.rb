@@ -37,6 +37,9 @@ class Api::V1::DiariesController < ApplicationController
   # DELETE /diaries/{uid}
   def destroy
     @diary.destroy
+    render json: { message: '日記の削除に成功しました' }, status: :ok
+  rescue ActiveRecord::RecordNotDestroyed => e
+    render json: { error: e.message }, status: :unprocessable_entity
   end
 
   # GET /diaries/{date}
