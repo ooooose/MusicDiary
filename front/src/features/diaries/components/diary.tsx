@@ -2,10 +2,10 @@
 
 import { useDiary } from '@/features/diaries/api/get-diary'
 import { LoadingDiary } from '@/features/diaries/components/loading-diary'
-import { useSetMusicDialog } from '@/features/diaries/hooks'
+import { DeleteDiary } from '@/features/diaries/components/delete-diary'
 import { formatDateForDiary } from '@/lib/date'
 import { TextWithLineBreaks } from '@/lib/text-with-line-breaks'
-import { memo, useEffect } from 'react'
+import { memo } from 'react'
 
 type DiaryProps = {
   date: string
@@ -13,14 +13,7 @@ type DiaryProps = {
 }
 
 export const Diary = memo(({ date, diaryId }: DiaryProps) => {
-  const { ModalDialog, openDialog } = useSetMusicDialog()
   const diaryQuery = useDiary({ diaryId })
-
-  useEffect(() => {
-    if (diaryQuery.data) {
-      openDialog()
-    }
-  }, [openDialog, diaryQuery.data])
 
   if (diaryQuery.isLoading) return <LoadingDiary />
   return (
@@ -29,7 +22,9 @@ export const Diary = memo(({ date, diaryId }: DiaryProps) => {
       <div className="h-[300px] w-full rounded-sm border p-2">
         <TextWithLineBreaks text={diaryQuery.data?.body ?? ''} />
       </div>
-      <ModalDialog uid={diaryId} />
+      <div className='w-full text-right'>
+        <DeleteDiary id={diaryId} date={date} />
+      </div>
     </div>
   )
 })
