@@ -7,7 +7,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { useCreateMusic } from '@/features/diaries/api'
+import { useCreateMusic } from '@/features/music/api'
 import type { UseMutationResult } from '@tanstack/react-query'
 import type { FC } from 'react'
 import { useCallback, useState } from 'react'
@@ -39,14 +39,9 @@ const _ModalDialog: FC<DialogProps> = ({ uid, music, open, onClose, onSetMusic }
             日記からおすすめの音楽を提供できます。利用しますか？
           </DialogDescription>
         </DialogHeader>
-        {music.length > 0 ? (
-          music.map((m: string, i: number) => <div key={i}>{m}</div>)
-        ) : (
-          <div>No!</div>
-        )}
         <DialogFooter>
           <Button onClick={handleSetMusic}>利用する！</Button>
-          <Button onClick={() => onClose(false)}>閉じる</Button>
+          <Button variant='outline' onClick={() => onClose(false)}>閉じる</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -100,6 +95,8 @@ export const useSetMusicDialog = () => {
   )
 
   return {
+    createDiaryMutation,
+    music,
     ModalDialog,
     openDialog,
   }
