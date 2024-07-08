@@ -55,7 +55,7 @@ export const ConfirmationDialog = ({
       }}
     >
       <DialogTrigger asChild>{triggerButton}</DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]" >
+      <DialogContent className="sm:max-w-[425px]">
         <DialogHeader className="flex">
           <DialogTitle className="flex items-center gap-2">
             {icon === 'danger' && (
@@ -67,11 +67,16 @@ export const ConfirmationDialog = ({
             {title}
           </DialogTitle>
         </DialogHeader>
-
-        <DialogDescription id="dialog-description" className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+        <DialogDescription
+          className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left"
+        >
           {body && (
             <div className="mt-2">
-              <p>{body}</p>
+              {body.split('\n').map((text, index) => (
+                <span key={index} className="block">
+                  {text}
+                </span>
+              ))}
             </div>
           )}
         </DialogDescription>

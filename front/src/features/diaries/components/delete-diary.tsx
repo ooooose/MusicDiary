@@ -1,15 +1,13 @@
-import { Trash } from 'lucide-react';
-
-import { useRouter } from 'next/navigation';
-import { Button } from '@/components/ui/button';
-import { ConfirmationDialog } from '@/components/ui/confirmation-dialog';
-
-import { UseDeleteDiary } from '@/features/diaries/api/delete-diary';
+import { Button } from '@/components/ui/button'
+import { ConfirmationDialog } from '@/components/ui/confirmation-dialog'
+import { UseDeleteDiary } from '@/features/diaries/api/delete-diary'
+import { Trash } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 
 type DeleteDiaryProps = {
-  id: string;
+  id: string
   date: string
-};
+}
 
 export const DeleteDiary = ({ id, date }: DeleteDiaryProps) => {
   const router = useRouter()
@@ -20,7 +18,7 @@ export const DeleteDiary = ({ id, date }: DeleteDiaryProps) => {
         router.push(`/diaries/${date}`)
       },
     },
-  });
+  })
 
   return (
     <ConfirmationDialog
@@ -49,4 +47,4 @@ export const DeleteDiary = ({ id, date }: DeleteDiaryProps) => {
       }
     />
   )
-};
+}
