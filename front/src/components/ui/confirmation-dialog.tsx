@@ -67,18 +67,13 @@ export const ConfirmationDialog = ({
             {title}
           </DialogTitle>
         </DialogHeader>
-        <DialogDescription
-          className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left"
-        >
-          {body && (
-            <div className="mt-2">
-              {body.split('\n').map((text, index) => (
-                <span key={index} className="block">
-                  {text}
-                </span>
-              ))}
-            </div>
-          )}
+        <DialogDescription className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+          {body &&
+            body.split('\n').map((text, index) => (
+              <span key={index} className="block">
+                {text}
+              </span>
+            ))}
         </DialogDescription>
 
         <DialogFooter>
