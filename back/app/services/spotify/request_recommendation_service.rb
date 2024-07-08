@@ -1,21 +1,21 @@
-require 'rspotify'
+require "rspotify"
 
 module Spotify
   class RequestRecommendationService
     def initialize(params)
       @limit = 1
-      @genre = params['Genre']
-      @danceability = params['Danceability']
-      @valence = params['Valence']
-      @popularity = params['Popularity']
-      @acousticness = params['Acousticness']
-      @energy = params['Energy']
-      @instrumentalness = params['Instrumentalness']
-      @liveness = params['Liveness']
-      @speechiness = params['Speechiness']
+      @genre = params["Genre"]
+      @danceability = params["Danceability"]
+      @valence = params["Valence"]
+      @popularity = params["Popularity"]
+      @acousticness = params["Acousticness"]
+      @energy = params["Energy"]
+      @instrumentalness = params["Instrumentalness"]
+      @liveness = params["Liveness"]
+      @speechiness = params["Speechiness"]
     end
 
-    def request()
+    def request
       recommendations = RSpotify::Recommendations.generate(
         limit: @limit,
         seed_genres: [@genre],
@@ -28,7 +28,7 @@ module Spotify
         target_liveness: @liveness,
         target_speechiness: @speechiness
       )
-      recommendations.tracks.map {|track| [track.artists.first.name, track.name].join('/')}
+      recommendations.tracks.map {|track| [track.artists.first.name, track.name].join("/") }
     end
   end
 end
