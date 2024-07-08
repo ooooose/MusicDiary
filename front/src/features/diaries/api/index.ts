@@ -1,5 +1,4 @@
 export * from './create-diary'
-export * from './create-music'
 export * from './get-dairy-diaries'
 export * from './get-diaries'
 export * from './get-diary'

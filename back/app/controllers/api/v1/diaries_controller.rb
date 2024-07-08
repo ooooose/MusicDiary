@@ -37,6 +37,9 @@ class Api::V1::DiariesController < ApplicationController
   # DELETE /diaries/{uid}
   def destroy
     @diary.destroy
+    render json: { message: '日記の削除に成功しました' }, status: :ok
+  rescue ActiveRecord::RecordNotDestroyed => e
+    render json: { error: e.message }, status: :unprocessable_entity
   end
 
   # GET /diaries/{date}
@@ -51,7 +54,7 @@ class Api::V1::DiariesController < ApplicationController
   def set_music
     service = Openai::ChatResponseService.new
     response = service.call(@diary.body)
-    reccomendations = Spotify::RequestRecommendationService.new(response).request()
+    reccomendations = Spotify::RequestRecommendationService.new(response).request
     render json: { response: reccomendations }
   rescue => e
     render json: { error: e.message }, status: :internal_server_error

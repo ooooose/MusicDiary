@@ -28,7 +28,7 @@ export const DiariesCalendar = () => {
         className="rounded-md border shadow"
       />
 
-      <Button variant="outline" className="mt-4 w-full" asChild>
+      <Button variant="outline" className="mt-4 w-full">
         <Link href="/diaries">日記を作成する</Link>
       </Button>
     </div>

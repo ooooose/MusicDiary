@@ -4,7 +4,6 @@ import type { MutationConfig } from '@/lib/react-query/react-query'
 import { endpoints } from '@/utils/constants/endpoints'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
-
 export const createMusic = async (
   uid: string,
 ): Promise<{ response: string[] }> => {
