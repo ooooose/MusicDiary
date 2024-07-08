@@ -7,7 +7,8 @@ type RecommendationsProps = {
 }
 
 export const Recommendations = ({ diaryId }: RecommendationsProps) => {
-  const { ModalDialog, music, createDiaryMutation, openDialog } = useSetMusicDialog()
+  const { ModalDialog, music, createDiaryMutation, openDialog } =
+    useSetMusicDialog()
 
   return (
     <div className="w-full">
