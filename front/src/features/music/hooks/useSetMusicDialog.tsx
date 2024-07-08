@@ -14,18 +14,12 @@ import { useCallback, useState } from 'react'
 
 type DialogProps = {
   uid: string
-  music: string[]
   open: boolean
   onClose: (result: boolean) => void
-  onSetMusic: UseMutationResult<
-    { response: string[] },
-    Error,
-    string,
-    unknown
-  >
+  onSetMusic: UseMutationResult<{ response: string[] }, Error, string, unknown>
 }
 
-const _ModalDialog: FC<DialogProps> = ({ uid, music, open, onClose, onSetMusic }) => {
+const _ModalDialog: FC<DialogProps> = ({ uid, open, onClose, onSetMusic }) => {
   const handleSetMusic = useCallback(() => {
     onSetMusic.mutate(uid)
   }, [onSetMusic, uid])
@@ -40,8 +34,17 @@ const _ModalDialog: FC<DialogProps> = ({ uid, music, open, onClose, onSetMusic }
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <Button onClick={handleSetMusic}>利用する！</Button>
-          <Button variant='outline' onClick={() => onClose(false)}>閉じる</Button>
+          <Button
+            onClick={() => {
+              handleSetMusic()
+              onClose(false)
+            }}
+          >
+            利用する！
+          </Button>
+          <Button variant="outline" onClick={() => onClose(false)}>
+            閉じる
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -89,7 +92,6 @@ export const useSetMusicDialog = () => {
       uid={uid}
       open={modalOpen}
       onClose={onClose}
-      music={music}
       onSetMusic={createDiaryMutation}
     />
   )
