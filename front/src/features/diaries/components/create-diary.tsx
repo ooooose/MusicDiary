@@ -16,6 +16,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
 import type { SubmitHandler } from 'react-hook-form'
 import { useForm } from 'react-hook-form'
+import { Check } from 'lucide-react'
 
 export const CreateDiary = () => {
   const today = formatToday()
@@ -65,8 +66,9 @@ export const CreateDiary = () => {
           isLoading={createDiaryMutation.isPending}
           className="float-right mt-4"
           type="submit"
-          variant="outline"
+          variant="default"
           disabled={createDiaryMutation.isPending}
+          icon={<Check className='size-4' />}
         >
           登録する
         </Button>
