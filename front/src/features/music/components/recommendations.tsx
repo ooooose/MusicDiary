@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { Spinner } from '@/components/ui/spinner'
+import ApiErrorAlert from '@/features/music/components/api-error-alert'
 import { useSetMusicDialog } from '@/features/music/hooks'
 
 type RecommendationsProps = {
@@ -7,8 +8,15 @@ type RecommendationsProps = {
 }
 
 export const Recommendations = ({ diaryId }: RecommendationsProps) => {
-  const { ModalDialog, music, createDiaryMutation, openDialog } =
-    useSetMusicDialog()
+  const {
+    ModalDialog,
+    music,
+    createDiaryMutation,
+    openDialog,
+    handleSetMusic,
+    setHasApiError,
+    hasApiError,
+  } = useSetMusicDialog(diaryId)
 
   return (
     <div className="flex flex-col">
@@ -31,6 +39,11 @@ export const Recommendations = ({ diaryId }: RecommendationsProps) => {
             </li>
           ))}
       </div>
+      <ApiErrorAlert
+        hasApiError={hasApiError}
+        onClick={handleSetMusic}
+        setHasApiError={setHasApiError}
+      />
     </div>
   )
 }
