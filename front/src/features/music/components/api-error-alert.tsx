@@ -7,9 +7,9 @@ import {
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
+  AlertDialogAction,
   AlertDialogCancel
 } from '@/components/ui/alert-dialog'
-import { Button } from '@/components/ui/button'
 
 type ApiErrorAlertProps = {
   hasApiError: boolean
@@ -29,7 +29,7 @@ export default function ApiErrorAlert({ hasApiError, onClick, setHasApiError }: 
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter className="flex-col gap-4 sm:flex-row sm:gap-0">
-          <Button onClick={onClick}>再リクエスト</Button>
+          <AlertDialogAction onClick={onClick} asChild>再リクエスト</AlertDialogAction>
           <AlertDialogCancel onClick={() => setHasApiError(false)}>
             キャンセル
           </AlertDialogCancel>
