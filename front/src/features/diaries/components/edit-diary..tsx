@@ -9,46 +9,20 @@ import {
 } from '@/components/ui/form'
 import { Textarea } from '@/components/ui/textarea'
 import type { UpdateDiaryInput } from '@/features/diaries/api/update-diary'
-import {
-  updateDiaryInputSchema,
-  useUpdateDiary,
-} from '@/features/diaries/api/update-diary'
-import { zodResolver } from '@hookform/resolvers/zod'
-import type { SubmitHandler } from 'react-hook-form'
-import { useForm } from 'react-hook-form'
+import type { SubmitHandler, UseFormReturn } from 'react-hook-form'
 
 type EditDiaryProps = {
-  diaryId: string
-  body: string
+  form: UseFormReturn<
+    {
+      body: string
+    },
+    any,
+    undefined
+  >
+  onSubmit: SubmitHandler<UpdateDiaryInput>
 }
 
-export const EditDiary = ({ diaryId, body }: EditDiaryProps) => {
-  const createDiaryMutation = useUpdateDiary({
-    mutationConfig: {
-      onSuccess: async () => {
-        // toastを出すこと
-        console.log('success')
-      },
-      onError: (error) => {
-        console.log('error', error)
-      },
-    },
-  })
-
-  const form = useForm<UpdateDiaryInput>({
-    resolver: zodResolver(updateDiaryInputSchema),
-    defaultValues: {
-      body,
-    },
-  })
-
-  const onSubmit: SubmitHandler<UpdateDiaryInput> = (values) => {
-    createDiaryMutation.mutate({
-      diaryId,
-      data: { body: values.body },
-    })
-  }
-
+export const EditDiary = ({ form, onSubmit }: EditDiaryProps) => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
