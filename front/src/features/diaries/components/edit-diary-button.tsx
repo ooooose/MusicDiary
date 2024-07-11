@@ -25,7 +25,7 @@ export const EditDiaryButton = ({
         <div>
           <Button
             onClick={() => {
-              form.handleSubmit(onSubmit)
+              form.handleSubmit(onSubmit)()
               setEditFlag(false)
             }}
             icon={<Check className="sizew-4" />}

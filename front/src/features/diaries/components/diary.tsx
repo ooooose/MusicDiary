@@ -28,6 +28,7 @@ export const Diary = memo(({ date, diaryId }: DiaryProps) => {
   const [editFlag, setEditFlag] = useState<boolean>(false)
   const diaryQuery = useDiary({ diaryId })
   const updateDiaryMutation = useUpdateDiary({
+    diaryId,
     mutationConfig: {
       onSuccess: async () => {
         // toastを出すこと

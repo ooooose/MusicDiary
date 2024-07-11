@@ -6,7 +6,7 @@ import { apiClient } from '@/lib/api/api-client'
 import type { MutationConfig } from '@/lib/react-query/react-query'
 
 import { endpoints } from '@/utils/constants/endpoints'
-import { getDiariesQueryOptions } from '@/features/diaries/api/get-diaries'
+import { getDiaryQueryOptions } from '@/features/diaries/api/get-diary'
 
 export const updateDiaryInputSchema = z.object({
   body: z.string().min(1, '入力必須です'),
@@ -25,12 +25,14 @@ export const updateDiary = async ({
 }
 
 type UseUpdateDiaryOptions = {
+  diaryId: string
   mutationConfig?: MutationConfig<typeof updateDiary>
 }
 
 export const useUpdateDiary = ({
+  diaryId,
   mutationConfig,
-}: UseUpdateDiaryOptions = {}) => {
+}: UseUpdateDiaryOptions) => {
   const queryClient = useQueryClient()
 
   const { onSuccess, ...restConfig } = mutationConfig || {}
@@ -38,7 +40,7 @@ export const useUpdateDiary = ({
   return useMutation({
     onSuccess: (data, ...args) => {
       queryClient.refetchQueries({
-        queryKey: getDiariesQueryOptions().queryKey,
+        queryKey: getDiaryQueryOptions(diaryId).queryKey,
       })
       onSuccess?.(data, ...args)
     },
