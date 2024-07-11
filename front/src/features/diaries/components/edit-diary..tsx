@@ -12,13 +12,9 @@ import type { UpdateDiaryInput } from '@/features/diaries/api/update-diary'
 import type { SubmitHandler, UseFormReturn } from 'react-hook-form'
 
 type EditDiaryProps = {
-  form: UseFormReturn<
-    {
-      body: string
-    },
-    any,
-    undefined
-  >
+  form: UseFormReturn<{
+    body: string
+  }>
   onSubmit: SubmitHandler<UpdateDiaryInput>
 }
 

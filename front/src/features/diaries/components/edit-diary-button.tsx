@@ -7,13 +7,9 @@ import type { SubmitHandler, UseFormReturn } from 'react-hook-form'
 type EditDiaryButtonProps = {
   editFlag: boolean
   setEditFlag: Dispatch<SetStateAction<boolean>>
-  form: UseFormReturn<
-    {
-      body: string
-    },
-    any,
-    undefined
-  >
+  form: UseFormReturn<{
+    body: string
+  }>
   onSubmit: SubmitHandler<UpdateDiaryInput>
 }
 
@@ -21,7 +17,7 @@ export const EditDiaryButton = ({
   editFlag,
   setEditFlag,
   form,
-  onSubmit
+  onSubmit,
 }: EditDiaryButtonProps) => {
   return (
     <div>
@@ -29,8 +25,8 @@ export const EditDiaryButton = ({
         <div>
           <Button
             onClick={() => {
-              setEditFlag(false)
               form.handleSubmit(onSubmit)
+              setEditFlag(false)
             }}
             icon={<Check className="sizew-4" />}
           >

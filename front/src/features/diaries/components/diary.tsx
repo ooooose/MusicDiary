@@ -42,7 +42,7 @@ export const Diary = memo(({ date, diaryId }: DiaryProps) => {
   const form = useForm<UpdateDiaryInput>({
     resolver: zodResolver(updateDiaryInputSchema),
     defaultValues: {
-      body: diaryQuery.data?.body ?? '',
+      body: diaryQuery.data?.body,
     },
   })
 
