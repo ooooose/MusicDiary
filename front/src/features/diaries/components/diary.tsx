@@ -2,11 +2,14 @@
 
 import { useDiary } from '@/features/diaries/api/get-diary'
 import { DeleteDiary } from '@/features/diaries/components/delete-diary'
+import { EditDiary } from '@/features/diaries/components/edit-diary.'
 import { LoadingDiary } from '@/features/diaries/components/loading-diary'
+import { EditDiaryButton } from '@/features/diaries/components/edit-diary-button'
 import { Recommendations } from '@/features/music/components/recommendations'
 import { formatDateForDiary } from '@/lib/date'
 import { TextWithLineBreaks } from '@/lib/text-with-line-breaks'
-import { memo } from 'react'
+
+import { memo, useState } from 'react'
 
 type DiaryProps = {
   date: string
@@ -14,6 +17,7 @@ type DiaryProps = {
 }
 
 export const Diary = memo(({ date, diaryId }: DiaryProps) => {
+  const [editFlag, setEditFlag] = useState<boolean>(false)
   const diaryQuery = useDiary({ diaryId })
 
   if (diaryQuery.isLoading) return <LoadingDiary />
@@ -22,12 +26,17 @@ export const Diary = memo(({ date, diaryId }: DiaryProps) => {
       <div className="space-between flex">
         <p className="w-full">{formatDateForDiary(new Date(date))}</p>
         <div className="w-full text-right">
+          <EditDiaryButton editFlag={editFlag} setEditFlag={setEditFlag} />
           <DeleteDiary id={diaryId} date={date} />
         </div>
       </div>
-      <div className="h-[300px] w-full rounded-sm border p-2">
-        <TextWithLineBreaks text={diaryQuery.data?.body ?? ''} />
-      </div>
+        {editFlag ? (
+          <EditDiary diaryId={diaryId} />
+        ) : (
+          <div className="h-[300px] w-full rounded-sm border p-2">
+            <TextWithLineBreaks text={diaryQuery.data?.body ?? ''} />
+          </div>
+        )}
       <div className="mt-2 w-full">
         <Recommendations diaryId={diaryId} />
       </div>
