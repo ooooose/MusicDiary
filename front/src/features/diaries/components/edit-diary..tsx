@@ -19,9 +19,10 @@ import { useForm } from 'react-hook-form'
 
 type EditDiaryProps = {
   diaryId: string
+  body: string
 }
 
-export const EditDiary = ({ diaryId }: EditDiaryProps) => {
+export const EditDiary = ({ diaryId, body }: EditDiaryProps) => {
   const createDiaryMutation = useUpdateDiary({
     mutationConfig: {
       onSuccess: async () => {
@@ -37,7 +38,7 @@ export const EditDiary = ({ diaryId }: EditDiaryProps) => {
   const form = useForm<UpdateDiaryInput>({
     resolver: zodResolver(updateDiaryInputSchema),
     defaultValues: {
-      body: '',
+      body,
     },
   })
 

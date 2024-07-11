@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button'
-import { Check, Ban } from 'lucide-react'
+import { Ban, Check } from 'lucide-react'
 import type { Dispatch, SetStateAction } from 'react'
 
 type EditDiaryButtonProps = {
@@ -7,13 +7,18 @@ type EditDiaryButtonProps = {
   setEditFlag: Dispatch<SetStateAction<boolean>>
 }
 
-export const EditDiaryButton = ({ editFlag, setEditFlag }: EditDiaryButtonProps) => {
+export const EditDiaryButton = ({
+  editFlag,
+  setEditFlag,
+}: EditDiaryButtonProps) => {
   return (
     <div>
       {editFlag ? (
         <div>
           <Button
-            onClick={() => setEditFlag(false)}
+            onClick={() => {
+              setEditFlag(false)
+            }}
             icon={<Check className="sizew-4" />}
           >
             更新
@@ -26,7 +31,7 @@ export const EditDiaryButton = ({ editFlag, setEditFlag }: EditDiaryButtonProps)
           </Button>
         </div>
       ) : (
-        <Button onClick={() => setEditFlag(true)}>更新する</Button>
+        <Button onClick={() => setEditFlag(true)}>編集する</Button>
       )}
     </div>
   )
