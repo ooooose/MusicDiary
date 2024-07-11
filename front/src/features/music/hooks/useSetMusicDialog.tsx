@@ -8,22 +8,16 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { useCreateMusic } from '@/features/music/api'
-import type { UseMutationResult } from '@tanstack/react-query'
 import type { FC } from 'react'
 import { useCallback, useState } from 'react'
 
 type DialogProps = {
-  uid: string
   open: boolean
   onClose: (result: boolean) => void
-  onSetMusic: UseMutationResult<{ response: string[] }, Error, string, unknown>
+  handleSetMusic: () => void
 }
 
-const _ModalDialog: FC<DialogProps> = ({ uid, open, onClose, onSetMusic }) => {
-  const handleSetMusic = useCallback(() => {
-    onSetMusic.mutate(uid)
-  }, [onSetMusic, uid])
-
+const _ModalDialog: FC<DialogProps> = ({ open, onClose, handleSetMusic }) => {
   return (
     <Dialog open={open} onOpenChange={(isOpen) => !isOpen && onClose(false)}>
       <DialogContent>
@@ -51,21 +45,22 @@ const _ModalDialog: FC<DialogProps> = ({ uid, open, onClose, onSetMusic }) => {
   )
 }
 
-export const useSetMusicDialog = () => {
+export const useSetMusicDialog = (uid: string) => {
   const [modalOpen, setModalOpen] = useState<boolean>(false)
   const [music, setMusic] = useState<string[]>([])
-
+  const [hasApiError, setHasApiError] = useState<boolean>(false)
+  
   const [resolve, setResolve] = useState<(result: boolean) => void>(
     () => () => {},
   )
-
+  
   const openDialog = useCallback((): Promise<boolean> => {
     setModalOpen(true)
     return new Promise<boolean>((resolve) => {
       setResolve(() => resolve)
     })
   }, [])
-
+  
   const onClose = useCallback(
     (result: boolean) => {
       setModalOpen(false)
@@ -75,7 +70,7 @@ export const useSetMusicDialog = () => {
     },
     [resolve],
   )
-
+  
   const createDiaryMutation = useCreateMusic({
     mutationConfig: {
       onSuccess: async (data) => {
@@ -83,16 +78,20 @@ export const useSetMusicDialog = () => {
       },
       onError: (error) => {
         console.log('error', error)
+        setHasApiError(true)
       },
     },
   })
+  
+  const handleSetMusic = useCallback(() => {
+    createDiaryMutation.mutate(uid)
+  }, [createDiaryMutation, uid])
 
-  const ModalDialog: FC<{ uid: string }> = ({ uid }) => (
+  const ModalDialog: FC<{ uid: string }> = () => (
     <_ModalDialog
-      uid={uid}
       open={modalOpen}
       onClose={onClose}
-      onSetMusic={createDiaryMutation}
+      handleSetMusic={handleSetMusic}
     />
   )
 
@@ -101,5 +100,8 @@ export const useSetMusicDialog = () => {
     music,
     ModalDialog,
     openDialog,
+    handleSetMusic,
+    setHasApiError,
+    hasApiError
   }
 }

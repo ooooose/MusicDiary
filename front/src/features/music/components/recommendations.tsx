@@ -1,14 +1,23 @@
 import { Button } from '@/components/ui/button'
 import { Spinner } from '@/components/ui/spinner'
+import ApiErrorAlert from '@/features/music/components/api-error-alert'
 import { useSetMusicDialog } from '@/features/music/hooks'
+import { Music } from 'lucide-react'
 
 type RecommendationsProps = {
   diaryId: string
 }
 
 export const Recommendations = ({ diaryId }: RecommendationsProps) => {
-  const { ModalDialog, music, createDiaryMutation, openDialog } =
-    useSetMusicDialog()
+  const {
+    ModalDialog,
+    music,
+    createDiaryMutation,
+    openDialog,
+    handleSetMusic,
+    setHasApiError,
+    hasApiError,
+  } = useSetMusicDialog(diaryId)
 
   return (
     <div className="flex flex-col">
@@ -16,6 +25,7 @@ export const Recommendations = ({ diaryId }: RecommendationsProps) => {
         className="ml-auto"
         onClick={() => openDialog()}
         disabled={createDiaryMutation.isPending}
+        icon={<Music className="size-4" />}
       >
         音楽を取得
       </Button>
@@ -31,6 +41,11 @@ export const Recommendations = ({ diaryId }: RecommendationsProps) => {
             </li>
           ))}
       </div>
+      <ApiErrorAlert
+        hasApiError={hasApiError}
+        onClick={handleSetMusic}
+        setHasApiError={setHasApiError}
+      />
     </div>
   )
 }

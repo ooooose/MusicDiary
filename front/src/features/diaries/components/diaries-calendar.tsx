@@ -6,6 +6,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { useDiaries } from '@/features/diaries/api'
 import Link from 'next/link'
 import { useState } from 'react'
+import { Notebook } from 'lucide-react'
 
 export const DiariesCalendar = () => {
   const [date, setDate] = useState<Date | undefined>(new Date())
@@ -28,7 +29,11 @@ export const DiariesCalendar = () => {
         className="rounded-md border shadow"
       />
 
-      <Button variant="outline" className="mt-4 w-full">
+      <Button
+        variant="default"
+        className="mt-4 w-full"
+        icon={<Notebook className="size-4" />}
+      >
         <Link href="/diaries">日記を作成する</Link>
       </Button>
     </div>
