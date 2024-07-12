@@ -1,5 +1,6 @@
 class Diary < ApplicationRecord
   belongs_to :user
+  has_many :tracks, dependent: :destroy
 
   validates :body, presence: true
   validates :uid, presence: true, uniqueness: true
