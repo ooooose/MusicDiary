@@ -5,13 +5,12 @@ class Api::V1::DiariesController < ApplicationController
   def index
     diaries = current_user.diaries
 
-    json_string = DiarySerializer.new(diaries).serializable_hash.to_json
-    render json: json_string, status: :ok
+    render json: DiarySerializer.new(diaries).serializable_hash, status: :ok
   end
 
   # GET /diaries/{uid}
   def show
-    render json: DiarySerializer.new(@diary).serializable_hash.to_json, status: :ok
+    render json: DiarySerializer.new(@diary).serializable_hash, status: :ok
   end
 
   # POST /diaries
@@ -21,7 +20,7 @@ class Api::V1::DiariesController < ApplicationController
     if @diary.save
       render json: @diary, status: :created
     else
-      render json: @diary.errors, status: :unprocessable_entity
+      render json: { errors: @diary.errors }, status: :unprocessable_entity
     end
   end
 
@@ -30,45 +29,42 @@ class Api::V1::DiariesController < ApplicationController
     if @diary.update(diary_params)
       render json: @diary
     else
-      render json: @diary.errors, status: :unprocessable_entity
+      render json: { errors: @diary.errors }, status: :unprocessable_entity
     end
   end
 
   # DELETE /diaries/{uid}
   def destroy
-    @diary.destroy
-    render json: { message: '日記の削除に成功しました' }, status: :ok
+    @diary.destroy!
   rescue ActiveRecord::RecordNotDestroyed => e
     render json: { error: e.message }, status: :unprocessable_entity
+  else
+    render json: { message: "日記の削除に成功しました" }, status: :ok
   end
 
   # GET /diaries/{date}
   def dairy_index
     date = Date.parse(params[:date])
     @diaries = current_user.diaries.created_on(date).sorted_by_date
-    json_string = DiarySerializer.new(@diaries).serializable_hash.to_json
-    render json: json_string, status: :ok
+    render json: DiarySerializer.new(@diaries).serializable_hash, status: :ok
   end
 
   # POST /diaries/{uid}/music
   def set_music
     service = Openai::ChatResponseService.new
     response = service.call(@diary.body)
-    recommendations = Spotify::RequestRecommendationService.new(response).request
-    @track = @diary.tracks.build(
-      spotify_id: recommendations.id,
-      title: recommendations.name,
-      artist: recommendations.artists[0].name,
-      image: recommendations.album.images[0]['url']
-    )
-    if @track.save
-      json_string = TrackSerializer.new(@track).serializable_hash
-      render json: json_string, status: :created
+    recommendations = fetch_recommendations(response)
+
+    @track = build_track_from_recommendations(recommendations)
+
+    if save_track_and_render_response
+      render_track_creation_success
     else
-      render json: { errors: @track.errors }, status: :unprocessable_entity
+      render_track_creation_failure
     end
   rescue => e
-    render json: { error: e.message }, status: :internal_server_error
+    # Catch more specific exceptions here (e.g., OpenAIError, Spotify::RequestError)
+    render_error_response(e)
   end
 
   private
@@ -79,5 +75,40 @@ class Api::V1::DiariesController < ApplicationController
 
     def diary_params
       params.require(:diary).permit(:uid, :body)
+    end
+
+    def fetch_recommendations(response)
+      Spotify::RequestRecommendationService.new(response).request
+    end
+
+    def build_track_from_recommendations(recommendations)
+      @diary.tracks.build(
+        spotify_id: recommendations.id,
+        title: recommendations.name,
+        artist: recommendations.artists[0].name,
+        image: recommendations.album.images[0]["url"]
+      )
+    end
+
+    def save_track_and_render_response
+      if @track.save
+        true
+      else
+        render json: { errors: @track.errors }, status: :unprocessable_entity
+        false
+      end
+    end
+
+    def render_track_creation_success
+      render json: TrackSerializer.new(@track).serializable_hash, status: :created
+    end
+
+    def render_track_creation_failure
+      render json: { errors: @track.errors }, status: :unprocessable_entity
+    end
+
+    def render_error_response(e)
+      Rails.logger.error(e.message)
+      render json: { error: "An error occurred. Please try again later." }, status: :internal_server_error
     end
 end
