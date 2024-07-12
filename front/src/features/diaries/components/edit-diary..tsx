@@ -9,16 +9,28 @@ import {
 } from '@/components/ui/form'
 import { Textarea } from '@/components/ui/textarea'
 import type { UpdateDiaryInput } from '@/features/diaries/api/update-diary'
-import type { SubmitHandler, UseFormReturn } from 'react-hook-form'
+import React, { memo } from 'react'
+import type {
+  ControllerRenderProps,
+  FieldValues,
+  SubmitHandler,
+  UseFormReturn,
+} from 'react-hook-form'
 
 type EditDiaryProps = {
-  form: UseFormReturn<{
-    body: string
-  }>
+  form: UseFormReturn<UpdateDiaryInput>
   onSubmit: SubmitHandler<UpdateDiaryInput>
 }
 
-export const EditDiary = ({ form, onSubmit }: EditDiaryProps) => {
+const TextareaField = memo(
+  ({ field }: { field: ControllerRenderProps<FieldValues, string> }) => (
+    <Textarea {...field} className="h-[300px]" />
+  ),
+)
+TextareaField.displayName = 'TextareaField'
+
+export const EditDiary = memo(({ form, onSubmit }: EditDiaryProps) => {
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -37,4 +49,6 @@ export const EditDiary = ({ form, onSubmit }: EditDiaryProps) => {
       </form>
     </Form>
   )
-}
+})
+
+EditDiary.displayName = 'EditDiary'
