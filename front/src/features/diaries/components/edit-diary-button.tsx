@@ -35,14 +35,12 @@ CancelButton.displayName = 'CancelButton'
 
 export const EditDiaryButton = memo(
   ({ editFlag, setEditFlag, form, onSubmit }: EditDiaryButtonProps) => {
-
     const handleUpdate = useCallback(async () => {
       try {
-        const result = await form.handleSubmit(onSubmit)()
-        if (result === undefined) {
-          return
-        }
-        setEditFlag(false)
+        await form.handleSubmit(async (data) => {
+          await onSubmit(data)
+          setEditFlag(false)
+        })()
       } catch (err) {
         console.error(err)
       }
