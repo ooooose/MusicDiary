@@ -54,8 +54,19 @@ class Api::V1::DiariesController < ApplicationController
   def set_music
     service = Openai::ChatResponseService.new
     response = service.call(@diary.body)
-    reccomendations = Spotify::RequestRecommendationService.new(response).request
-    render json: { response: reccomendations }
+    recommendations = Spotify::RequestRecommendationService.new(response).request
+    @track = @diary.tracks.build(
+      spotify_id: recommendations.id,
+      title: recommendations.name,
+      artist: recommendations.artists[0].name,
+      image: recommendations.album.images[0]['url']
+    )
+    if @track.save
+      json_string = TrackSerializer.new(@track).serializable_hash
+      render json: json_string, status: :created
+    else
+      render json: { errors: @track.errors }, status: :unprocessable_entity
+    end
   rescue => e
     render json: { error: e.message }, status: :internal_server_error
   end

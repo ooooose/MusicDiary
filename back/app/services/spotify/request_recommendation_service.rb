@@ -28,7 +28,7 @@ module Spotify
         target_liveness: @liveness,
         target_speechiness: @speechiness
       )
-      recommendations.tracks.map {|track| [track.artists.first.name, track.name].join("/") }
+      recommendations.tracks[0]
     end
   end
 end
