@@ -34,12 +34,10 @@ export const Recommendations = ({ diaryId }: RecommendationsProps) => {
         {createDiaryMutation.isPending && (
           <Spinner className="mx-auto text-center" size="lg" />
         )}
-        {music &&
-          music.map((m, i) => (
-            <li key={i} className="w-full p-4 shadow-sm">
-              {m}
-            </li>
-          ))}
+        <div>
+          <p>{music.title}</p>
+          <p>{music.artist}</p>
+        </div>
       </div>
       <ApiErrorAlert
         hasApiError={hasApiError}
