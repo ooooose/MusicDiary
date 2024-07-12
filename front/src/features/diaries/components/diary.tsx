@@ -15,7 +15,7 @@ import { formatDateForDiary } from '@/lib/date'
 import { TextWithLineBreaks } from '@/lib/text-with-line-breaks'
 import { zodResolver } from '@hookform/resolvers/zod'
 
-import { memo, useState } from 'react'
+import { memo, useEffect, useState } from 'react'
 import type { SubmitHandler } from 'react-hook-form'
 import { useForm } from 'react-hook-form'
 
@@ -25,8 +25,8 @@ type DiaryProps = {
 }
 
 export const Diary = memo(({ date, diaryId }: DiaryProps) => {
-  const [editFlag, setEditFlag] = useState<boolean>(false)
   const diaryQuery = useDiary({ diaryId })
+  const [editFlag, setEditFlag] = useState<boolean>(false)
   const updateDiaryMutation = useUpdateDiary({
     diaryId,
     mutationConfig: {
@@ -42,10 +42,13 @@ export const Diary = memo(({ date, diaryId }: DiaryProps) => {
 
   const form = useForm<UpdateDiaryInput>({
     resolver: zodResolver(updateDiaryInputSchema),
-    defaultValues: {
-      body: diaryQuery.data?.body,
-    },
   })
+
+  useEffect(() => {
+    if (diaryQuery.data) {
+      form.reset({ body: diaryQuery.data.body })
+    }
+  }, [diaryQuery.data, form])
 
   if (diaryQuery.isLoading) return <LoadingDiary />
 
@@ -55,6 +58,7 @@ export const Diary = memo(({ date, diaryId }: DiaryProps) => {
       data: { body: values.body },
     })
   }
+
   return (
     <div className="flex w-full flex-col gap-4">
       <div className="space-between flex">
