@@ -4,13 +4,30 @@ import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useDiaries } from '@/features/diaries/api'
-import Link from 'next/link'
-import { useState } from 'react'
 import { Notebook } from 'lucide-react'
+import Link from 'next/link'
+import { memo, useCallback, useState } from 'react'
+
+const CreateDiaryButton = memo(() => (
+  <Link href="/diaries" passHref legacyBehavior>
+    <Button
+      variant="default"
+      className="mt-4 w-full"
+      icon={<Notebook className="size-4" />}
+    >
+      日記を作成する
+    </Button>
+  </Link>
+))
+CreateDiaryButton.displayName = 'CreateDiaryButton'
 
 export const DiariesCalendar = () => {
   const [date, setDate] = useState<Date | undefined>(new Date())
   const diariesQuery = useDiaries({})
+
+  const handleDateSelect = useCallback((newDate: Date | undefined) => {
+    setDate(newDate)
+  }, [])
 
   if (diariesQuery.isLoading)
     return (
@@ -19,23 +36,17 @@ export const DiariesCalendar = () => {
         <Skeleton className="mt-4 h-[40px] w-full" />
       </div>
     )
+
   return (
     <div className="float-left">
       <Calendar
         mode="single"
         selected={date}
-        onSelect={setDate}
+        onSelect={handleDateSelect}
         diaries={diariesQuery.data ?? []}
         className="rounded-md border shadow"
       />
-
-      <Button
-        variant="default"
-        className="mt-4 w-full"
-        icon={<Notebook className="size-4" />}
-      >
-        <Link href="/diaries">日記を作成する</Link>
-      </Button>
+      <CreateDiaryButton />
     </div>
   )
 }
