@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button'
 import type { UpdateDiaryInput } from '@/features/diaries/api/update-diary'
 import { Ban, Check, Pencil } from 'lucide-react'
 import type { Dispatch, SetStateAction } from 'react'
-import { useState } from 'react'
+import { memo, useCallback } from 'react'
 import type { SubmitHandler, UseFormReturn } from 'react-hook-form'
 
 type EditDiaryButtonProps = {
@@ -12,60 +12,64 @@ type EditDiaryButtonProps = {
   onSubmit: SubmitHandler<UpdateDiaryInput>
 }
 
-const EditButton = ({ onClick }: { onClick: () => void }) => (
+const EditButton = memo(({ onClick }: { onClick: () => void }) => (
   <Button size="sm" onClick={onClick} icon={<Pencil className="size-4" />}>
     編集
   </Button>
-)
+))
+EditButton.displayName = 'EditButton'
 
-const UpdateButton = ({ onClick }: { onClick: () => void }) => (
+const UpdateButton = memo(({ onClick }: { onClick: () => void }) => (
   <Button size="sm" onClick={onClick} icon={<Check className="size-4" />}>
     更新
   </Button>
-)
+))
+UpdateButton.displayName = 'UpdateButton'
 
-const CancelButton = ({ onClick }: { onClick: () => void }) => (
+const CancelButton = memo(({ onClick }: { onClick: () => void }) => (
   <Button size="sm" onClick={onClick} icon={<Ban className="size-4" />}>
     キャンセル
   </Button>
+))
+CancelButton.displayName = 'CancelButton'
+
+export const EditDiaryButton = memo(
+  ({ editFlag, setEditFlag, form, onSubmit }: EditDiaryButtonProps) => {
+
+    const handleUpdate = useCallback(async () => {
+      try {
+        const result = await form.handleSubmit(onSubmit)()
+        if (result === undefined) {
+          return
+        }
+        setEditFlag(false)
+      } catch (err) {
+        console.error(err)
+      }
+    }, [form, onSubmit, setEditFlag])
+
+    const handleCancel = useCallback(() => {
+      setEditFlag(false)
+      form.reset()
+    }, [setEditFlag, form])
+
+    const handleEdit = useCallback(() => setEditFlag(true), [setEditFlag])
+
+    return (
+      <div>
+        <div className="flex gap-2">
+          {editFlag ? (
+            <>
+              <UpdateButton onClick={handleUpdate} />
+              <CancelButton onClick={handleCancel} />
+            </>
+          ) : (
+            <EditButton onClick={handleEdit} />
+          )}
+        </div>
+      </div>
+    )
+  },
 )
 
-export const EditDiaryButton = ({
-  editFlag,
-  setEditFlag,
-  form,
-  onSubmit,
-}: EditDiaryButtonProps) => {
-
-  const handleUpdate = async () => {
-    try {
-      const result = await form.handleSubmit(onSubmit)()
-      if (result === undefined) {
-        return
-      }
-      setEditFlag(false)
-    } catch (err) {
-      console.error(err)
-    }
-  }
-
-  const handleCancel = () => {
-    setEditFlag(false)
-    form.reset()
-  }
-
-  return (
-    <div>
-      <div className="flex gap-2">
-        {editFlag ? (
-          <>
-            <UpdateButton onClick={handleUpdate} />
-            <CancelButton onClick={handleCancel} />
-          </>
-        ) : (
-          <EditButton onClick={() => setEditFlag(true)} />
-        )}
-      </div>
-    </div>
-  )
-}
+EditDiaryButton.displayName = 'EditDiaryButton'
