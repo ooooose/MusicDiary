@@ -36,28 +36,22 @@ export const EditDiaryButton = ({
   form,
   onSubmit,
 }: EditDiaryButtonProps) => {
-  const [error, setError] = useState<string | null>(null)
 
   const handleUpdate = async () => {
     try {
       const result = await form.handleSubmit(onSubmit)()
       if (result === undefined) {
-        // フォームのバリデーションが失敗した場合
-        setError('入力内容を確認してください。')
         return
       }
       setEditFlag(false)
-      setError(null)
     } catch (err) {
       console.error(err)
-      setError('更新に失敗しました。')
     }
   }
 
   const handleCancel = () => {
     setEditFlag(false)
     form.reset()
-    setError(null)
   }
 
   return (
