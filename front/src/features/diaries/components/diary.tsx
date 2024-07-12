@@ -63,7 +63,7 @@ export const Diary = memo(({ date, diaryId }: DiaryProps) => {
     <div className="flex w-full flex-col gap-4">
       <div className="space-between flex">
         <p className="w-full">{formatDateForDiary(new Date(date))}</p>
-        <div className="w-full text-right">
+        <div className="flex justify-end space-x-2">
           <EditDiaryButton
             editFlag={editFlag}
             setEditFlag={setEditFlag}
