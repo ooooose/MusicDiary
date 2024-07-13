@@ -79,7 +79,6 @@ export const Diary = memo(({ date, diaryId }: DiaryProps) => {
   )
 
   if (diaryQuery.isLoading) return <LoadingDiary />
-  console.log(diaryQuery.data)
 
   return (
     <div className="flex w-full flex-col gap-4">
