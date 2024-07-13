@@ -1,7 +1,5 @@
+# app/serializers/track_serializer.rb
 class TrackSerializer
   include JSONAPI::Serializer
-  set_type :track
-  attributes :title, :artist, :spotify_id, :image
-
-  belongs_to :diary, serializer: DiarySerializer
+  attributes :spotify_id, :title, :artist, :image
 end

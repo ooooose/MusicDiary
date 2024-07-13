@@ -47,20 +47,19 @@ const _ModalDialog: FC<DialogProps> = ({ open, onClose, handleSetMusic }) => {
 
 export const useSetMusicDialog = (uid: string) => {
   const [modalOpen, setModalOpen] = useState<boolean>(false)
-  const [music, setMusic] = useState<string[]>([])
   const [hasApiError, setHasApiError] = useState<boolean>(false)
-  
+
   const [resolve, setResolve] = useState<(result: boolean) => void>(
     () => () => {},
   )
-  
+
   const openDialog = useCallback((): Promise<boolean> => {
     setModalOpen(true)
     return new Promise<boolean>((resolve) => {
       setResolve(() => resolve)
     })
   }, [])
-  
+
   const onClose = useCallback(
     (result: boolean) => {
       setModalOpen(false)
@@ -70,11 +69,12 @@ export const useSetMusicDialog = (uid: string) => {
     },
     [resolve],
   )
-  
+
   const createDiaryMutation = useCreateMusic({
+    diaryId: uid,
     mutationConfig: {
-      onSuccess: async (data) => {
-        setMusic(data.response)
+      onSuccess: async () => {
+        console.log('success')
       },
       onError: (error) => {
         console.log('error', error)
@@ -82,7 +82,7 @@ export const useSetMusicDialog = (uid: string) => {
       },
     },
   })
-  
+
   const handleSetMusic = useCallback(() => {
     createDiaryMutation.mutate(uid)
   }, [createDiaryMutation, uid])
@@ -97,11 +97,10 @@ export const useSetMusicDialog = (uid: string) => {
 
   return {
     createDiaryMutation,
-    music,
     ModalDialog,
     openDialog,
     handleSetMusic,
     setHasApiError,
-    hasApiError
+    hasApiError,
   }
 }
