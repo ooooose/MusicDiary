@@ -79,6 +79,7 @@ export const Diary = memo(({ date, diaryId }: DiaryProps) => {
   )
 
   if (diaryQuery.isLoading) return <LoadingDiary />
+  console.log(diaryQuery.data)
 
   return (
     <div className="flex w-full flex-col gap-4">
@@ -97,7 +98,7 @@ export const Diary = memo(({ date, diaryId }: DiaryProps) => {
         <DiaryContent body={diaryQuery.data?.body ?? ''} />
       )}
       <div className="mt-2 w-full">
-        <Recommendations diaryId={diaryId} />
+        <Recommendations diaryId={diaryId} tracks={diaryQuery.data?.tracks ?? []} />
       </div>
     </div>
   )

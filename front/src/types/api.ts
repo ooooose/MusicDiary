@@ -18,6 +18,7 @@ export type Diary = Entity<{
   uid: string
   body: string
   userId: number
+  tracks: Track[]
 }>
 
 export type Track = Entity<{
