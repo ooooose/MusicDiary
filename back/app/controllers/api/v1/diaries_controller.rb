@@ -3,14 +3,13 @@ class Api::V1::DiariesController < ApplicationController
 
   # GET /diaries
   def index
-    diaries = current_user.diaries
-
-    render json: DiarySerializer.new(diaries).serializable_hash, status: :ok
+    diaries = current_user.diaries.includes([:tracks])
+    render json: DiarySerializer.new(diaries, include: [:tracks]).serializable_hash, status: :ok
   end
 
   # GET /diaries/{uid}
   def show
-    render json: DiarySerializer.new(@diary).serializable_hash, status: :ok
+    render json: DiarySerializer.new(@diary, include: [:tracks]).serializable_hash, status: :ok
   end
 
   # POST /diaries
@@ -45,8 +44,8 @@ class Api::V1::DiariesController < ApplicationController
   # GET /diaries/{date}
   def dairy_index
     date = Date.parse(params[:date])
-    @diaries = current_user.diaries.created_on(date).sorted_by_date
-    render json: DiarySerializer.new(@diaries).serializable_hash, status: :ok
+    diaries = current_user.diaries.created_on(date).sorted_by_date
+    render json: DiarySerializer.new(diaries).serializable_hash, status: :ok
   end
 
   # POST /diaries/{uid}/music
@@ -63,14 +62,13 @@ class Api::V1::DiariesController < ApplicationController
       render_track_creation_failure
     end
   rescue => e
-    # Catch more specific exceptions here (e.g., OpenAIError, Spotify::RequestError)
     render_error_response(e)
   end
 
   private
 
     def set_diary
-      @diary = Diary.find_by(uid: params[:uid])
+      @diary = Diary.includes(:tracks).find_by(uid: params[:uid])
     end
 
     def diary_params
