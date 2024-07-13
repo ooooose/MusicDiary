@@ -1,15 +1,16 @@
 'use client'
 
-import type { Dispatch, SetStateAction } from 'react'
 import {
   AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
-  AlertDialogAction,
-  AlertDialogCancel
+  AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
+import { useState, type Dispatch, type SetStateAction } from 'react'
 
 type ApiErrorAlertProps = {
   hasApiError: boolean
@@ -17,10 +18,28 @@ type ApiErrorAlertProps = {
   setHasApiError: Dispatch<SetStateAction<boolean>>
 }
 
-export default function ApiErrorAlert({ hasApiError, onClick, setHasApiError }: ApiErrorAlertProps) {
+export default function ApiErrorAlert({
+  hasApiError,
+  onClick,
+  setHasApiError,
+}: ApiErrorAlertProps) {
+  const [isRetrying, setIsRetrying] = useState(false)
+
+  const handleRetry = () => {
+    setIsRetrying(true)
+    onClick()
+    setHasApiError(false)
+    setTimeout(() => setIsRetrying(false), 2000) // 2-second delay before retrying
+  }
+
+  const handleClose = () => {
+    setHasApiError(false)
+  }
+
   return (
     <AlertDialog open={hasApiError}>
       <AlertDialogContent>
+        <AlertDialogTitle>楽曲の取得に失敗しました</AlertDialogTitle>
         <AlertDialogHeader>
           <AlertDialogDescription className="text-left">
             申し訳ございません。楽曲の提供に失敗しました。
@@ -29,8 +48,10 @@ export default function ApiErrorAlert({ hasApiError, onClick, setHasApiError }: 
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter className="flex-col gap-4 sm:flex-row sm:gap-0">
-          <AlertDialogAction onClick={onClick} asChild>再リクエスト</AlertDialogAction>
-          <AlertDialogCancel onClick={() => setHasApiError(false)}>
+          <AlertDialogAction disabled={isRetrying} onClick={handleRetry}>
+            再リクエスト
+          </AlertDialogAction>
+          <AlertDialogCancel onClick={handleClose}>
             キャンセル
           </AlertDialogCancel>
         </AlertDialogFooter>
