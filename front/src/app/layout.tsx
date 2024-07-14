@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 
+import { Notifications } from '@/components/atoms/notifications'
 import NextAuthProvider from '@/lib/auth/next-auth-provider'
 import { cn } from '@/lib/utils'
 import { Inter as FontSans } from 'next/font/google'
@@ -27,6 +28,7 @@ export default function RootLayout({
           fontSans.variable,
         )}
       >
+        <Notifications />
         <NextAuthProvider>{children}</NextAuthProvider>
       </body>
     </html>

@@ -1,3 +1,4 @@
+import { useNotifications } from '@/components/atoms/notifications'
 import { Button } from '@/components/ui/button'
 import { ConfirmationDialog } from '@/components/ui/confirmation-dialog'
 import { UseDeleteDiary } from '@/features/diaries/api/delete-diary'
@@ -10,13 +11,23 @@ type DeleteDiaryProps = {
 }
 
 export const DeleteDiary = ({ id, date }: DeleteDiaryProps) => {
+  const { addNotification } = useNotifications()
   const router = useRouter()
   const deleteDiaryMutation = UseDeleteDiary({
     mutationConfig: {
       onSuccess: () => {
-        console.log('success')
+        addNotification({
+          type: 'success',
+          title: '日記を削除しました',
+        })
         router.push(`/diaries/${date}`)
       },
+      onError: () => {
+        addNotification({
+          type: 'error',
+          title: '日記を削除できませんでした'
+        })
+      }
     },
   })
 
