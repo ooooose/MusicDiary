@@ -38,7 +38,7 @@ export const Recommendations = ({ diaryId, tracks }: RecommendationsProps) => {
         )}
         {tracks.map((track, index) => (
           <div key={`${index}-${track.title}`}>
-            <Track spotifyId={track.spotifyId}/> 
+            <Track spotifyId={track.spotifyId} />
           </div>
         ))}
       </div>

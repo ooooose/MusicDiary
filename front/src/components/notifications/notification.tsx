@@ -24,7 +24,6 @@ export const Notification = ({
   notification: { id, type, title, message },
   onDismiss,
 }: NotificationProps) => {
-
   useEffect(() => {
     setTimeout(() => onDismiss(id), 3000)
   }, [id, onDismiss])
