@@ -1,8 +1,10 @@
+import { memo } from "react"
+
 type TrackProps = {
   spotifyId: string
 }
 
-export const Track = ({ spotifyId }: TrackProps) => {
+export const Track = memo(({ spotifyId }: TrackProps) => {
   return (
     <div className="flex items-center md:flex-row">
       <iframe
@@ -14,4 +16,6 @@ export const Track = ({ spotifyId }: TrackProps) => {
       ></iframe>
     </div>
   )
-}
+})
+
+Track.displayName = 'Track'
