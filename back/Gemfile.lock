@@ -90,6 +90,7 @@ GEM
     dotenv-rails (3.1.2)
       dotenv (= 3.1.2)
       railties (>= 6.1)
+    drb (2.2.1)
     erubi (1.13.0)
     factory_bot (6.4.6)
       activesupport (>= 5.0.0)
@@ -320,6 +321,7 @@ DEPENDENCIES
   bullet
   debug
   dotenv-rails
+  drb
   factory_bot_rails
   faraday
   jsonapi-serializer
