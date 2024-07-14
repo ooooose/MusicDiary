@@ -1,3 +1,4 @@
+import { useNotifications } from '@/components/notifications'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -8,7 +9,6 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { useCreateMusic } from '@/features/music/api'
-import { useNotifications } from '@/components/atoms/notifications'
 import type { FC } from 'react'
 import { useCallback, useState } from 'react'
 

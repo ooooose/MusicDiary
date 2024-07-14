@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 
-import { Notifications } from '@/components/atoms/notifications'
+import { Notifications } from '@/components/notifications'
 import NextAuthProvider from '@/lib/auth/next-auth-provider'
 import { cn } from '@/lib/utils'
 import { Inter as FontSans } from 'next/font/google'

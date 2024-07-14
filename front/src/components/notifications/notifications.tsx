@@ -1,7 +1,7 @@
 'use client'
 
+import { useNotifications } from '@/components/notifications/notifications-store'
 import { Notification } from './notification'
-import { useNotifications } from '@/components/atoms/notifications/notifications-store'
 
 export const Notifications = () => {
   const { notifications, dismissNotification } = useNotifications()

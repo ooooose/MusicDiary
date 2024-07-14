@@ -1,4 +1,4 @@
-import { useNotifications } from '@/components/atoms/notifications'
+import { useNotifications } from '@/components/notifications'
 import { Button } from '@/components/ui/button'
 import { ConfirmationDialog } from '@/components/ui/confirmation-dialog'
 import { UseDeleteDiary } from '@/features/diaries/api/delete-diary'
@@ -25,9 +25,9 @@ export const DeleteDiary = ({ id, date }: DeleteDiaryProps) => {
       onError: () => {
         addNotification({
           type: 'error',
-          title: '日記を削除できませんでした'
+          title: '日記を削除できませんでした',
         })
-      }
+      },
     },
   })
 

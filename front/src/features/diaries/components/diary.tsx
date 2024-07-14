@@ -1,12 +1,12 @@
 'use client'
 
+import { useNotifications } from '@/components/notifications'
 import { useDiary } from '@/features/diaries/api/get-diary'
 import type { UpdateDiaryInput } from '@/features/diaries/api/update-diary'
 import {
   updateDiaryInputSchema,
   useUpdateDiary,
 } from '@/features/diaries/api/update-diary'
-import { useNotifications } from '@/components/atoms/notifications'
 import { DeleteDiary } from '@/features/diaries/components/delete-diary'
 import { EditDiary } from '@/features/diaries/components/edit-diary'
 import { EditDiaryButton } from '@/features/diaries/components/edit-diary-button'
@@ -52,13 +52,13 @@ export const Diary = memo(({ date, diaryId }: DiaryProps) => {
       onSuccess: async () => {
         addNotification({
           type: 'success',
-          title: '日記を更新しました'
+          title: '日記を更新しました',
         })
       },
       onError: () => {
         addNotification({
           type: 'error',
-          title: '日記を更新できませんでした'
+          title: '日記を更新できませんでした',
         })
       },
     },
