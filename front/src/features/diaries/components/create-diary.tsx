@@ -1,5 +1,6 @@
 'use client'
 
+import { useNotifications } from '@/components/notifications'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -13,18 +14,22 @@ import type { CreateDiaryInput } from '@/features/diaries/api'
 import { createDiaryInputSchema, useCreateDiary } from '@/features/diaries/api'
 import { formatDateForDairyDiaries, formatToday } from '@/lib/date'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { Check } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import type { SubmitHandler } from 'react-hook-form'
 import { useForm } from 'react-hook-form'
-import { Check } from 'lucide-react'
 
 export const CreateDiary = () => {
+  const { addNotification } = useNotifications()
   const today = formatToday()
   const router = useRouter()
   const createDiaryMutation = useCreateDiary({
     mutationConfig: {
       onSuccess: async () => {
-        // toastを出すこと
+        addNotification({
+          type: 'success',
+          title: '日記を作成しました',
+        })
         router.push(`/diaries/${formatDateForDairyDiaries(new Date())}`)
       },
       onError: (error) => {
@@ -68,7 +73,7 @@ export const CreateDiary = () => {
           type="submit"
           variant="default"
           disabled={createDiaryMutation.isPending}
-          icon={<Check className='size-4' />}
+          icon={<Check className="size-4" />}
         >
           登録する
         </Button>

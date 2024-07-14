@@ -1,7 +1,6 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-
 import { apiClient } from '@/lib/api/api-client'
 import type { MutationConfig } from '@/lib/react-query/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import { getDiariesQueryOptions } from '@/features/diaries/api/get-diaries'
 import { endpoints } from '@/utils/constants/endpoints'

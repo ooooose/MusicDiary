@@ -1,5 +1,5 @@
 up:
-	docker-compose up -d
+	docker compose up -d
 	cd front && npm run dev
 
 build:

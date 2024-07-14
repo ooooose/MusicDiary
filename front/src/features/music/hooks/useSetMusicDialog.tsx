@@ -1,3 +1,4 @@
+import { useNotifications } from '@/components/notifications'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -48,6 +49,7 @@ const _ModalDialog: FC<DialogProps> = ({ open, onClose, handleSetMusic }) => {
 export const useSetMusicDialog = (uid: string) => {
   const [modalOpen, setModalOpen] = useState<boolean>(false)
   const [hasApiError, setHasApiError] = useState<boolean>(false)
+  const { addNotification } = useNotifications()
 
   const [resolve, setResolve] = useState<(result: boolean) => void>(
     () => () => {},
@@ -74,10 +76,12 @@ export const useSetMusicDialog = (uid: string) => {
     diaryId: uid,
     mutationConfig: {
       onSuccess: async () => {
-        console.log('success')
+        addNotification({
+          type: 'success',
+          title: '楽曲を取得しました',
+        })
       },
-      onError: (error) => {
-        console.log('error', error)
+      onError: () => {
         setHasApiError(true)
       },
     },
