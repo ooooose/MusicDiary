@@ -13,7 +13,7 @@ const AuthButton = () => {
       {loading ? (
         <Skeleton className="h-[50px] w-[100px]" />
       ) : session ? (
-        <div className="flex items-center gap-2 h-full justify-center">
+        <div className="flex h-full items-center justify-center gap-2">
           <p className="text-center">{session.user?.name} さん</p>
           <Button variant="outline" onClick={() => signOut()}>
             ログアウト

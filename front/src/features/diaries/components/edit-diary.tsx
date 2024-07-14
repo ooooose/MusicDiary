@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/form'
 import { Textarea } from '@/components/ui/textarea'
 import type { UpdateDiaryInput } from '@/features/diaries/api/update-diary'
-import React, { memo } from 'react'
+import { memo } from 'react'
 import type {
   ControllerRenderProps,
   FieldValues,
@@ -30,7 +30,6 @@ const TextareaField = memo(
 TextareaField.displayName = 'TextareaField'
 
 export const EditDiary = memo(({ form, onSubmit }: EditDiaryProps) => {
-
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>

@@ -1,12 +1,12 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { z } from 'zod'
 
-import type { Diary } from '@/types/api'
 import { apiClient } from '@/lib/api/api-client'
 import type { MutationConfig } from '@/lib/react-query/react-query'
+import type { Diary } from '@/types/api'
 
-import { endpoints } from '@/utils/constants/endpoints'
 import { getDiaryQueryOptions } from '@/features/diaries/api/get-diary'
+import { endpoints } from '@/utils/constants/endpoints'
 
 export const updateDiaryInputSchema = z.object({
   body: z.string().min(1, '入力必須です'),
@@ -16,9 +16,9 @@ export type UpdateDiaryInput = z.infer<typeof updateDiaryInputSchema>
 
 export const updateDiary = async ({
   data,
-  diaryId
+  diaryId,
 }: {
-  data: UpdateDiaryInput,
+  data: UpdateDiaryInput
   diaryId: string
 }): Promise<Diary> => {
   return await apiClient.apiPut(`${endpoints.diaries}/${diaryId}`, data)
