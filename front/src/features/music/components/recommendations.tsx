@@ -1,13 +1,14 @@
 import { Button } from '@/components/ui/button'
 import { Spinner } from '@/components/ui/spinner'
 import ApiErrorAlert from '@/features/music/components/api-error-alert'
+import { Track } from '@/features/music/components/track'
 import { useSetMusicDialog } from '@/features/music/hooks'
-import type { Track } from '@/types/api'
+import type { Track as TrackType } from '@/types/api'
 import { Music } from 'lucide-react'
 
 type RecommendationsProps = {
   diaryId: string
-  tracks: Track[]
+  tracks: TrackType[]
 }
 
 export const Recommendations = ({ diaryId, tracks }: RecommendationsProps) => {
@@ -37,8 +38,7 @@ export const Recommendations = ({ diaryId, tracks }: RecommendationsProps) => {
         )}
         {tracks.map((track, index) => (
           <div key={`${index}-${track.title}`}>
-            <p>{track.title}</p>
-            <p>{track.artist}</p>
+            <Track spotifyId={track.spotifyId}/> 
           </div>
         ))}
       </div>
