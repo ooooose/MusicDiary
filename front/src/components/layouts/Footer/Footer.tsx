@@ -1,4 +1,5 @@
 import AuthButton from '@/components/atoms/AuthButton'
+import Image from 'next/image'
 import Link from 'next/link'
 
 const Footer = () => {
@@ -8,8 +9,14 @@ const Footer = () => {
         <div className="flex items-center justify-between px-4 pb-12">
           <div className="flex flex-col gap-4">
             <div className="mt-10">
-              <h2 className="text-3xl">Music Diary</h2>
-              <p>一日を音楽と共に振り返ろう</p>
+              <Image
+                src="/logo.png"
+                alt="logo"
+                width={200}
+                height={100}
+                priority
+                className="h-[80px] w-auto"
+              />
             </div>
             <AuthButton />
           </div>
