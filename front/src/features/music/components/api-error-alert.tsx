@@ -10,7 +10,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
-import { useState, type Dispatch, type SetStateAction } from 'react'
+import type { Dispatch, SetStateAction } from 'react'
 
 type ApiErrorAlertProps = {
   hasApiError: boolean
@@ -23,13 +23,9 @@ export default function ApiErrorAlert({
   onClick,
   setHasApiError,
 }: ApiErrorAlertProps) {
-  const [isRetrying, setIsRetrying] = useState(false)
-
   const handleRetry = () => {
-    setIsRetrying(true)
     onClick()
     setHasApiError(false)
-    setTimeout(() => setIsRetrying(false), 2000) // 2-second delay before retrying
   }
 
   const handleClose = () => {
@@ -48,7 +44,7 @@ export default function ApiErrorAlert({
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter className="flex-col gap-4 sm:flex-row sm:gap-0">
-          <AlertDialogAction disabled={isRetrying} onClick={handleRetry}>
+          <AlertDialogAction onClick={handleRetry}>
             再リクエスト
           </AlertDialogAction>
           <AlertDialogCancel onClick={handleClose}>

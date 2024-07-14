@@ -9,6 +9,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Textarea } from '@/components/ui/textarea'
+import { useNotifications } from '@/components/atoms/notifications'
 import type { CreateDiaryInput } from '@/features/diaries/api'
 import { createDiaryInputSchema, useCreateDiary } from '@/features/diaries/api'
 import { formatDateForDairyDiaries, formatToday } from '@/lib/date'
@@ -19,12 +20,16 @@ import { useForm } from 'react-hook-form'
 import { Check } from 'lucide-react'
 
 export const CreateDiary = () => {
+  const { addNotification } = useNotifications()
   const today = formatToday()
   const router = useRouter()
   const createDiaryMutation = useCreateDiary({
     mutationConfig: {
       onSuccess: async () => {
-        // toastを出すこと
+        addNotification({
+          type: 'success',
+          title: '日記を作成しました',
+        })
         router.push(`/diaries/${formatDateForDairyDiaries(new Date())}`)
       },
       onError: (error) => {
