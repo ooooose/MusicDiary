@@ -5,6 +5,6 @@ FactoryBot.define do
     sequence(:email) {|n| "email_#{n}@example.com" }
     sequence(:image) {|n| "image_key_#{n}" }
     role { 1 }
-    deleted_flag { false }   
+    deleted_flag { false }
   end
 end
