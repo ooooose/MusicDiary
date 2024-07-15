@@ -4,7 +4,7 @@ RSpec.describe Diary, type: :model do
   # validationのテスト
   describe 'validation' do
     context 'when normal' do
-      # 名前とメールアドレスがあれば、有効であること
+      # ユーザーIDと日記の内容があれば、有効であること
       it 'is valid with a name and email' do
         diary = build(:diary)
         expect(diary).to be_valid
@@ -12,7 +12,7 @@ RSpec.describe Diary, type: :model do
     end
 
     context 'when abnormal' do
-      # ユーザーがなければ、無効であること
+      # ユーザーIDがなければ、無効であること
       it 'is invalid without user' do
         diary = build(:diary, user_id: nil)
         expect(diary).not_to be_valid
