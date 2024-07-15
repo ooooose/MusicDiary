@@ -80,4 +80,29 @@ RSpec.describe "Diaries", type: :request do
       end
     end
   end
+
+  describe "GET /api/v1/diaries/:uid" do
+    let!(:diary) { create(:diary, body: 'test', user:) }
+
+    context "when authenticated" do
+      before do
+        get api_v1_diary_path(diary.uid), headers:
+      end
+
+      it "returns status ok" do
+        expect(response).to have_http_status(:ok)
+      end
+
+      it "returns diaries" do
+        expect(JSON.parse(response.body)["data"]['attributes']['body']).to eq('test')
+      end
+    end
+
+    context "when unauthenticated" do
+      before { get api_v1_diaries_path, headers: {}}
+      it "returns unauthorized status" do
+        expect(response).to have_http_status(:unauthorized)
+      end
+    end
+  end
 end
