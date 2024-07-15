@@ -49,7 +49,12 @@ RSpec.describe "Diaries", type: :request do
         end
       end
     end
+
+    context 'when unauthenticated' do
+      it 'returns unauthorized status' do
+          post(api_v1_diaries_path, params: { diary: { body: 'test', uid: user.uid } }, headers: {})
+          expect(response).to have_http_status(:unauthorized)
+      end
+    end
   end
-
-
 end
