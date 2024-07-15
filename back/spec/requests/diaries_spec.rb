@@ -82,7 +82,7 @@ RSpec.describe "Diaries", type: :request do
   end
 
   describe "GET /api/v1/diaries/:uid" do
-    let!(:diary) { create(:diary, body: 'test', user:) }
+    let!(:diary) { create(:diary, body: "test", user:) }
 
     context "when authenticated" do
       before do
@@ -94,13 +94,35 @@ RSpec.describe "Diaries", type: :request do
       end
 
       it "returns diaries" do
-        expect(JSON.parse(response.body)["data"]['attributes']['body']).to eq('test')
+        expect(JSON.parse(response.body)["data"]["attributes"]["body"]).to eq("test")
       end
     end
 
     context "when unauthenticated" do
-      before { get api_v1_diaries_path, headers: {}}
+      before { get api_v1_diaries_path, headers: {} }
+
       it "returns unauthorized status" do
+        expect(response).to have_http_status(:unauthorized)
+      end
+    end
+  end
+
+  describe "PUT /api/v1/diaries/:uid" do
+    let!(:diary) { create(:diary, body: "test", user:) }
+
+    context "when authenticated" do
+      before do
+        put api_v1_diary_path(diary.uid), params: { diary: { body: "Edit body" } }, headers:
+      end
+
+      it "returns the updated diary for body" do
+        expect(JSON.parse(response.body)["body"]).to eq("Edit body")
+      end
+    end
+
+    context "when unauthenticated" do
+      it "returns unauthorized status" do
+        put api_v1_diary_path(diary.uid), params: { diary: { body: "Edit body" } }, headers: {}
         expect(response).to have_http_status(:unauthorized)
       end
     end
