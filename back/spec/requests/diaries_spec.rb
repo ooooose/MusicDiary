@@ -151,13 +151,13 @@ RSpec.describe "Diaries", type: :request do
 
   describe "GET /api/v1/diaries/date/:date" do
     let(:date) { Date.today.to_s }
-    
+
     context "when authenticated" do
       before do
-        create(:diary, user: user, created_at: Date.today)
-        create(:diary, user: user, created_at: Date.today)
-        create(:diary, user: user, created_at: Date.yesterday)
-        get date_api_v1_diaries_path(date: date), headers: headers
+        create(:diary, user:, created_at: Date.today)
+        create(:diary, user:, created_at: Date.today)
+        create(:diary, user:, created_at: Date.yesterday)
+        get date_api_v1_diaries_path(date:), headers:
       end
 
       it "returns status ok" do
@@ -170,7 +170,7 @@ RSpec.describe "Diaries", type: :request do
     end
 
     context "when unauthenticated" do
-      before { get date_api_v1_diaries_path(date: date) }
+      before { get date_api_v1_diaries_path(date:) }
 
       it "returns unauthorized status" do
         expect(response).to have_http_status(:unauthorized)
@@ -179,10 +179,16 @@ RSpec.describe "Diaries", type: :request do
   end
 
   describe "POST /api/v1/diaries/:uid/music" do
-    let!(:diary) { create(:diary, user: user) }
+    let!(:diary) { create(:diary, user:) }
     let(:openai_service) { instance_double(Openai::ChatResponseService) }
     let(:spotify_service) { instance_double(Spotify::RequestRecommendationService) }
-    let(:recommendation) { double("recommendation", id: "spotify_id", name: "Track Name", artists: [double("artist", name: "Artist Name")], album: double("album", images: [{"url" => "image_url"}])) }
+    let(:recommendation) do
+      instance_double("Recommendation",
+                      id: "spotify_id",
+                      name: "Track Name",
+                      artists: [instance_double("Artist", name: "Artist Name")],
+                      album: instance_double("Album", images: [{ "url" => "image_url" }]))
+    end
 
     before do
       allow(Openai::ChatResponseService).to receive(:new).and_return(openai_service)
@@ -193,7 +199,7 @@ RSpec.describe "Diaries", type: :request do
 
     context "when authenticated" do
       before do
-        post "/api/v1/diaries/#{diary.uid}/music", headers: headers
+        post "/api/v1/diaries/#{diary.uid}/music", headers:
       end
 
       it "returns status created" do
@@ -216,7 +222,7 @@ RSpec.describe "Diaries", type: :request do
     context "when track creation fails" do
       before do
         allow_any_instance_of(Track).to receive(:save).and_return(false)
-        post "/api/v1/diaries/#{diary.uid}/music", headers: headers
+        post "/api/v1/diaries/#{diary.uid}/music", headers:
       end
 
       it "returns unprocessable entity status" do
@@ -231,7 +237,7 @@ RSpec.describe "Diaries", type: :request do
     context "when an error occurs" do
       before do
         allow(openai_service).to receive(:call).and_raise(StandardError.new("API Error"))
-        post "/api/v1/diaries/#{diary.uid}/music", headers: headers
+        post "/api/v1/diaries/#{diary.uid}/music", headers:
       end
 
       it "returns internal server error status" do
@@ -251,5 +257,4 @@ RSpec.describe "Diaries", type: :request do
       end
     end
   end
-
 end

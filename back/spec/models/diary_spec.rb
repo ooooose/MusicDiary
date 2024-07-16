@@ -2,12 +2,12 @@ require "rails_helper"
 
 RSpec.describe Diary, type: :model do
   # バリデーションのテスト
-  describe 'validations' do
+  describe "validations" do
     subject { create(:diary) }
 
-    it { should validate_presence_of(:body) }
-    it { should validate_presence_of(:uid) }
-    it { should validate_uniqueness_of(:uid).case_insensitive }
+    it { is_expected.to validate_presence_of(:body) }
+    it { is_expected.to validate_presence_of(:uid) }
+    it { is_expected.to validate_uniqueness_of(:uid).case_insensitive }
   end
 
   # validationのテスト
@@ -36,27 +36,27 @@ RSpec.describe Diary, type: :model do
   end
 
   # アソシエーションのテスト
-  describe 'associations' do
-    it { should belong_to(:user) }
-    it { should have_many(:tracks).dependent(:destroy) }
+  describe "associations" do
+    it { is_expected.to belong_to(:user) }
+    it { is_expected.to have_many(:tracks).dependent(:destroy) }
   end
 
   # スコープのテスト
-  describe 'scopes' do
-    let!(:diary1) { create(:diary, created_at: 2.days.ago) } 
-    let!(:diary2) { create(:diary, created_at: 1.day.ago) }
-    let!(:diary3) { create(:diary, created_at: Time.current) }
+  describe "scopes" do
+    let!(:old_diary) { create(:diary, created_at: 2.days.ago) }
+    let!(:yesterday_diary) { create(:diary, created_at: 1.day.ago) }
+    let!(:today_diary) { create(:diary, created_at: Time.current) }
 
-    describe '.sorted_by_date' do
-      it 'returns diaries in descending order of creation date' do
-        expect(Diary.sorted_by_date).to eq([diary3, diary2, diary1])
+    describe ".sorted_by_date" do
+      it "returns diaries in descending order of creation date" do
+        expect(Diary.sorted_by_date).to eq([today_diary, yesterday_diary, old_diary])
       end
     end
 
-    describe '.created_on' do
-      it 'returns diaries created on the given date' do
+    describe ".created_on" do
+      it "returns diaries created on the given date" do
         date = 1.day.ago.to_date
-        expect(Diary.created_on(date)).to eq([diary2])
+        expect(Diary.created_on(date)).to eq([yesterday_diary])
       end
     end
   end
