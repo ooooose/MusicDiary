@@ -1,6 +1,15 @@
 require "rails_helper"
 
 RSpec.describe Diary, type: :model do
+  # バリデーションのテスト
+  describe "validations" do
+    subject { create(:diary) }
+
+    it { is_expected.to validate_presence_of(:body) }
+    it { is_expected.to validate_presence_of(:uid) }
+    it { is_expected.to validate_uniqueness_of(:uid).case_insensitive }
+  end
+
   # validationのテスト
   describe "validation" do
     context "when normal" do
@@ -26,8 +35,29 @@ RSpec.describe Diary, type: :model do
     end
   end
 
-  # associationのテスト
-  describe "association" do
+  # アソシエーションのテスト
+  describe "associations" do
+    it { is_expected.to belong_to(:user) }
     it { is_expected.to have_many(:tracks).dependent(:destroy) }
+  end
+
+  # スコープのテスト
+  describe "scopes" do
+    let!(:old_diary) { create(:diary, created_at: 2.days.ago) }
+    let!(:yesterday_diary) { create(:diary, created_at: 1.day.ago) }
+    let!(:today_diary) { create(:diary, created_at: Time.current) }
+
+    describe ".sorted_by_date" do
+      it "returns diaries in descending order of creation date" do
+        expect(Diary.sorted_by_date).to eq([today_diary, yesterday_diary, old_diary])
+      end
+    end
+
+    describe ".created_on" do
+      it "returns diaries created on the given date" do
+        date = 1.day.ago.to_date
+        expect(Diary.created_on(date)).to eq([yesterday_diary])
+      end
+    end
   end
 end

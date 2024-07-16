@@ -56,7 +56,7 @@ class Api::V1::DiariesController < ApplicationController
 
     @track = build_track_from_recommendations(recommendations)
 
-    if save_track_and_render_response
+    if @track.save
       render_track_creation_success
     else
       render_track_creation_failure
@@ -86,15 +86,6 @@ class Api::V1::DiariesController < ApplicationController
         artist: recommendations.artists[0].name,
         image: recommendations.album.images[0]["url"]
       )
-    end
-
-    def save_track_and_render_response
-      if @track.save
-        true
-      else
-        render json: { errors: @track.errors }, status: :unprocessable_entity
-        false
-      end
     end
 
     def render_track_creation_success
