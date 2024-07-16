@@ -148,4 +148,108 @@ RSpec.describe "Diaries", type: :request do
       end
     end
   end
+
+  describe "GET /api/v1/diaries/date/:date" do
+    let(:date) { Date.today.to_s }
+    
+    context "when authenticated" do
+      before do
+        create(:diary, user: user, created_at: Date.today)
+        create(:diary, user: user, created_at: Date.today)
+        create(:diary, user: user, created_at: Date.yesterday)
+        get date_api_v1_diaries_path(date: date), headers: headers
+      end
+
+      it "returns status ok" do
+        expect(response).to have_http_status(:ok)
+      end
+
+      it "returns diaries for the specified date" do
+        expect(JSON.parse(response.body)["data"].length).to eq(2)
+      end
+    end
+
+    context "when unauthenticated" do
+      before { get date_api_v1_diaries_path(date: date) }
+
+      it "returns unauthorized status" do
+        expect(response).to have_http_status(:unauthorized)
+      end
+    end
+  end
+
+  describe "POST /api/v1/diaries/:uid/music" do
+    let!(:diary) { create(:diary, user: user) }
+    let(:openai_service) { instance_double(Openai::ChatResponseService) }
+    let(:spotify_service) { instance_double(Spotify::RequestRecommendationService) }
+    let(:recommendation) { double("recommendation", id: "spotify_id", name: "Track Name", artists: [double("artist", name: "Artist Name")], album: double("album", images: [{"url" => "image_url"}])) }
+
+    before do
+      allow(Openai::ChatResponseService).to receive(:new).and_return(openai_service)
+      allow(openai_service).to receive(:call).and_return("AI response")
+      allow(Spotify::RequestRecommendationService).to receive(:new).and_return(spotify_service)
+      allow(spotify_service).to receive(:request).and_return(recommendation)
+    end
+
+    context "when authenticated" do
+      before do
+        post "/api/v1/diaries/#{diary.uid}/music", headers: headers
+      end
+
+      it "returns status created" do
+        expect(response).to have_http_status(:created)
+      end
+
+      it "creates a new track" do
+        expect(diary.tracks.count).to eq(1)
+      end
+
+      it "returns the created track" do
+        track = JSON.parse(response.body)["data"]["attributes"]
+        expect(track["spotify_id"]).to eq("spotify_id")
+        expect(track["title"]).to eq("Track Name")
+        expect(track["artist"]).to eq("Artist Name")
+        expect(track["image"]).to eq("image_url")
+      end
+    end
+
+    context "when track creation fails" do
+      before do
+        allow_any_instance_of(Track).to receive(:save).and_return(false)
+        post "/api/v1/diaries/#{diary.uid}/music", headers: headers
+      end
+
+      it "returns unprocessable entity status" do
+        expect(response).to have_http_status(:unprocessable_entity)
+      end
+
+      it "returns error messages" do
+        expect(JSON.parse(response.body)).to have_key("errors")
+      end
+    end
+
+    context "when an error occurs" do
+      before do
+        allow(openai_service).to receive(:call).and_raise(StandardError.new("API Error"))
+        post "/api/v1/diaries/#{diary.uid}/music", headers: headers
+      end
+
+      it "returns internal server error status" do
+        expect(response).to have_http_status(:internal_server_error)
+      end
+
+      it "returns an error message" do
+        expect(JSON.parse(response.body)["error"]).to eq("An error occurred. Please try again later.")
+      end
+    end
+
+    context "when unauthenticated" do
+      before { post "/api/v1/diaries/#{diary.uid}/music" }
+
+      it "returns unauthorized status" do
+        expect(response).to have_http_status(:unauthorized)
+      end
+    end
+  end
+
 end
