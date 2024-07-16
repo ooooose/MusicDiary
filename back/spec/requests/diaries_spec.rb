@@ -4,8 +4,10 @@ RSpec.describe "Diaries", type: :request do
   let!(:user) { create(:user) }
   let!(:token) { encode_jwt({ user_id: user.id }) }
   let!(:headers) { { Authorization: "Bearer #{token}" } }
-describe "GET /api/v1/diaries" do
-    context "when the user does not have any diaries" do before { get api_v1_diaries_path, headers: }
+
+  describe "GET /api/v1/diaries" do
+    context "when the user does not have any diaries" do
+      before { get api_v1_diaries_path, headers: }
 
       it "returns status ok" do
         expect(response).to have_http_status(:ok)
