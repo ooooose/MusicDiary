@@ -4,10 +4,8 @@ RSpec.describe "Diaries", type: :request do
   let!(:user) { create(:user) }
   let!(:token) { encode_jwt({ user_id: user.id }) }
   let!(:headers) { { Authorization: "Bearer #{token}" } }
-
-  describe "GET /api/v1/diaries" do
-    context "when the user does not have any diaries" do
-      before { get api_v1_diaries_path, headers: }
+describe "GET /api/v1/diaries" do
+    context "when the user does not have any diaries" do before { get api_v1_diaries_path, headers: }
 
       it "returns status ok" do
         expect(response).to have_http_status(:ok)
@@ -123,6 +121,27 @@ RSpec.describe "Diaries", type: :request do
     context "when unauthenticated" do
       it "returns unauthorized status" do
         put api_v1_diary_path(diary.uid), params: { diary: { body: "Edit body" } }, headers: {}
+        expect(response).to have_http_status(:unauthorized)
+      end
+    end
+  end
+
+  describe "DELETE /api/v1/diaries/:uid" do
+    let!(:diary) { create(:diary, body: "test", user:) }
+
+    context "when authenticated" do
+      before do
+        delete api_v1_diary_path(diary.uid), headers:
+      end
+
+      it "return status ok" do
+        expect(response).to have_http_status(:ok)
+      end
+    end
+
+    context "when unauthenticated" do
+      it "returns unauthorized status" do
+        delete api_v1_diary_path(diary.uid), headers: {}
         expect(response).to have_http_status(:unauthorized)
       end
     end
