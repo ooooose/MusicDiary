@@ -8,6 +8,7 @@ Rails.application.routes.draw do
           post ':uid/music', to: 'diaries#set_music'
         end
       end
+      resources :tracks, only: %i[destroy]
     end
   end
 end
