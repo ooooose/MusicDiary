@@ -1,8 +1,8 @@
 import { Button } from '@/components/ui/button'
 import { Spinner } from '@/components/ui/spinner'
-import ApiErrorAlert from '@/features/track/components/api-error-alert'
-import { Track } from '@/features/track/components/track'
-import { useSetTrackDialog } from '@/features/track/hooks'
+import ApiErrorAlert from '@/features/tracks/components/api-error-alert'
+import { Track } from '@/features/tracks/components/track'
+import { useSetTrackDialog } from '@/features/tracks/hooks'
 import type { Track as TrackType } from '@/types/api'
 import { Music } from 'lucide-react'
 

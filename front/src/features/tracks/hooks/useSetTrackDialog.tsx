@@ -8,7 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { useCreateTrack } from '@/features/track/api'
+import { useCreateTrack } from '@/features/tracks/api'
 import type { FC } from 'react'
 import { useCallback, useState } from 'react'
 
