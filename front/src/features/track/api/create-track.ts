@@ -5,21 +5,18 @@ import type { Track } from '@/types/api'
 import { endpoints } from '@/utils/constants/endpoints'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
-export const createMusic = async (
+export const createTrack = async (
   uid: string,
 ): Promise<{ response: Track }> => {
   return await apiClient.apiPost(endpoints.set_music(uid))
 }
 
-type UsePostMusicOptions = {
+type UsePostTrackOptions = {
   diaryId: string
-  mutationConfig?: MutationConfig<typeof createMusic>
+  mutationConfig?: MutationConfig<typeof createTrack>
 }
 
-export const useCreateMusic = ({
-  diaryId,
-  mutationConfig,
-}: UsePostMusicOptions) => {
+export const useCreateTrack = ({ diaryId, mutationConfig }: UsePostTrackOptions) => {
   const queryClient = useQueryClient()
 
   const { onSuccess, ...restConfig } = mutationConfig || {}
@@ -32,6 +29,6 @@ export const useCreateMusic = ({
       onSuccess?.(data, ...args)
     },
     ...restConfig,
-    mutationFn: createMusic,
+    mutationFn: createTrack,
   })
 }
