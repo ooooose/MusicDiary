@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Diaries", type: :request do
+RSpec.describe "Api::V1::Diaries", type: :request do
   let!(:user) { create(:user) }
   let!(:token) { encode_jwt({ user_id: user.id }) }
   let!(:headers) { { Authorization: "Bearer #{token}" } }

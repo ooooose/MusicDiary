@@ -8,17 +8,17 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { useCreateMusic } from '@/features/music/api'
+import { useCreateTrack } from '@/features/tracks/api'
 import type { FC } from 'react'
 import { useCallback, useState } from 'react'
 
 type DialogProps = {
   open: boolean
   onClose: (result: boolean) => void
-  handleSetMusic: () => void
+  handleSetTrack: () => void
 }
 
-const _ModalDialog: FC<DialogProps> = ({ open, onClose, handleSetMusic }) => {
+const _ModalDialog: FC<DialogProps> = ({ open, onClose, handleSetTrack }) => {
   return (
     <Dialog open={open} onOpenChange={(isOpen) => !isOpen && onClose(false)}>
       <DialogContent>
@@ -31,7 +31,7 @@ const _ModalDialog: FC<DialogProps> = ({ open, onClose, handleSetMusic }) => {
         <DialogFooter>
           <Button
             onClick={() => {
-              handleSetMusic()
+              handleSetTrack()
               onClose(false)
             }}
           >
@@ -46,7 +46,7 @@ const _ModalDialog: FC<DialogProps> = ({ open, onClose, handleSetMusic }) => {
   )
 }
 
-export const useSetMusicDialog = (uid: string) => {
+export const useSetTrackDialog = (uid: string) => {
   const [modalOpen, setModalOpen] = useState<boolean>(false)
   const [hasApiError, setHasApiError] = useState<boolean>(false)
   const { addNotification } = useNotifications()
@@ -72,7 +72,7 @@ export const useSetMusicDialog = (uid: string) => {
     [resolve],
   )
 
-  const createDiaryMutation = useCreateMusic({
+  const createTrackMutation = useCreateTrack({
     diaryId: uid,
     mutationConfig: {
       onSuccess: async () => {
@@ -87,23 +87,23 @@ export const useSetMusicDialog = (uid: string) => {
     },
   })
 
-  const handleSetMusic = useCallback(() => {
-    createDiaryMutation.mutate(uid)
-  }, [createDiaryMutation, uid])
+  const handleSetTrack = useCallback(() => {
+    createTrackMutation.mutate(uid)
+  }, [createTrackMutation, uid])
 
   const ModalDialog: FC<{ uid: string }> = () => (
     <_ModalDialog
       open={modalOpen}
       onClose={onClose}
-      handleSetMusic={handleSetMusic}
+      handleSetTrack={handleSetTrack}
     />
   )
 
   return {
-    createDiaryMutation,
+    createTrackMutation,
     ModalDialog,
     openDialog,
-    handleSetMusic,
+    handleSetTrack,
     setHasApiError,
     hasApiError,
   }

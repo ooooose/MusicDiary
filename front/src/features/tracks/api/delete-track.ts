@@ -2,18 +2,19 @@ import { apiClient } from '@/lib/api/api-client'
 import type { MutationConfig } from '@/lib/react-query/react-query'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
-import { getDiariesQueryOptions } from '@/features/diaries/api/get-diaries'
+import { getDiaryQueryOptions } from '@/features/diaries/api'
 import { endpoints } from '@/utils/constants/endpoints'
 
-export const deleteDiary = ({ diaryId }: { diaryId: string }) => {
-  return apiClient.apiDelete(`${endpoints.diaries}/${diaryId}`)
+export const deleteTrack = ({ trackId }: { trackId: number }) => {
+  return apiClient.apiDelete(`${endpoints.tracks}/${trackId}`)
 }
 
-type UseDeleteDiaryOptions = {
-  mutationConfig?: MutationConfig<typeof deleteDiary>
+type UseDeleteTrackOptions = {
+  diaryId: string
+  mutationConfig?: MutationConfig<typeof deleteTrack>
 }
 
-export const UseDeleteDiary = ({ mutationConfig }: UseDeleteDiaryOptions) => {
+export const UseDeleteTrack = ({ diaryId, mutationConfig }: UseDeleteTrackOptions) => {
   const queryClient = useQueryClient()
 
   const { onSuccess, ...restConfig } = mutationConfig || {}
@@ -21,11 +22,11 @@ export const UseDeleteDiary = ({ mutationConfig }: UseDeleteDiaryOptions) => {
   return useMutation({
     onSuccess: (...args) => {
       queryClient.invalidateQueries({
-        queryKey: getDiariesQueryOptions().queryKey,
+        queryKey: getDiaryQueryOptions(diaryId).queryKey,
       })
       onSuccess?.(...args)
     },
     ...restConfig,
-    mutationFn: deleteDiary,
+    mutationFn: deleteTrack,
   })
 }

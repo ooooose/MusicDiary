@@ -1,31 +1,29 @@
 import { useNotifications } from '@/components/notifications'
 import { Button } from '@/components/ui/button'
 import { ConfirmationDialog } from '@/components/ui/confirmation-dialog'
-import { UseDeleteDiary } from '@/features/diaries/api/delete-diary'
+import { UseDeleteTrack } from '@/features/tracks/api/delete-track'
 import { Trash } from 'lucide-react'
-import { useRouter } from 'next/navigation'
 
-type DeleteDiaryProps = {
-  id: string
-  date: string
+type DeleteTrackProps = {
+  diaryId: string
+  trackId: number
 }
 
-export const DeleteDiary = ({ id, date }: DeleteDiaryProps) => {
+export const DeleteTrack = ({ diaryId, trackId }: DeleteTrackProps) => {
   const { addNotification } = useNotifications()
-  const router = useRouter()
-  const deleteDiaryMutation = UseDeleteDiary({
+  const deleteTrackMutation = UseDeleteTrack({
+    diaryId,
     mutationConfig: {
       onSuccess: () => {
         addNotification({
           type: 'success',
-          title: '日記を削除しました',
+          title: '楽曲を削除しました',
         })
-        router.push(`/diaries/${date}`)
       },
       onError: () => {
         addNotification({
           type: 'error',
-          title: '日記を削除できませんでした',
+          title: '楽曲を削除できませんでした',
         })
       },
     },
@@ -33,10 +31,10 @@ export const DeleteDiary = ({ id, date }: DeleteDiaryProps) => {
 
   return (
     <ConfirmationDialog
-      isDone={deleteDiaryMutation.isSuccess}
+      isDone={deleteTrackMutation.isSuccess}
       icon="danger"
-      title="日記を削除します"
-      body="本当に日記を削除してよろしいですか？"
+      title="楽曲を削除します"
+      body="本当に楽曲を削除してよろしいですか？"
       triggerButton={
         <Button
           variant="destructive"
@@ -48,10 +46,10 @@ export const DeleteDiary = ({ id, date }: DeleteDiaryProps) => {
       }
       confirmButton={
         <Button
-          isLoading={deleteDiaryMutation.isPending}
+          isLoading={deleteTrackMutation.isPending}
           type="button"
           variant="destructive"
-          onClick={() => deleteDiaryMutation.mutate({ diaryId: id })}
+          onClick={() => deleteTrackMutation.mutate({ trackId })}
         >
           削除
         </Button>

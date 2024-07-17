@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Users", type: :request do
+RSpec.describe "Api::V1::Users", type: :request do
   describe "POST /auth/google/callback" do
     context "when valid request" do
       it "creates a new user and returns accessToken" do
