@@ -17,7 +17,7 @@ export const Track = memo(({ spotifyId }: TrackProps) => {
   }
 
   return (
-    <div className="flex items-center md:flex-row">
+    <div className="mb-2">
       <iframe
         ref={iframeRef}
         src={`https://open.spotify.com/embed/track/${spotifyId}`}

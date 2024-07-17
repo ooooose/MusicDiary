@@ -5,8 +5,8 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { getDiariesQueryOptions } from '@/features/diaries/api/get-diaries'
 import { endpoints } from '@/utils/constants/endpoints'
 
-export const deleteDiary = ({ diary_id }: { diary_id: string }) => {
-  return apiClient.apiDelete(`${endpoints.diaries}/${diary_id}`)
+export const deleteDiary = ({ diaryId }: { diaryId: string }) => {
+  return apiClient.apiDelete(`${endpoints.diaries}/${diaryId}`)
 }
 
 type UseDeleteDiaryOptions = {

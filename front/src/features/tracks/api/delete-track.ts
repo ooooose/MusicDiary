@@ -5,8 +5,8 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { getDiaryQueryOptions } from '@/features/diaries/api'
 import { endpoints } from '@/utils/constants/endpoints'
 
-export const deleteTrack = ({ track_id }: { track_id: number }) => {
-  return apiClient.apiDelete(`${endpoints.tracks}/${track_id}`)
+export const deleteTrack = ({ trackId }: { trackId: number }) => {
+  return apiClient.apiDelete(`${endpoints.tracks}/${trackId}`)
 }
 
 type UseDeleteTrackOptions = {
