@@ -7,7 +7,7 @@ class Api::V1::TracksController < ApplicationController
   rescue ActiveRecord::RecordNotDestroyed => e
     render json: { error: e.message }, status: :unprocessable_entity
   else
-    render json: { message: "日記の削除に成功しました" }, status: :ok
+    render json: { message: "楽曲の削除に成功しました" }, status: :ok
   end
 
   private
