@@ -9,6 +9,8 @@ services:
       - './back:/app'
     ports:
       - '3000:3000'
+    environment:
+      - REDIS_URL=redis://redis:6379
     tty: true
     stdin_open: true
     depends_on:

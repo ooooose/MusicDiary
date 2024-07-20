@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  if Rails.env.development?
+    require 'sidekiq/web'
+    mount Sidekiq::Web, at: '/sidekiq'
+  end
   post 'auth/:provider/callback', to: 'api/v1/users#create'
   namespace :api, format: 'json' do
     namespace :v1 do
