@@ -13,6 +13,7 @@ services:
     stdin_open: true
     depends_on:
       - db
+      - redis
   db:
     restart: always
     image: mysql:8.1
@@ -23,6 +24,24 @@ services:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
+  worker:
+    build: ./back
+    environment:
+      - "RAILS_ENV=development"
+      - "REDIS_URL=redis://redis:6379"
+    volumes:
+      - './back:/app'
+    depends_on:
+      - db
+      - redis
+    command: bundle exec sidekiq
+  redis:
+    image: redis:latest
+    command: redis-server --appendonly yes
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./redis/data:/data
   # front:
   #   build:
   #     context: ./front
