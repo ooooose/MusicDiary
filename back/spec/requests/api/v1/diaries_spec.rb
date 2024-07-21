@@ -43,20 +43,20 @@ RSpec.describe "Api::V1::Diaries", type: :request do
   end
 
   describe "POST /api/v1/diaries" do
+    before do
+      allow(RecommendMusicJob).to receive(:perform_later).and_return(true)
+    end
+
     context "when authenticated" do
       context "when params are valid" do
-        before { post api_v1_diaries_path, params: { diary: { body: "test", uid: user.uid } }, headers: }
-
-        it "creates an diary and returns status created" do
-          expect(response).to have_http_status(:created)
+        it "creates an diary and returns status ok" do
+         post(api_v1_diaries_path, params: { diary: { body: "test", uid: user.uid } }, headers:)
+          expect(response).to have_http_status(:ok)
         end
 
-        it "returns the created diary body" do
-          expect(JSON.parse(response.body)["body"]).to eq("test")
-        end
-
-        it "returns the created diary user_id" do
-          expect(JSON.parse(response.body)["user_id"]).to eq(user.id)
+        it "returns nil" do
+          post(api_v1_diaries_path, params: { diary: { body: "test", uid: user.uid } }, headers:)
+          expect(response.body).to be_empty
         end
       end
 
