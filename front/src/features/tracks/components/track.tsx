@@ -1,4 +1,4 @@
-import { memo, useRef } from 'react'
+import { memo, useCallback, useRef } from 'react'
 
 type TrackProps = {
   spotifyId: string
@@ -7,25 +7,26 @@ type TrackProps = {
 export const Track = memo(({ spotifyId }: TrackProps) => {
   const iframeRef = useRef<HTMLIFrameElement>(null)
 
-  const handleGesture = () => {
+  const handleLoad = useCallback(() => {
     if (iframeRef.current) {
-      iframeRef.current.contentWindow?.postMessage(
-        'play',
-        'https://open.spotify.com',
+      iframeRef.current.setAttribute(
+        'allow',
+        'autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture',
       )
     }
-  }
+  }, [])
 
   return (
     <div className="mb-2">
       <iframe
         ref={iframeRef}
-        src={`https://open.spotify.com/embed/track/${spotifyId}`}
+        src={`https://open.spotify.com/embed/track/${spotifyId}?utm_source=generator`}
         width="100%"
         height="80"
         allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
         loading="lazy"
-        onClick={handleGesture}
+        title={`Spotify track ${spotifyId}`}
+        onLoad={handleLoad}
       ></iframe>
     </div>
   )

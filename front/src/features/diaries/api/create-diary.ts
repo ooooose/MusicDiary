@@ -1,4 +1,4 @@
-import { getDiariesQueryOptions } from '@/features/diaries/api/get-diaries'
+import { getDiaryQueryOptions } from '@/features/diaries/api/get-diary'
 import { apiClient } from '@/lib/api/api-client'
 import { formatDateForDairyDiaries } from '@/lib/date'
 import type { MutationConfig } from '@/lib/react-query/react-query'
@@ -35,7 +35,9 @@ type UsePostDiaryOptions = {
   mutationConfig?: MutationConfig<typeof createDiary>
 }
 
-export const useCreateDiary = ({ mutationConfig }: UsePostDiaryOptions) => {
+export const useCreateDiary = ({
+  mutationConfig,
+}: UsePostDiaryOptions) => {
   const queryClient = useQueryClient()
   const today = formatDateForDairyDiaries(new Date())
   const router = useRouter()
@@ -45,7 +47,7 @@ export const useCreateDiary = ({ mutationConfig }: UsePostDiaryOptions) => {
   return useMutation({
     onSuccess: (data, ...args) => {
       queryClient.invalidateQueries({
-        queryKey: getDiariesQueryOptions().queryKey,
+        queryKey: getDiaryQueryOptions(data.uid).queryKey,
       })
       onSuccess?.(data, ...args)
       router.push(`/diaries/${today}/${data.uid}`)

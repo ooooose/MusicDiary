@@ -105,7 +105,6 @@ export const Diary = memo(({ date, diaryId }: DiaryProps) => {
       )}
       <div className="mt-2 w-full">
         <Recommendations
-          diaryId={diaryId}
           tracks={diaryQuery.data?.tracks ?? []}
         />
       </div>
