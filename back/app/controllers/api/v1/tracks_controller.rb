@@ -11,7 +11,7 @@ class Api::V1::TracksController < ApplicationController
   end
 
   private
-    
+
     def set_track
       @track = Track.find(params[:id])
     end

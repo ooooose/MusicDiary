@@ -50,7 +50,7 @@ RSpec.describe "Api::V1::Diaries", type: :request do
     context "when authenticated" do
       context "when params are valid" do
         it "creates an diary and returns status ok" do
-         post(api_v1_diaries_path, params: { diary: { body: "test", uid: user.uid } }, headers:)
+          post(api_v1_diaries_path, params: { diary: { body: "test", uid: user.uid } }, headers:)
           expect(response).to have_http_status(:ok)
         end
 
