@@ -49,23 +49,6 @@ class Api::V1::DiariesController < ApplicationController
     render json: DiarySerializer.new(diaries).serializable_hash, status: :ok
   end
 
-  # POST /diaries/{uid}/music
-  def set_music
-    service = Openai::ChatResponseService.new
-    response = service.call(@diary.body)
-    recommendations = fetch_recommendations(response)
-
-    @track = build_track_from_recommendations(recommendations)
-
-    if @track.save
-      render_track_creation_success
-    else
-      render_track_creation_failure
-    end
-  rescue => e
-    render_error_response(e)
-  end
-
   private
 
     def set_diary
