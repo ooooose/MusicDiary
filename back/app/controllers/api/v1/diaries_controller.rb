@@ -13,16 +13,16 @@ class Api::V1::DiariesController < ApplicationController
   end
 
   # POST /diaries
-def create
-  @diary = current_user.diaries.build(diary_params)
+  def create
+    @diary = current_user.diaries.build(diary_params)
 
-  if @diary.save
-    RecommendMusicJob.perform_later(@diary, current_user.id)
-    head :ok
-  else
-    render json: { errors: @diary.errors.full_messages }, status: :unprocessable_entity
+    if @diary.save
+      RecommendMusicJob.perform_later(@diary.id, current_user.id)
+      render json: DiarySerializer.new(@diary).serializable_hash, status: :created
+    else
+      render json: { errors: @diary.errors.full_messages }, status: :unprocessable_entity
+    end
   end
-end
 
   # PATCH/PUT /diaries/{uid}
   def update
@@ -47,23 +47,6 @@ end
     date = Date.parse(params[:date])
     diaries = current_user.diaries.created_on(date).sorted_by_date
     render json: DiarySerializer.new(diaries).serializable_hash, status: :ok
-  end
-
-  # POST /diaries/{uid}/music
-  def set_music
-    service = Openai::ChatResponseService.new
-    response = service.call(@diary.body)
-    recommendations = fetch_recommendations(response)
-
-    @track = build_track_from_recommendations(recommendations)
-
-    if @track.save
-      render_track_creation_success
-    else
-      render_track_creation_failure
-    end
-  rescue => e
-    render_error_response(e)
   end
 
   private
@@ -100,5 +83,17 @@ end
     def render_error_response(e)
       Rails.logger.error(e.message)
       render json: { error: "An error occurred. Please try again later." }, status: :internal_server_error
+    end
+
+    def wait_for_job(job)
+      timeout = 30.seconds
+      start_time = Time.current
+
+      while Time.current - start_time < timeout
+        return if job.completed?
+        sleep 0.5
+      end
+
+      raise Timeout::Error, "ジョブがタイムアウトしました"
     end
 end
