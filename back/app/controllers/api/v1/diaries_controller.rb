@@ -84,4 +84,16 @@ class Api::V1::DiariesController < ApplicationController
       Rails.logger.error(e.message)
       render json: { error: "An error occurred. Please try again later." }, status: :internal_server_error
     end
+
+    def wait_for_job(job)
+      timeout = 30.seconds
+      start_time = Time.current
+
+      while Time.current - start_time < timeout
+        return if job.completed?
+        sleep 0.5
+      end
+
+      raise Timeout::Error, "ジョブがタイムアウトしました"
+    end
 end

@@ -1,17 +1,18 @@
 class RecommendMusicJob < ApplicationJob
   queue_as :default
 
-  def perform(diary_id, user_id)
-    @diary = Diary.find(diary_id)
+  def perform(diary_id, user_id)@diary = Diary.find(diary_id)@diary = Diary.find(diary_id)
     service = Openai::ChatResponseService.new
     response = service.call(@diary.body)
     recommendations = fetch_recommendations(response)
 
     track = build_track_from_recommendations(recommendations)
     if track.save
-      broadcast_recommendation(track, user_id)
+      ActionCable.server.broadcast "track_channel_#{user_id}", 
+        { track: TrackSerializer.new(track).serializable_hash, diary_id: @diary.id }
     else
-      handle_error(ActiveRecord::RecordInvalid.new(track), user_id)
+      ActionCable.server.broadcast "track_channel_#{user_id}", 
+        { error: track.errors.full_messages, diary_id: @diary.id }
     end
   rescue => e
     handle_error(e, user_id)
@@ -30,10 +31,6 @@ class RecommendMusicJob < ApplicationJob
       artist: recommendations.artists[0].name,
       image: recommendations.album.images[0]["url"]
     )
-  end
-
-  def broadcast_recommendation(track, user_id)
-    ActionCable.server.broadcast "track_channel_#{user_id}", TrackSerializer.new(track).serializable_hash
   end
 
   def handle_error(error, user_id)
