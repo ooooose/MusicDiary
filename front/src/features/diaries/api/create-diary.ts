@@ -6,6 +6,8 @@ import { generateUUID } from '@/lib/uuid'
 import type { Diary } from '@/types/api'
 import { endpoints } from '@/utils/constants/endpoints'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import type { DeserializerOptions } from 'jsonapi-serializer'
+import { Deserializer } from 'jsonapi-serializer'
 import { useRouter } from 'next/navigation'
 import { z } from 'zod'
 
@@ -13,13 +15,20 @@ export const createDiaryInputSchema = z.object({
   body: z.string().min(1, '入力必須です'),
 })
 
+const deserializerOptions: DeserializerOptions = {
+  keyForAttribute: 'camelCase',
+}
+
 export type CreateDiaryInput = z.infer<typeof createDiaryInputSchema>
 
 export const createDiary = async (params: CreateDiaryInput): Promise<Diary> => {
   const uuid = generateUUID()
   const paramsWithUUID = { ...params, uid: uuid }
 
-  return await apiClient.apiPost(endpoints.diaries, paramsWithUUID)
+  const response = await apiClient.apiPost(endpoints.diaries, paramsWithUUID)
+  const deserializer = new Deserializer(deserializerOptions)
+  const diary = await deserializer.deserialize(response)
+  return diary
 }
 
 type UsePostDiaryOptions = {
