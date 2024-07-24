@@ -1,7 +1,8 @@
 class RecommendMusicJob < ApplicationJob
   queue_as :default
 
-  def perform(diary_id, user_id)@diary = Diary.find(diary_id)@diary = Diary.find(diary_id)
+  def perform(diary_id, user_id)
+    @diary = Diary.find(diary_id)
     service = Openai::ChatResponseService.new
     response = service.call(@diary.body)
     recommendations = fetch_recommendations(response)
