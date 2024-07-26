@@ -1,5 +1,6 @@
 'use client'
 
+import { memo, useCallback, useEffect, useState } from 'react'
 import { useNotifications } from '@/components/notifications'
 import { useDiary } from '@/features/diaries/api/get-diary'
 import type { UpdateDiaryInput } from '@/features/diaries/api/update-diary'
@@ -12,13 +13,14 @@ import { EditDiary } from '@/features/diaries/components/edit-diary'
 import { EditDiaryButton } from '@/features/diaries/components/edit-diary-button'
 import { LoadingDiary } from '@/features/diaries/components/loading-diary'
 import { Recommendations } from '@/features/tracks/components/recommendations'
+import { useActionCable } from '@/hooks/use-action-cable'
 import { formatDateForDiary } from '@/lib/date'
 import { TextWithLineBreaks } from '@/lib/text-with-line-breaks'
 import { zodResolver } from '@hookform/resolvers/zod'
 
-import { memo, useCallback, useEffect, useState } from 'react'
 import type { SubmitHandler } from 'react-hook-form'
 import { useForm } from 'react-hook-form'
+import type { Track } from '@/types/api'
 
 type DiaryProps = {
   date: string
@@ -75,6 +77,8 @@ export const Diary = memo(({ date, diaryId }: DiaryProps) => {
     }
   }, [diaryQuery.data, form])
 
+  const [tracks, setTracks] = useState<Track[]>(diaryQuery.data?.tracks ?? [])
+
   const onSubmit = useCallback<SubmitHandler<UpdateDiaryInput>>(
     (values) => {
       updateDiaryMutation.mutate({
@@ -85,10 +89,13 @@ export const Diary = memo(({ date, diaryId }: DiaryProps) => {
     [updateDiaryMutation, diaryId],
   )
 
+  const { isConnected } = useActionCable(diaryQuery.data?.userId, setTracks)
+
   if (diaryQuery.isLoading) return <LoadingDiary />
 
   return (
     <div className="flex w-full flex-col gap-4">
+      {isConnected && <div>WebSocket Connected</div>}
       <DiaryHeader date={date}>
         <EditDiaryButton
           editFlag={editFlag}
@@ -104,9 +111,7 @@ export const Diary = memo(({ date, diaryId }: DiaryProps) => {
         <DiaryContent body={diaryQuery.data?.body ?? ''} />
       )}
       <div className="mt-2 w-full">
-        <Recommendations
-          tracks={diaryQuery.data?.tracks ?? []}
-        />
+        <Recommendations tracks={tracks} />
       </div>
     </div>
   )

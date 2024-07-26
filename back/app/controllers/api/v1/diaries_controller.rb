@@ -16,9 +16,8 @@ class Api::V1::DiariesController < ApplicationController
   def create
     @diary = current_user.diaries.build(diary_params)
 
-    if @diary.save
-      RecommendMusicJob.perform_later(@diary.id, current_user.id)
-      render json: DiarySerializer.new(@diary).serializable_hash, status: :created
+    if @diary.save && RecommendMusicJob.perform_later(@diary.id, current_user.id)
+      render json: DiarySerializer.new(@diary, include: [:tracks]).serializable_hash, status: :created
     else
       render json: { errors: @diary.errors.full_messages }, status: :unprocessable_entity
     end
