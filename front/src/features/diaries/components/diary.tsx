@@ -1,5 +1,6 @@
 'use client'
 
+import { memo, useCallback, useEffect, useState } from 'react'
 import { useNotifications } from '@/components/notifications'
 import { useDiary } from '@/features/diaries/api/get-diary'
 import type { UpdateDiaryInput } from '@/features/diaries/api/update-diary'
@@ -12,11 +13,11 @@ import { EditDiary } from '@/features/diaries/components/edit-diary'
 import { EditDiaryButton } from '@/features/diaries/components/edit-diary-button'
 import { LoadingDiary } from '@/features/diaries/components/loading-diary'
 import { Recommendations } from '@/features/tracks/components/recommendations'
+import { useActionCable } from '@/hooks/use-action-cable'
 import { formatDateForDiary } from '@/lib/date'
 import { TextWithLineBreaks } from '@/lib/text-with-line-breaks'
 import { zodResolver } from '@hookform/resolvers/zod'
 
-import { memo, useCallback, useEffect, useState } from 'react'
 import type { SubmitHandler } from 'react-hook-form'
 import { useForm } from 'react-hook-form'
 
@@ -84,6 +85,17 @@ export const Diary = memo(({ date, diaryId }: DiaryProps) => {
     },
     [updateDiaryMutation, diaryId],
   )
+
+  const handleReceivedData = useCallback(
+    (data: any) => {
+      if (data.diary_id === diaryId && data.action === 'update') {
+        diaryQuery.refetch()
+      }
+    },
+    [diaryId, diaryQuery],
+  )
+
+  useActionCable('TrackChannel', { diary_id: diaryId }, handleReceivedData)
 
   if (diaryQuery.isLoading) return <LoadingDiary />
 
