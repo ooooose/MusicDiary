@@ -20,6 +20,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 
 import type { SubmitHandler } from 'react-hook-form'
 import { useForm } from 'react-hook-form'
+import type { Track } from '@/types/api'
 
 type DiaryProps = {
   date: string
@@ -76,6 +77,8 @@ export const Diary = memo(({ date, diaryId }: DiaryProps) => {
     }
   }, [diaryQuery.data, form])
 
+  const [tracks, setTracks] = useState<Track[]>(diaryQuery.data?.tracks ?? [])
+
   const onSubmit = useCallback<SubmitHandler<UpdateDiaryInput>>(
     (values) => {
       updateDiaryMutation.mutate({
@@ -86,21 +89,13 @@ export const Diary = memo(({ date, diaryId }: DiaryProps) => {
     [updateDiaryMutation, diaryId],
   )
 
-  const handleReceivedData = useCallback(
-    (data: any) => {
-      if (data.diary_id === diaryId && data.action === 'update') {
-        diaryQuery.refetch()
-      }
-    },
-    [diaryId, diaryQuery],
-  )
-
-  useActionCable('TrackChannel', { diary_id: diaryId }, handleReceivedData)
+  const { isConnected } = useActionCable(diaryQuery.data?.userId, setTracks)
 
   if (diaryQuery.isLoading) return <LoadingDiary />
 
   return (
     <div className="flex w-full flex-col gap-4">
+      {isConnected && <div>WebSocket Connected</div>}
       <DiaryHeader date={date}>
         <EditDiaryButton
           editFlag={editFlag}
@@ -116,9 +111,7 @@ export const Diary = memo(({ date, diaryId }: DiaryProps) => {
         <DiaryContent body={diaryQuery.data?.body ?? ''} />
       )}
       <div className="mt-2 w-full">
-        <Recommendations
-          tracks={diaryQuery.data?.tracks ?? []}
-        />
+        <Recommendations tracks={tracks} />
       </div>
     </div>
   )
