@@ -57,42 +57,4 @@ class Api::V1::DiariesController < ApplicationController
     def diary_params
       params.require(:diary).permit(:uid, :body)
     end
-
-    def fetch_recommendations(response)
-      Spotify::RequestRecommendationService.new(response).request
-    end
-
-    def build_track_from_recommendations(recommendations)
-      @diary.tracks.build(
-        spotify_id: recommendations.id,
-        title: recommendations.name,
-        artist: recommendations.artists[0].name,
-        image: recommendations.album.images[0]["url"]
-      )
-    end
-
-    def render_track_creation_success
-      render json: TrackSerializer.new(@track).serializable_hash, status: :created
-    end
-
-    def render_track_creation_failure
-      render json: { errors: @track.errors }, status: :unprocessable_entity
-    end
-
-    def render_error_response(e)
-      Rails.logger.error(e.message)
-      render json: { error: "An error occurred. Please try again later." }, status: :internal_server_error
-    end
-
-    def wait_for_job(job)
-      timeout = 30.seconds
-      start_time = Time.current
-
-      while Time.current - start_time < timeout
-        return if job.completed?
-        sleep 0.5
-      end
-
-      raise Timeout::Error, "ジョブがタイムアウトしました"
-    end
 end

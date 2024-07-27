@@ -26,8 +26,4 @@ class Api::V1::UsersController < ApplicationController
     def user_params
       params.require(:user).permit(:name, :email, :image)
     end
-
-    def encode_jwt(payload)
-      JWT.encode(payload, Rails.application.secret_key_base, "HS256")
-    end
 end
