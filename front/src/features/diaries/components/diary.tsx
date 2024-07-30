@@ -13,7 +13,7 @@ import { EditDiary } from '@/features/diaries/components/edit-diary'
 import { EditDiaryButton } from '@/features/diaries/components/edit-diary-button'
 import { LoadingDiary } from '@/features/diaries/components/loading-diary'
 import { Recommendations } from '@/features/tracks/components/recommendations'
-import { useActionCable } from '@/hooks/use-action-cable'
+import { useWebsocketConnection } from '@/hooks/use-websocket-connection'
 import { formatDateForDiary } from '@/lib/date'
 import { TextWithLineBreaks } from '@/lib/text-with-line-breaks'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -48,6 +48,8 @@ export const Diary = memo(({ date, diaryId }: DiaryProps) => {
   const { addNotification } = useNotifications()
   const diaryQuery = useDiary({ diaryId })
   const [editFlag, setEditFlag] = useState<boolean>(false)
+  const [tracks, setTracks] = useState<Track[]>([])
+
   const updateDiaryMutation = useUpdateDiary({
     diaryId,
     mutationConfig: {
@@ -74,10 +76,9 @@ export const Diary = memo(({ date, diaryId }: DiaryProps) => {
   useEffect(() => {
     if (diaryQuery.data) {
       form.reset({ body: diaryQuery.data.body })
+      setTracks(diaryQuery.data.tracks || [])
     }
   }, [diaryQuery.data, form])
-
-  const [tracks, setTracks] = useState<Track[]>(diaryQuery.data?.tracks ?? [])
 
   const onSubmit = useCallback<SubmitHandler<UpdateDiaryInput>>(
     (values) => {
@@ -89,13 +90,33 @@ export const Diary = memo(({ date, diaryId }: DiaryProps) => {
     [updateDiaryMutation, diaryId],
   )
 
-  const { isConnected } = useActionCable(diaryQuery.data?.userId, setTracks)
+  const handleReceive = useCallback((data: any) => {
+      if (data.invalid) {
+        return
+      }
+      if (data.error) {
+        console.error(data.error)
+        addNotification({
+          type: 'error',
+          title: '楽曲の提供に失敗しました',
+          message: data.error,
+        })
+        return
+      }
+
+      setTracks(data.body)
+      addNotification({
+        type: 'info',
+        title: '楽曲の提供に成功しました',
+      })
+  }, [addNotification, setTracks])
+
+  useWebsocketConnection(diaryQuery.data?.userId, handleReceive)
 
   if (diaryQuery.isLoading) return <LoadingDiary />
 
   return (
     <div className="flex w-full flex-col gap-4">
-      {isConnected && <div>WebSocket Connected</div>}
       <DiaryHeader date={date}>
         <EditDiaryButton
           editFlag={editFlag}
